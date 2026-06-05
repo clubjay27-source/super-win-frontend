@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SUPER WIN</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#14142d;
+color:white;
+min-height:100vh;
+}
+
+.header{
+height:72px;
+background:#23234d;
+display:flex;
+justify-content:center;
+align-items:center;
+position:relative;
+}
+
+.back-btn{
+position:absolute;
+left:15px;
+font-size:22px;
+cursor:pointer;
+}
+
+.logo{
+font-size:30px;
+font-weight:900;
+letter-spacing:1px;
+background:linear-gradient(90deg,#7ec8ff,#f06dff);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.lang{
+position:absolute;
+right:15px;
+font-size:18px;
+}
+
+.top-gradient{
+height:42px;
+background:linear-gradient(
+90deg,
+#ff8d75,
+#d15eff,
+#62a9ff
+);
+}
+
+.container{
+max-width:390px;
+margin:auto;
+padding:18px;
+}
+
+.center-icon{
+text-align:center;
+font-size:32px;
+color:#9f8cff;
+margin-top:5px;
+}
+
+.register-title{
+text-align:center;
+font-size:20px;
+font-weight:bold;
+color:#9f8cff;
+margin-top:8px;
+}
+
+.line{
+height:2px;
+background:#8f80ff;
+margin:18px 0;
+}
+
+.label{
+display:flex;
+align-items:center;
+gap:10px;
+font-size:16px;
+margin-top:18px;
+margin-bottom:8px;
+}
+
+.label i{
+color:#9f8cff;
+font-size:18px;
+}
+
+.row{
+display:flex;
+gap:10px;
+}
+
+.country{
+width:90px;
+}
+
+input,
+select{
+width:100%;
+height:50px;
+border:none;
+outline:none;
+background:#25255b;
+border-radius:14px;
+padding:0 15px;
+font-size:15px;
+color:white;
+}
+
+input::placeholder{
+color:#9b9b9b;
+}
+
+.input-box{
+position:relative;
+}
+
+.eye{
+position:absolute;
+right:15px;
+top:50%;
+transform:translateY(-50%);
+color:#c7c7c7;
+cursor:pointer;
+}
+
+.agree{
+display:flex;
+align-items:center;
+gap:8px;
+margin-top:20px;
+font-size:14px;
+}
+
+.agree input{
+width:18px;
+height:18px;
+}
+
+.agree a{
+color:#ff6565;
+text-decoration:none;
+}
+
+.register-btn{
+width:100%;
+height:54px;
+margin-top:22px;
+border:none;
+border-radius:30px;
+font-size:20px;
+font-weight:bold;
+cursor:pointer;
+
+background:linear-gradient(
+90deg,
+#ff8d75,
+#d15eff,
+#62a9ff
+);
+}
+
+.login-btn{
+width:100%;
+height:54px;
+margin-top:15px;
+border-radius:30px;
+background:transparent;
+border:1px solid #7f73ff;
+color:#9f8cff;
+font-size:20px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.register-btn:hover,
+.login-btn:hover{
+opacity:.95;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header">
+
+<div class="back-btn">
+<i class="fa-solid fa-chevron-left"></i>
+</div>
+
+<div class="logo">
+SUPER WIN
+</div>
+
+<div class="lang">
+🇺🇸 EN
+</div>
+
+</div>
+
+<div class="top-gradient"></div>
+
+<div class="container">
+
+<div class="center-icon">
+<i class="fa-solid fa-mobile-screen"></i>
+</div>
+
+<div class="register-title">
+Register your phone
+</div>
+
+<div class="line"></div>
+
+<form method="POST" action="/register">
+
+<div class="label">
+<i class="fa-solid fa-mobile-screen"></i>
+<span>Phone number</span>
+</div>
+
+<div class="row">
+
+<select class="country" name="country_code">
+<option>+91</option>
+<option>+1</option>
+<option>+44</option>
+</select>
+
+<input
+type="text"
+name="phone"
+placeholder="Please enter the phone number"
+required>
+
+</div>
+
+<div class="label">
+<i class="fa-solid fa-lock"></i>
+<span>Set password</span>
+</div>
+
+<div class="input-box">
+
+<input
+type="password"
+id="password"
+name="password"
+placeholder="Set password"
+required>
+
+<i class="fa-solid fa-eye-slash eye"
+onclick="togglePassword('password',this)">
+</i>
+
+</div>
+
+<div class="label">
+<i class="fa-solid fa-lock"></i>
+<span>Confirm password</span>
+</div>
+
+<div class="input-box">
+
+<input
+type="password"
+id="confirm"
+name="confirm_password"
+placeholder="Confirm password"
+required>
+
+<i class="fa-solid fa-eye-slash eye"
+onclick="togglePassword('confirm',this)">
+</i>
+
+</div>
+
+<div class="label">
+<i class="fa-solid fa-user-group"></i>
+<span>Invite code</span>
+</div>
+
+<input
+type="text"
+name="invite_code"
+placeholder="Please enter the invitation code">
+
+<div class="agree">
+
+<input type="checkbox" checked required>
+
+<span>
+I have read and agree
+<a href="#">Privacy Agreement</a>
+</span>
+
+</div>
+
+<button type="submit" class="register-btn">
+Register
+</button>
+
+<button
+type="button"
+class="login-btn"
+onclick="window.location='/login'">
+Login
+</button>
+
+</form>
+
+</div>
+
+<script>
+
+function togglePassword(id,icon){
+
+let input=document.getElementById(id);
+
+if(input.type==="password"){
+input.type="text";
+icon.classList.remove("fa-eye-slash");
+icon.classList.add("fa-eye");
+}
+else{
+input.type="password";
+icon.classList.remove("fa-eye");
+icon.classList.add("fa-eye-slash");
+}
+
+}
+
+</script>
+
+</body>
+</html>
