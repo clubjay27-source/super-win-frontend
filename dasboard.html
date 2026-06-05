@@ -1,0 +1,1777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>super win</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+-webkit-tap-highlight-color:transparent;
+}
+
+body{
+background:#171334;
+overflow-x:hidden;
+color:white;
+}
+
+.container{
+width:100%;
+max-width:430px;
+margin:auto;
+padding-bottom:30px;
+}
+
+/* HEADER */
+
+.header{
+height:64px;
+background:#241d55;
+display:flex;
+align-items:center;
+justify-content:center;
+position:sticky;
+top:0;
+z-index:99;
+}
+
+.back{
+position:absolute;
+left:14px;
+font-size:28px;
+top:10px;
+}
+
+.logo{
+font-size:24px;
+font-weight:800;
+background:linear-gradient(180deg,#8fe6ff,#7d81ff,#ff79eb);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.header-icons{
+position:absolute;
+right:14px;
+display:flex;
+gap:8px;
+}
+
+.icon{
+width:30px;
+height:30px;
+border-radius:10px;
+background:rgba(255,255,255,.08);
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:13px;
+}
+
+.profile-box{
+position:absolute;
+right:14px;
+width:42px;
+height:42px;
+border-radius:50%;
+background:#d9d9d9;
+display:flex;
+align-items:center;
+justify-content:center;
+overflow:hidden;
+box-shadow:0 4px 10px rgba(0,0,0,.25);
+}
+
+.profile-icon{
+width:14px;
+height:14px;
+background:#9c9c9c;
+border-radius:50%;
+position:relative;
+margin-top:-10px;
+}
+
+.profile-icon::after{
+content:'';
+position:absolute;
+width:26px;
+height:14px;
+background:#9c9c9c;
+border-radius:20px 20px 0 0;
+left:50%;
+transform:translateX(-50%);
+top:18px;
+}
+
+/* WALLET */
+
+.wallet{
+margin:12px;
+padding:18px;
+border-radius:26px;
+background:linear-gradient(135deg,#4b42a7,#5b4ec7);
+position:relative;
+overflow:hidden;
+}
+
+.wallet::before{
+content:'';
+position:absolute;
+width:220px;
+height:220px;
+border-radius:50%;
+background:rgba(255,255,255,.08);
+left:-120px;
+bottom:-110px;
+}
+
+.wallet::after{
+content:'';
+position:absolute;
+width:210px;
+height:210px;
+border-radius:50%;
+background:rgba(255,255,255,.08);
+right:-120px;
+top:-100px;
+}
+
+.balance{
+position:relative;
+z-index:2;
+text-align:center;
+}
+
+.balance h1{
+font-size:22px;
+font-weight:700;
+}
+
+.balance p{
+font-size:12px;
+margin-top:4px;
+opacity:.9;
+}
+
+.wallet-btns{
+display:flex;
+gap:12px;
+margin-top:18px;
+position:relative;
+z-index:2;
+}
+
+.wallet-btn{
+flex:1;
+height:50px;
+border:none;
+border-radius:40px;
+font-size:15px;
+font-weight:700;
+color:white;
+}
+
+.withdraw{
+background:#ff5d61;
+box-shadow:0 4px 12px rgba(255,93,97,.35);
+}
+
+.deposit{
+background:#20c85b;
+box-shadow:0 4px 12px rgba(32,200,91,.35);
+}
+
+/* NOTICE */
+
+.notice{
+margin:0 12px;
+padding:10px;
+border-radius:16px;
+background:#2a245b;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px;
+}
+
+.notice-left{
+display:flex;
+align-items:center;
+gap:8px;
+font-size:11px;
+line-height:15px;
+}
+
+.notice-icon{
+font-size:18px;
+}
+
+.detail-btn{
+min-width:84px;
+height:36px;
+border:none;
+border-radius:30px;
+font-size:13px;
+font-weight:600;
+color:white;
+background:linear-gradient(90deg,#ff69d8,#5cb5ff);
+}
+
+/* TABS */
+
+.tabs{
+margin:14px 12px;
+display:flex;
+gap:10px;
+}
+
+.tab{
+flex:1;
+height:96px;
+border-radius:20px;
+background:#3b3378;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+font-size:11px;
+text-align:center;
+}
+
+.active-tab{
+background:linear-gradient(135deg,#ff91be,#5db2ff);
+}
+
+.clock{
+width:44px;
+height:44px;
+border-radius:50%;
+background:#f1f1f1;
+display:flex;
+align-items:center;
+justify-content:center;
+margin-bottom:8px;
+font-size:18px;
+color:#7a63ff;
+}
+
+/* TIMER */
+
+.timer-box{
+margin:0 12px;
+padding:14px;
+border-radius:22px;
+background:linear-gradient(90deg,#ff8ebc,#67b6ff);
+}
+
+.play-btn{
+height:36px;
+padding:0 18px;
+border:none;
+border-radius:30px;
+background:rgba(255,255,255,.18);
+font-size:13px;
+font-weight:600;
+color:#2a2144;
+}
+
+.timer-flex{
+display:flex;
+justify-content:space-between;
+margin-top:14px;
+gap:10px;
+}
+
+.left h2{
+font-size:14px;
+margin-bottom:10px;
+color:#2a2144;
+}
+
+.history{
+display:flex;
+gap:6px;
+}
+
+/* SMALL BALL */
+
+.small-ball{
+width:30px;
+height:30px;
+border-radius:50%;
+position:relative;
+overflow:hidden;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.small-ball::before{
+content:'';
+position:absolute;
+inset:0;
+border-radius:50%;
+}
+
+.small-ball::after{
+content:'';
+position:absolute;
+width:22px;
+height:22px;
+border-radius:50%;
+background:
+radial-gradient(circle at 30% 30%,
+#ffffff 0%,
+#f8f8f8 45%,
+#dcdcdc 100%);
+box-shadow:
+inset 0 2px 4px rgba(0,0,0,.12);
+}
+
+.small-ball span{
+position:relative;
+z-index:5;
+font-size:16px;
+font-weight:800;
+}
+
+.red-small::before{
+background:
+conic-gradient(
+from 0deg,
+#ff6262 0deg 35deg,
+#ffffff 35deg 60deg,
+#ff6262 60deg 120deg,
+#ffffff 120deg 145deg,
+#ff6262 145deg 205deg,
+#ffffff 205deg 230deg,
+#ff6262 230deg 290deg,
+#ffffff 290deg 315deg,
+#ff6262 315deg 360deg
+);
+}
+
+.green-small::before{
+background:
+conic-gradient(
+from 0deg,
+#31d877 0deg 35deg,
+#ffffff 35deg 60deg,
+#31d877 60deg 120deg,
+#ffffff 120deg 145deg,
+#31d877 145deg 205deg,
+#ffffff 205deg 230deg,
+#31d877 230deg 290deg,
+#ffffff 290deg 315deg,
+#31d877 315deg 360deg
+);
+}
+
+.red-small span{
+color:#ff5656;
+}
+
+.green-small span{
+color:#25bc64;
+}
+
+/* TIMER */
+
+.time-right{
+text-align:center;
+}
+
+.time-right h3{
+font-size:13px;
+margin-bottom:8px;
+color:#2d2144;
+}
+
+.timer{
+display:flex;
+align-items:center;
+justify-content:center;
+gap:4px;
+}
+
+.time-box{
+width:30px;
+height:40px;
+background:#2a2458;
+border-radius:6px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:22px;
+font-weight:700;
+}
+
+.dot{
+font-size:20px;
+font-weight:700;
+color:#2d2144;
+}
+
+.period{
+margin-top:8px;
+font-size:11px;
+font-weight:700;
+color:#2d2144;
+}
+
+/* COLORS */
+
+.colors{
+margin:16px 12px;
+display:flex;
+gap:10px;
+}
+
+.color-btn{
+flex:1;
+height:48px;
+border:none;
+border-radius:14px;
+font-size:16px;
+font-weight:700;
+color:white;
+}
+
+.green{
+background:#20c75b;
+}
+
+.violet{
+background:#c365ff;
+}
+
+.red{
+background:#ff5d61;
+}
+
+/* NUMBER AREA */
+
+.number-area{
+margin:0 12px;
+padding:14px;
+border-radius:22px;
+background:#201b46;
+}
+
+.numbers{
+display:grid;
+grid-template-columns:repeat(5,1fr);
+gap:10px;
+}
+
+/* REAL 3D BALL */
+
+.ball{
+width:64px;
+height:64px;
+border-radius:50%;
+position:relative;
+overflow:hidden;
+display:flex;
+align-items:center;
+justify-content:center;
+margin:auto;
+}
+
+.ball::before{
+content:'';
+position:absolute;
+inset:0;
+border-radius:50%;
+}
+
+.ball::after{
+content:'';
+position:absolute;
+width:48px;
+height:48px;
+border-radius:50%;
+background:
+radial-gradient(circle at 30% 30%,
+#ffffff 0%,
+#fbfbfb 38%,
+#ececec 70%,
+#d8d8d8 100%);
+box-shadow:
+inset 0 3px 6px rgba(0,0,0,.12),
+0 1px 2px rgba(255,255,255,.8);
+}
+
+.ball span{
+position:relative;
+z-index:5;
+font-size:34px;
+font-weight:800;
+}
+
+.shine{
+position:absolute;
+top:7px;
+left:10px;
+width:20px;
+height:8px;
+border-radius:50%;
+background:rgba(255,255,255,.95);
+transform:rotate(-18deg);
+z-index:4;
+}
+
+/* GREEN */
+
+.green-ball{
+background:
+radial-gradient(circle at 30% 30%,#7dffb3 0%,#27cf6b 70%);
+box-shadow:
+0 6px 12px rgba(0,0,0,.35),
+0 0 10px rgba(39,207,107,.45);
+}
+
+.green-ball::before{
+background:
+conic-gradient(
+from 0deg,
+#32d878 0deg 35deg,
+#ffffff 35deg 60deg,
+#32d878 60deg 120deg,
+#ffffff 120deg 145deg,
+#32d878 145deg 205deg,
+#ffffff 205deg 230deg,
+#32d878 230deg 290deg,
+#ffffff 290deg 315deg,
+#32d878 315deg 360deg
+);
+}
+
+.green-ball span{
+color:#2cc66c;
+}
+
+/* RED */
+
+.red-ball{
+background:
+radial-gradient(circle at 30% 30%,#ff9b9b 0%,#ff5656 70%);
+box-shadow:
+0 6px 12px rgba(0,0,0,.35),
+0 0 10px rgba(255,86,86,.45);
+}
+
+.red-ball::before{
+background:
+conic-gradient(
+from 0deg,
+#ff6464 0deg 35deg,
+#ffffff 35deg 60deg,
+#ff6464 60deg 120deg,
+#ffffff 120deg 145deg,
+#ff6464 145deg 205deg,
+#ffffff 205deg 230deg,
+#ff6464 230deg 290deg,
+#ffffff 290deg 315deg,
+#ff6464 315deg 360deg
+);
+}
+
+.red-ball span{
+color:#ff5555;
+}
+
+/* VIOLET */
+
+.violet-ball{
+background:
+radial-gradient(circle at 30% 30%,#f1a8ff 0%,#ca59ff 70%);
+box-shadow:
+0 6px 12px rgba(0,0,0,.35),
+0 0 10px rgba(202,89,255,.45);
+}
+
+.violet-ball::before{
+background:
+conic-gradient(
+from 0deg,
+#d86cff 0deg 35deg,
+#ffffff 35deg 60deg,
+#d86cff 60deg 120deg,
+#ffffff 120deg 145deg,
+#d86cff 145deg 205deg,
+#ffffff 205deg 230deg,
+#d86cff 230deg 290deg,
+#ffffff 290deg 315deg,
+#d86cff 315deg 360deg
+);
+}
+
+.violet-ball span{
+color:#c850ff;
+}
+
+/* BET */
+
+.bet-row{
+margin:16px 12px;
+display:flex;
+gap:8px;
+overflow:auto;
+}
+
+.bet-row::-webkit-scrollbar{
+display:none;
+}
+
+.bet-btn{
+min-width:62px;
+height:38px;
+border:none;
+border-radius:14px;
+background:#2a2455;
+font-size:13px;
+color:white;
+}
+
+.random{
+background:transparent;
+border:2px solid #ff6464;
+color:#ff6464;
+}
+
+.active-bet{
+background:#20c75b;
+}
+
+/* BIG SMALL */
+
+.big-small{
+margin:16px 12px;
+height:54px;
+background:#2a2458;
+border-radius:40px;
+display:flex;
+overflow:hidden;
+}
+
+.big-btn,
+.small-btn{
+flex:1;
+border:none;
+font-size:18px;
+font-weight:600;
+color:white;
+}
+
+.big-btn{
+background:#f4a652;
+}
+
+.small-btn{
+background:#73a7ea;
+}
+
+/* HISTORY TABS */
+
+.history-tabs{
+margin:16px 12px;
+display:flex;
+gap:12px;
+}
+
+.history-tab{
+flex:1;
+height:52px;
+border:none;
+border-radius:16px;
+background:#29245a;
+font-size:14px;
+font-weight:500;
+color:#aaa;
+}
+
+.active-history{
+background:
+linear-gradient(90deg,#ff8f9d,#c45bff,#58b7ff);
+color:#1e1b3d;
+font-weight:700;
+}
+
+/* TABLE */
+
+.history-table{
+margin:0 12px;
+border-radius:18px;
+overflow:hidden;
+background:#252055;
+}
+
+.table-head{
+height:54px;
+background:#4a428e;
+display:grid;
+grid-template-columns:2.2fr .8fr 1fr .6fr;
+align-items:center;
+padding:0 14px;
+font-size:13px;
+font-weight:700;
+}
+
+.table-row{
+min-height:68px;
+display:grid;
+grid-template-columns:2.2fr .8fr 1fr .6fr;
+align-items:center;
+padding:0 14px;
+font-size:13px;
+border-bottom:1px solid rgba(255,255,255,.04);
+}
+
+.period-text{
+font-size:12px;
+color:#f2f2f2;
+}
+
+.number{
+font-size:28px;
+font-weight:800;
+text-align:center;
+}
+
+.red-num{
+color:#ff5d61;
+}
+
+.green-num{
+color:#2fd175;
+}
+
+.violet-num{
+background:linear-gradient(180deg,#2fd175 0%,#d25bff 100%);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.bs-text{
+text-align:center;
+font-size:13px;
+}
+
+.color-dot{
+width:20px;
+height:20px;
+border-radius:50%;
+margin:auto;
+}
+
+.red-dot{
+background:#ff4d57;
+}
+
+.green-dot{
+background:#4ac97f;
+}
+
+.violet-dot{
+background:#d455ff;
+}
+
+.dots{
+display:flex;
+justify-content:center;
+gap:6px;
+}
+
+/* PAGINATION */
+
+.pagination{
+margin:18px 12px;
+height:70px;
+border-radius:18px;
+background:#252055;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:28px;
+}
+
+.page-btn{
+width:48px;
+height:48px;
+border:none;
+border-radius:12px;
+font-size:34px;
+color:white;
+}
+
+.left-page{
+background:#4b438f;
+}
+
+.right-page{
+background:#a18cff;
+}
+
+.page-count{
+font-size:16px;
+color:#dcdcdc;
+}
+
+.bet-modal{
+display:none;
+position:fixed;
+left:0;
+top:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.65);
+z-index:9999;
+align-items:flex-end;
+}
+
+.bet-content{
+width:100%;
+max-width:430px;
+margin:auto;
+background:#1f1b46;
+border-radius:25px 25px 0 0;
+padding:20px;
+color:white;
+}
+
+.bet-content h2{
+text-align:center;
+margin-bottom:15px;
+}
+
+.bet-content input[type=text]{
+width:100%;
+height:50px;
+border:none;
+border-radius:10px;
+text-align:center;
+font-size:18px;
+margin-bottom:15px;
+}
+
+.amount-row,
+.multiplier{
+display:flex;
+gap:8px;
+margin-bottom:15px;
+}
+
+.amount-row button,
+.multiplier button{
+flex:1;
+height:42px;
+border:none;
+border-radius:8px;
+background:#443d87;
+color:white;
+}
+
+.qty-row{
+display:flex;
+justify-content:center;
+align-items:center;
+gap:10px;
+margin-bottom:15px;
+}
+
+.qty-row button{
+width:40px;
+height:40px;
+border:none;
+background:#20c75b;
+color:white;
+font-size:20px;
+border-radius:8px;
+}
+
+.qty-row input{
+width:80px;
+height:40px;
+text-align:center;
+background:#2a2458;
+border:none;
+color:white;
+}
+
+.popup-footer{
+display:flex;
+margin-top:15px;
+}
+
+.cancel-btn{
+width:40%;
+height:50px;
+border:none;
+background:#666;
+color:white;
+}
+
+.total-btn{
+width:60%;
+height:50px;
+border:none;
+background:#20c75b;
+color:white;
+font-weight:700;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- HEADER -->
+
+<div class="header">
+
+<div class="back">‹</div>
+
+<div class="logo">
+super win
+</div>
+
+<div class="profile-box">
+<div class="profile-icon"></div>
+</div>
+
+</div>
+
+</div>
+
+<!-- PROFILE MENU -->
+
+<div id="profileMenu" style="
+display:none;
+position:fixed;
+top:70px;
+right:12px;
+width:220px;
+background:#2a2458;
+border-radius:16px;
+padding:15px;
+z-index:999;
+box-shadow:0 5px 20px rgba(0,0,0,.4);
+">
+
+<div style="font-size:14px;margin-bottom:10px;">
+<b>Name:</b> <span id="userName">User</span>
+</div>
+
+<div style="font-size:14px;margin-bottom:15px;">
+<b>User ID:</b> <span id="userId">0</span>
+</div>
+
+<button id="logoutBtn" style="
+width:100%;
+height:45px;
+border:none;
+border-radius:12px;
+background:#ff5d61;
+color:white;
+font-weight:700;
+">
+Logout
+</button>
+
+</div>
+
+<!-- WALLET -->
+
+<div class="wallet">
+
+<div class="balance">
+<h1 id="walletBalance">₹0.00</h1>
+<p>Wallet balance</p>
+</div>
+
+<div class="wallet-btns">
+
+<button class="wallet-btn withdraw">
+Withdraw
+</button>
+
+<button class="wallet-btn deposit">
+Deposit
+</button>
+
+</div>
+
+</div>
+
+<!-- NOTICE -->
+
+<div class="notice">
+
+<div class="notice-left">
+
+<div class="notice-icon">🔊</div>
+
+<div>
+Our customer service will never send any links
+</div>
+
+</div>
+
+<button class="detail-btn">
+Detail
+</button>
+
+</div>
+
+<!-- TABS -->
+
+<div class="tabs">
+
+<div class="tab active-tab">
+
+<div class="clock">◔</div>
+
+<div>
+WinGo<br>30sec
+</div>
+
+</div>
+
+<div class="tab">
+<div class="clock">◔</div>
+<div>WinGo 1<br>Min</div>
+</div>
+
+<div class="tab">
+<div class="clock">◔</div>
+<div>WinGo 3<br>Min</div>
+</div>
+
+<div class="tab">
+<div class="clock">◔</div>
+<div>WinGo 5<br>Min</div>
+</div>
+
+</div>
+
+<!-- TIMER -->
+
+<div class="timer-box">
+
+<button class="play-btn">
+📋 How to play
+</button>
+
+<div class="timer-flex">
+
+<div class="left">
+
+<h2>WinGo 30sec</h2>
+
+<div class="history">
+
+<div class="small-ball red-small"><span>4</span></div>
+<div class="small-ball green-small"><span>7</span></div>
+<div class="small-ball red-small"><span>8</span></div>
+<div class="small-ball red-small"><span>8</span></div>
+<div class="small-ball green-small"><span>9</span></div>
+
+</div>
+
+</div>
+
+<div class="time-right">
+
+<h3>Time remaining</h3>
+
+<div class="timer">
+
+<div class="time-box">0</div>
+<div class="time-box">0</div>
+
+<div class="dot">:</div>
+
+<div class="time-box">2</div>
+<div class="time-box">5</div>
+
+</div>
+
+<div class="period" id="period">
+Loading...
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- COLORS -->
+
+<div class="colors">
+
+<button class="color-btn green" id="greenBtn">Green</button>
+<button class="color-btn violet">Violet</button>
+<button class="color-btn red">Red</button>
+
+</div>
+
+<!-- NUMBERS -->
+
+<div class="number-area">
+
+<div class="numbers">
+
+<div class="ball violet-ball">
+<div class="shine"></div>
+<span>0</span>
+</div>
+
+<div class="ball green-ball">
+<div class="shine"></div>
+<span>1</span>
+</div>
+
+<div class="ball red-ball">
+<div class="shine"></div>
+<span>2</span>
+</div>
+
+<div class="ball green-ball">
+<div class="shine"></div>
+<span>3</span>
+</div>
+
+<div class="ball red-ball">
+<div class="shine"></div>
+<span>4</span>
+</div>
+
+<div class="ball violet-ball">
+<div class="shine"></div>
+<span>5</span>
+</div>
+
+<div class="ball red-ball">
+<div class="shine"></div>
+<span>6</span>
+</div>
+
+<div class="ball green-ball">
+<div class="shine"></div>
+<span>7</span>
+</div>
+
+<div class="ball red-ball">
+<div class="shine"></div>
+<span>8</span>
+</div>
+
+<div class="ball green-ball">
+<div class="shine"></div>
+<span>9</span>
+</div>
+
+</div>
+
+</div>
+
+<!-- BET -->
+
+<div class="bet-row">
+
+<button class="bet-btn random">
+Random
+</button>
+
+<button class="bet-btn active-bet">
+X1
+</button>
+
+<button class="bet-btn">
+X5
+</button>
+
+<button class="bet-btn">
+X10
+</button>
+
+<button class="bet-btn">
+X20
+</button>
+
+<button class="bet-btn">
+X50
+</button>
+
+<button class="bet-btn">
+X100
+</button>
+
+</div>
+
+<!-- BIG SMALL -->
+
+<div class="big-small">
+<button class="big-btn">Big</button>
+<button class="small-btn">Small</button>
+</div>
+
+<!-- HISTORY TABS -->
+
+<div class="history-tabs">
+
+<button class="history-tab active-history">
+Game history
+</button>
+
+<button class="history-tab">
+Chart
+</button>
+
+<button class="history-tab">
+My history
+</button>
+
+</div>
+
+<!-- TABLE -->
+
+<div class="history-table">
+
+<div class="table-head">
+<div>Period</div>
+<div>Number</div>
+<div>Big Small</div>
+<div>Color</div>
+</div>
+
+<div id="historyBody"></div>
+
+</div>
+
+<!-- PAGINATION -->
+
+<div class="pagination">
+
+<button class="page-btn left-page">
+‹
+</button>
+
+<div class="page-count">
+1/50
+</div>
+
+<button class="page-btn right-page">
+›
+</button>
+
+</div>
+
+</div>
+
+<div id="greenModal" class="bet-modal">
+
+<div class="bet-content">
+
+<h2>WinGo 30 Sec</h2>
+
+<input type="text" id="betType" readonly>
+
+<div class="amount-row">
+<button>1</button>
+<button>10</button>
+<button>100</button>
+<button>1000</button>
+</div>
+
+<div class="qty-row">
+<button onclick="changeQty(-1)">-</button>
+
+<input type="number" id="qty" value="1">
+
+<button onclick="changeQty(1)">+</button>
+</div>
+
+<div class="multiplier">
+<button>X1</button>
+<button>X5</button>
+<button>X10</button>
+<button>X20</button>
+<button>X50</button>
+<button>X100</button>
+</div>
+
+<div class="popup-footer">
+
+<button class="cancel-btn"
+onclick="closeGreenModal()">
+Cancel
+</button>
+
+<button class="total-btn" id="placeBetBtn">
+Total Amount ₹1
+</button>
+
+</div>
+
+</div>
+</div>
+
+<script>
+
+// Withdraw
+document.querySelector('.withdraw').addEventListener('click',()=>{
+alert('Withdraw Clicked');
+});
+
+// Deposit
+document.querySelector('.deposit').addEventListener('click',()=>{
+alert('Deposit Clicked');
+});
+
+// Detail
+document.querySelector('.detail-btn').addEventListener('click',()=>{
+alert('Notice Details');
+});
+
+// How To Play
+document.querySelector('.play-btn').addEventListener('click',()=>{
+alert('How To Play');
+});
+
+
+// Wingo Tabs
+document.querySelectorAll('.tab').forEach(tab=>{
+tab.addEventListener('click',function(){
+
+document.querySelectorAll('.tab').forEach(t=>{
+t.classList.remove('active-tab');
+});
+
+this.classList.add('active-tab');
+
+});
+});
+
+// Color Buttons
+document.querySelectorAll('.color-btn').forEach(btn=>{
+btn.addEventListener('click',function(){
+
+document.querySelectorAll('.color-btn').forEach(b=>{
+b.style.opacity='0.6';
+});
+
+this.style.opacity='1';
+
+alert(this.innerText + ' Selected');
+
+});
+});
+
+// Number Balls
+document.querySelectorAll('.ball').forEach(ball=>{
+
+ball.addEventListener('click',function(){
+
+document.querySelectorAll('.ball').forEach(b=>{
+b.style.transform='scale(1)';
+});
+
+this.style.transform='scale(1.1)';
+
+let num=this.querySelector('span').innerText;
+
+alert('Number '+num+' Selected');
+
+});
+
+});
+
+// Bet Buttons
+document.querySelectorAll('.bet-btn').forEach(btn=>{
+
+btn.addEventListener('click',function(){
+
+document.querySelectorAll('.bet-btn').forEach(b=>{
+b.classList.remove('active-bet');
+});
+
+this.classList.add('active-bet');
+
+});
+
+});
+
+// Big Small
+document.querySelector('.big-btn').addEventListener('click',function(){
+
+this.style.opacity='1';
+document.querySelector('.small-btn').style.opacity='0.6';
+
+alert('Big Selected');
+
+});
+
+document.querySelector('.small-btn').addEventListener('click',function(){
+
+this.style.opacity='1';
+document.querySelector('.big-btn').style.opacity='0.6';
+
+alert('Small Selected');
+
+});
+
+// History Tabs
+document.querySelectorAll('.history-tab').forEach(tab=>{
+
+tab.addEventListener('click',function(){
+
+document.querySelectorAll('.history-tab').forEach(t=>{
+t.classList.remove('active-history');
+});
+
+this.classList.add('active-history');
+
+});
+
+});
+
+// Pagination
+document.querySelector('.left-page').addEventListener('click',()=>{
+alert('Previous Page');
+});
+
+document.querySelector('.right-page').addEventListener('click',()=>{
+alert('Next Page');
+});
+
+// Back Button
+document.querySelector('.back').addEventListener('click',()=>{
+history.back();
+});
+const profileBox = document.querySelector('.profile-box');
+const profileMenu = document.getElementById('profileMenu');
+
+profileBox.addEventListener('click',()=>{
+
+if(profileMenu.style.display === 'block'){
+profileMenu.style.display = 'none';
+}else{
+profileMenu.style.display = 'block';}
+});
+
+document.getElementById('logoutBtn').addEventListener('click',()=>{
+
+localStorage.removeItem('token');
+localStorage.removeItem('name');
+localStorage.removeItem('user_id');
+
+alert('Logout Successful');
+
+window.location.href='login.html';
+
+});
+
+const greenModal =
+document.getElementById("greenModal");
+
+// Color Buttons
+document.querySelectorAll(".color-btn").forEach(btn=>{
+
+btn.addEventListener("click",()=>{
+
+document.querySelector("#betType").value =
+btn.innerText;
+
+greenModal.style.display="flex";
+
+});
+
+});
+
+// Number Balls
+document.querySelectorAll(".ball").forEach(ball=>{
+
+ball.addEventListener("click",()=>{
+
+let num = ball.querySelector("span").innerText;
+
+document.querySelector("#betType").value =
+"Number " + num;
+
+greenModal.style.display="flex";
+
+});
+
+});
+
+// Big
+document.querySelector(".big-btn").addEventListener("click",()=>{
+
+document.querySelector("#betType").value =
+"Big";
+
+greenModal.style.display="flex";
+
+});
+
+// Small
+document.querySelector(".small-btn").addEventListener("click",()=>{
+
+document.querySelector("#betType").value =
+"Small";
+
+greenModal.style.display="flex";
+
+});
+
+function closeGreenModal(){
+
+greenModal.style.display="none";
+
+}
+
+function changeQty(val){
+
+let qty =
+document.getElementById("qty");
+
+let current =
+parseInt(qty.value);
+
+current += val;
+
+if(current < 1){
+current = 1;
+}
+
+qty.value = current;
+
+document.querySelector(".total-btn").innerText =
+"Total Amount ₹" + current;
+
+}
+
+async function loadCurrentRound(){
+
+try{
+
+const response = await fetch(
+"https://super-win.onrender.com/api/current-round"
+);
+
+const data = await response.json();
+
+document.getElementById("period").innerText =
+data.period;
+
+}catch(err){
+console.log(err);
+}
+
+}
+
+async function loadHistory(){
+
+try{
+
+const response = await fetch(
+"https://super-win.onrender.com/api/history"
+);
+
+const data = await response.json();
+
+let html = "";
+
+data.forEach(row=>{
+
+let numClass = "red-num";
+
+if(row.color==="green"){
+numClass = "green-num";
+}
+
+if(row.color==="violet"){
+numClass = "violet-num";
+}
+
+html += `
+<div class="table-row">
+
+<div class="period-text">
+${row.period}
+</div>
+
+<div class="number ${numClass}">
+${row.number}
+</div>
+
+<div class="bs-text">
+${row.size}
+</div>
+
+<div class="color-dot ${row.color}-dot"></div>
+
+</div>
+`;
+
+});
+
+document.getElementById("historyBody").innerHTML =
+html;
+
+}catch(err){
+console.log(err);
+}
+
+}
+
+loadCurrentRound();
+loadHistory();
+
+setInterval(loadCurrentRound,1000);
+setInterval(loadHistory,3000);
+
+async function loadBalance(){
+
+try{
+
+const token = localStorage.getItem("token");
+
+const response = await fetch(
+"https://super-win.onrender.com/api/balance",
+{
+headers:{
+Authorization:"Bearer " + token
+}
+});
+
+const data = await response.json();
+
+if(data.balance !== undefined){
+
+document.getElementById("walletBalance").innerText =
+"₹" + data.balance;
+
+}
+
+}catch(err){
+console.log(err);
+}
+
+}
+
+loadBalance();
+
+setInterval(loadBalance,5000);
+
+document.getElementById("placeBetBtn")
+.addEventListener("click", placeBet);
+
+async function placeBet(){
+
+try{
+
+const token = localStorage.getItem("token");
+
+if(!token){
+alert("Please Login First");
+return;
+}
+
+const betText =
+document.getElementById("betType").value;
+
+const amount =
+parseInt(document.getElementById("qty").value);
+
+let bet_type = "";
+let bet_value = "";
+
+if(
+betText==="Green" ||
+betText==="Red" ||
+betText==="Violet"
+){
+bet_type = "color";
+bet_value = betText.toLowerCase();
+}
+
+else if(
+betText==="Big" ||
+betText==="Small"
+){
+bet_type = "size";
+bet_value = betText;
+}
+
+else if(
+betText.startsWith("Number")
+){
+bet_type = "number";
+bet_value = betText.replace("Number ","");
+}
+
+const response = await fetch(
+"https://super-win.onrender.com/api/bet",
+{
+method:"POST",
+
+headers:{
+"Content-Type":"application/json",
+"Authorization":"Bearer " + token
+},
+
+body:JSON.stringify({
+bet_type:bet_type,
+bet_value:bet_value,
+amount:amount
+})
+
+});
+
+const result = await response.json();
+
+if(response.ok){
+
+alert("Bet Placed Successfully");
+
+closeGreenModal();
+
+loadBalance();
+
+}else{
+
+alert(
+result.error ||
+"Bet Failed"
+);
+
+}
+
+}catch(err){
+
+console.log(err);
+
+alert("Server Error");
+
+}
+
+}
+
+</script>
+</body>
+</html>
