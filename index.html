@@ -1,12 +1,11 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SUPER WIN</title>
+<title>SUPER WIN - Register</title>
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 <style>
 
@@ -171,7 +170,6 @@ border-radius:30px;
 font-size:20px;
 font-weight:bold;
 cursor:pointer;
-
 background:linear-gradient(
 90deg,
 #ff8d75,
@@ -193,30 +191,19 @@ font-weight:bold;
 cursor:pointer;
 }
 
-.register-btn:hover,
-.login-btn:hover{
-opacity:.95;
-}
-
 </style>
 </head>
 
 <body>
 
 <div class="header">
-
 <div class="back-btn">
 <i class="fa-solid fa-chevron-left"></i>
 </div>
 
-<div class="logo">
-SUPER WIN
-</div>
+<div class="logo">SUPER WIN</div>
 
-<div class="lang">
-🇺🇸 EN
-</div>
-
+<div class="lang">🇺🇸 EN</div>
 </div>
 
 <div class="top-gradient"></div>
@@ -233,16 +220,27 @@ Register your phone
 
 <div class="line"></div>
 
-<form method="POST" action="/register">
+<form id="registerForm">
+
+<div class="label">
+<i class="fa-solid fa-user"></i>
+<span>Full Name</span>
+</div>
+
+<input
+type="text"
+name="name"
+placeholder="Enter your full name"
+required>
 
 <div class="label">
 <i class="fa-solid fa-mobile-screen"></i>
-<span>Phone number</span>
+<span>Phone Number</span>
 </div>
 
 <div class="row">
 
-<select class="country" name="country_code">
+<select class="country">
 <option>+91</option>
 <option>+1</option>
 <option>+44</option>
@@ -251,14 +249,14 @@ Register your phone
 <input
 type="text"
 name="phone"
-placeholder="Please enter the phone number"
+placeholder="Enter phone number"
 required>
 
 </div>
 
 <div class="label">
 <i class="fa-solid fa-lock"></i>
-<span>Set password</span>
+<span>Password</span>
 </div>
 
 <div class="input-box">
@@ -267,7 +265,7 @@ required>
 type="password"
 id="password"
 name="password"
-placeholder="Set password"
+placeholder="Enter password"
 required>
 
 <i class="fa-solid fa-eye-slash eye"
@@ -278,7 +276,7 @@ onclick="togglePassword('password',this)">
 
 <div class="label">
 <i class="fa-solid fa-lock"></i>
-<span>Confirm password</span>
+<span>Confirm Password</span>
 </div>
 
 <div class="input-box">
@@ -286,7 +284,7 @@ onclick="togglePassword('password',this)">
 <input
 type="password"
 id="confirm"
-name="confirm_password"
+name="confirm"
 placeholder="Confirm password"
 required>
 
@@ -296,25 +294,9 @@ onclick="togglePassword('confirm',this)">
 
 </div>
 
-<div class="label">
-<i class="fa-solid fa-user-group"></i>
-<span>Invite code</span>
-</div>
-
-<input
-type="text"
-name="invite_code"
-placeholder="Please enter the invitation code">
-
 <div class="agree">
-
-<input type="checkbox" checked required>
-
-<span>
-I have read and agree
-<a href="#">Privacy Agreement</a>
-</span>
-
+<input type="checkbox" required checked>
+<span>I agree to the Privacy Policy</span>
 </div>
 
 <button type="submit" class="register-btn">
@@ -324,7 +306,7 @@ Register
 <button
 type="button"
 class="login-btn"
-onclick="window.location='/login'">
+onclick="window.location.href='/login'">
 Login
 </button>
 
@@ -336,20 +318,67 @@ Login
 
 function togglePassword(id,icon){
 
-let input=document.getElementById(id);
+const input=document.getElementById(id);
 
 if(input.type==="password"){
 input.type="text";
-icon.classList.remove("fa-eye-slash");
-icon.classList.add("fa-eye");
-}
-else{
+icon.classList.replace("fa-eye-slash","fa-eye");
+}else{
 input.type="password";
-icon.classList.remove("fa-eye");
-icon.classList.add("fa-eye-slash");
+icon.classList.replace("fa-eye","fa-eye-slash");
 }
 
 }
+
+document.getElementById("registerForm").addEventListener("submit", async function(e){
+
+e.preventDefault();
+
+const name=document.querySelector('[name="name"]').value.trim();
+const phone=document.querySelector('[name="phone"]').value.trim();
+const password=document.querySelector('[name="password"]').value;
+const confirm=document.querySelector('[name="confirm"]').value;
+
+if(password!==confirm){
+alert("Passwords do not match");
+return;
+}
+
+try{
+
+const response=await fetch("/api/register",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+name:name,
+phone:phone,
+password:password
+})
+});
+
+const result=await response.json();
+
+if(response.ok){
+
+alert("Registration Successful");
+
+window.location.href="/dashboard";
+
+}else{
+
+alert(result.error || "Registration Failed");
+
+}
+
+}catch(error){
+
+alert("Server Error");
+
+}
+
+});
 
 </script>
 
