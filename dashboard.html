@@ -1639,11 +1639,47 @@ console.log(err);
 
 }
 
+async function updateTimer(){
+
+try{
+
+const response = await fetch(
+"https://super-win.onrender.com/api/game-status"
+);
+
+const data = await response.json();
+
+let sec = data.remaining;
+
+let minute = Math.floor(sec / 60);
+let second = sec % 60;
+
+let m = String(minute).padStart(2,"0");
+let s = String(second).padStart(2,"0");
+
+const boxes =
+document.querySelectorAll(".time-box");
+
+boxes[0].innerText = m[0];
+boxes[1].innerText = m[1];
+boxes[2].innerText = s[0];
+boxes[3].innerText = s[1];
+
+}catch(err){
+console.log(err);
+}
+
+}
+
 loadCurrentRound();
 loadHistory();
 
-setInterval(loadCurrentRound,1000);
-setInterval(loadHistory,3000);
+setInterval(loadCurrentRound,5000);
+setInterval(loadHistory,10000);
+
+updateTimer();
+
+setInterval(updateTimer,1000);
 
 async function loadBalance(){
 
