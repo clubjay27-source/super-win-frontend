@@ -1422,8 +1422,16 @@ Main Wallet Transfer
 <script>
 
  window.onload = function () {
+
+    checkLogin();
+
     loadBalance();
     loadUser();
+
+    if(localStorage.getItem("user")){
+        document.getElementById("authPage").style.display = "none";
+        document.getElementById("homePage").style.display = "block";
+    }
 };
  
 
@@ -1431,17 +1439,10 @@ function signup(){
     let user = document.getElementById("username").value;
     let pass = document.getElementById("password").value;
 
-    if(user == "" || pass == ""){
-        alert("Username or Password required");
-        return;
-    }
-
     localStorage.setItem("user", user);
     localStorage.setItem("pass", pass);
 
-    // 🔥 AUTO LOGIN AFTER SIGNUP
-    document.getElementById("authPage").style.display = "none";
-    document.getElementById("homePage").style.display = "block";
+    window.location.href = "login.html";
 }
 
 function login(){
@@ -1453,13 +1454,8 @@ function login(){
 
     if(user == sUser && pass == sPass){
 
-        // 🔥 DIRECT HOME OPEN
-        document.getElementById("authPage").style.display = "none";
-        document.getElementById("homePage").style.display = "block";
-
-        // optional cleanup
-        document.getElementById("username").value = "";
-        document.getElementById("password").value = "";
+        localStorage.setItem("loggedIn", "true");
+window.location.href = "home.html";   // ya tumhare home page ka name
 
     } else {
         alert("Invalid login details");
