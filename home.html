@@ -1,0 +1,1509 @@
+ <!DOCTYPE html>
+ <html lang="en">
+    <head>
+     <meta charset="utf-8">
+      <meta name="viewport"
+     content="width=device-width,
+     initial-scale=1.0">
+        <title>Super Win</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- CSS STYLE START --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background-color: #0b0c1b;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Mobile responsive container */
+        .app-container {
+            width: 100%;
+            max-width: 450px;
+            background-color: #15162c;
+            min-height: 100vh;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background: linear-gradient(180deg, #251b45 0%, #15162c 100%);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            font-style: italic;
+            background: linear-gradient(45deg, #00dbde, #fc00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+
+        .logo span {
+            color: #fff;
+            -webkit-text-fill-color: initial;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .balance {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #ffcc00;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .balance i {
+            color: #ffcc00;
+        }
+
+        .lang {
+            background: #2a2b4a;
+            padding: 6px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+        }
+
+        /* Banner */
+        .banner {
+            margin: 15px;
+            height: 160px;
+            background: linear-gradient(135deg, #2b1055, #7597de);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .banner-content h2 {
+            font-size: 22px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 5px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .banner-content p {
+            font-size: 11px;
+            color: #ddd;
+        }
+
+        /* Notice Bar */
+        .notice-bar {
+            background: #1c1d3a;
+            margin: 0 15px;
+            padding: 8px 12px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+        }
+
+        .notice-bar marquee {
+            color: #b5b6d0;
+        }
+
+        .detail-btn {
+            background: linear-gradient(90deg, #6a11cb, #2575fc);
+            border: none;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        /* Categories */
+        .categories {
+            display: flex;
+            gap: 10px;
+            padding: 15px;
+            overflow-x: auto;
+        }
+
+        .categories::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-btn {
+            background: #222342;
+            border: none;
+            color: #b5b6d0;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(90deg, #e65c00, #f9d423);
+            color: #000;
+            font-weight: bold;
+        }
+
+        /* Game Grid */
+        .game-section {
+            padding: 0 15px;
+        }
+
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            margin-top: 10px;
+        }
+
+        .section-title h3 {
+            font-size: 16px;
+            border-left: 4px solid #7000ff;
+            padding-left: 8px;
+        }
+
+        .section-title a {
+            color: #b5b6d0;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .game-card {
+            height: 120px;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        /* Background Colors for Games */
+        .wingo { background: linear-gradient(145deg, #ff5e62, #ff9966); }
+        .aviator { background: linear-gradient(145deg, #8a2387, #e94057); }
+        .cricket { background: linear-gradient(145deg, #11998e, #38ef7d); }
+        .pubg { background: linear-gradient(145deg, #3a7bd5, #3a6073); }
+        .slots { background: linear-gradient(145deg, #f12711, #f5af19); }
+        .vortex { background: linear-gradient(145deg, #4e54c8, #8f94fb); }
+
+        .card-overlay {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 6px;
+            text-align: center;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        /* Leaderboard / Podium */
+        .leaderboard-section {
+            margin-top: 25px;
+            padding: 0 15px;
+        }
+
+        .podium {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            background: #1c1d3a;
+            padding: 20px 10px 0 10px;
+            border-radius: 15px 15px 0 0;
+            margin-top: 10px;
+        }
+
+        .podium-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 30%;
+        }
+
+        .avatar-container img {
+            border-radius: 50%;
+            width: 55px;
+            height: 55px;
+            object-fit: cover;
+        }
+
+        .rank-1 .avatar-container img { border: 3px solid #ffd700; width: 65px; height: 65px; }
+        .rank-2 .avatar-container img { border: 3px solid #c0c0c0; }
+        .rank-3 .avatar-container img { border: 3px solid #cd7f32; }
+
+        .username {
+            font-size: 11px;
+            margin-top: 5px;
+            color: #b5b6d0;
+            text-align: center;
+        }
+
+        .earning {
+            font-size: 10px;
+            color: #ffcc00;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 2px;
+        }
+
+        .bar {
+            width: 100%;
+            text-align: center;
+            padding: 5px 0;
+            font-weight: bold;
+            margin-top: 8px;
+            border-radius: 5px 5px 0 0;
+            color: #fff;
+        }
+
+        .rank-1 .bar { background: linear-gradient(180deg, #d4af37, #15162c); height: 55px; font-size: 18px; }
+        .rank-2 .bar { background: linear-gradient(180deg, #a8a8a8, #15162c); height: 40px; }
+        .rank-3 .bar { background: linear-gradient(180deg, #965a38, #15162c); height: 30px; }
+
+        .leaderboard-list {
+            background: #1c1d3a;
+            border-radius: 0 0 15px 15px;
+            padding: 5px 10px;
+        }
+
+        .list-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 5px;
+            border-bottom: 1px solid #2a2b4a;
+        }
+
+        .list-item:last-child {
+            border-bottom: none;
+        }
+
+        .rank-num {
+            font-weight: bold;
+            width: 25px;
+            color: #ffcc00;
+            font-size: 14px;
+        }
+
+        .list-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            margin-right: 15px;
+            object-fit: cover;
+        }
+
+        .list-username {
+            flex-grow: 1;
+            font-size: 13px;
+            color: #fff;
+        }
+
+        .list-amount {
+            color: #ffcc00;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        /* Footer text */
+        .footer-info {
+            padding: 25px 15px;
+            font-size: 12px;
+            color: #7a7b9a;
+            line-height: 1.6;
+            text-align: justify;
+        }
+
+        .dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #7000ff;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
+        /* Bottom Nav Bar */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            max-width: 450px;
+            background: #1a1b35;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            border-top: 1px solid #2a2b4a;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #7a7b9a;
+            font-size: 11px;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .nav-item.active {
+            color: #00dbde;
+        }
+
+        .nav-item i {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        /* Floating Center Diamond Button */
+        .promotion-center {
+            position: relative;
+        }
+
+        .promo-circle {
+            position: absolute;
+            top: -25px;
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, #bc4e9c, #f80759);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 -3px 10px rgba(248, 7, 89, 0.4);
+            border: 3px solid #1a1b35;
+        }
+
+        .promo-circle i {
+            color: white;
+            font-size: 22px;
+            margin: 0;
+        }
+
+/* ===== PREMIUM WINGO THEME ===== */
+
+body{
+    background: linear-gradient(180deg,#ffb347,#ff8c00,#ff4500);
+}
+
+.app-container{
+    background: linear-gradient(180deg,#ffb347,#ff8c00,#ff4500);
+}
+
+.header{
+    background: linear-gradient(90deg,#ff6a00,#ffb347);
+    border-bottom:2px solid rgba(255,255,255,.2);
+}
+
+.logo{
+    color:#fff;
+    background:none;
+    -webkit-text-fill-color:white;
+    text-shadow:
+    0 0 10px #fff,
+    0 0 20px #ffd700,
+    0 0 30px #ff8c00;
+}
+
+.balance{
+    background:#ffd700;
+    color:#000;
+    font-weight:700;
+}
+
+.banner{
+    background: linear-gradient(135deg,#ff6a00,#ffb347);
+    border:2px solid rgba(255,255,255,.25);
+}
+
+.notice-bar{
+    background:rgba(255,255,255,.15);
+    backdrop-filter:blur(10px);
+}
+
+.tab-btn{
+    background:rgba(255,255,255,.15);
+    color:white;
+}
+
+.tab-btn.active{
+    background:linear-gradient(90deg,#ffd700,#ff8c00);
+    color:#000;
+}
+
+.game-card{
+    border-radius:18px;
+    overflow:hidden;
+    border:2px solid rgba(255,255,255,.15);
+    box-shadow:
+    0 0 15px rgba(255,165,0,.4),
+    0 0 30px rgba(255,69,0,.3);
+}
+
+.wingo{
+    background-image:url("https://i.postimg.cc/43jbqzSj/Screenshot-20260606-210156-Chrome.jpg");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+}
+
+.aviator{
+    background-image:url("https://i.postimg.cc/26MHmsX4/Screenshot-20260606-210150-Chrome.jpg");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+}
+
+.cricket{
+    background-image:url("https://i.postimg.cc/g2L228J9/Screenshot-20260606-204223-Chrome.jpg");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+}
+
+.pubg{
+    background-image:url("https://i.postimg.cc/Wzs72swc/Screenshot-20260608-074607-Chrome.jpg");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+}
+
+.slots{
+    background-image:url("https://i.postimg.cc/bvBH4dg3/Screenshot-20260608-121336-Google.jpg");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+}
+
+.vortex{
+    background-image:url("https://i.postimg.cc/dtrqMvS1/Screenshot-20260608-074622-Chrome.jpg");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+}
+
+.card-overlay{
+    background:rgba(0,0,0,.55);
+    color:white;
+    font-size:12px;
+    font-weight:700;
+}
+
+.section-title h3{
+    border-left:4px solid #ffd700;
+}
+
+.podium,
+.leaderboard-list{
+    background:rgba(255,255,255,.12);
+    backdrop-filter:blur(10px);
+}
+
+.bottom-nav{
+    background:linear-gradient(90deg,#ff6a00,#ff8c00);
+}
+
+.nav-item{
+    color:white;
+}
+
+.nav-item.active{
+    color:#ffd700;
+}
+
+.promo-circle{
+    background:linear-gradient(135deg,#ffd700,#ff6a00);
+}
+
+.footer-info{
+    color:white;
+}
+
+/* ACCOUNT PAGE */
+
+.container{
+padding:15px;
+min-height:100vh;
+background:linear-gradient(180deg,#ffb347,#ff8c00,#ff4500);
+color:#fff;
+}
+
+.top{
+background:rgba(255,255,255,.15);
+backdrop-filter:blur(10px);
+border-radius:20px;
+padding:20px;
+margin-bottom:15px;
+}
+
+.profile{
+display:flex;
+align-items:center;
+gap:15px;
+}
+
+.profile img{
+width:80px;
+height:80px;
+border-radius:50%;
+border:3px solid #fff;
+}
+
+.uid{
+margin-top:5px;
+font-size:14px;
+opacity:.9;
+}
+
+.card{
+background:rgba(255,255,255,.15);
+backdrop-filter:blur(10px);
+border-radius:20px;
+padding:20px;
+margin-bottom:15px;
+}
+
+.card h2{
+font-size:18px;
+margin-bottom:10px;
+}
+
+.card .balance{
+font-size:30px;
+font-weight:bold;
+color:#ffd700;
+margin-bottom:20px;
+}
+
+.wallet-row{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:10px;
+text-align:center;
+}
+
+.wallet-row i{
+font-size:22px;
+margin-bottom:8px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:10px;
+margin-bottom:15px;
+}
+
+.box{
+background:rgba(255,255,255,.15);
+padding:15px;
+border-radius:15px;
+text-align:center;
+}
+
+.box h3{
+font-size:15px;
+margin-bottom:5px;
+}
+
+.box p{
+font-size:12px;
+}
+
+.menu{
+background:rgba(255,255,255,.15);
+border-radius:15px;
+overflow:hidden;
+margin-bottom:15px;
+}
+
+.item{
+display:flex;
+justify-content:space-between;
+padding:15px;
+border-bottom:1px solid rgba(255,255,255,.15);
+}
+
+.item:last-child{
+border-bottom:none;
+}
+
+.service{
+background:rgba(255,255,255,.15);
+border-radius:15px;
+padding:15px;
+margin-bottom:15px;
+}
+
+.service-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:15px;
+text-align:center;
+margin-top:15px;
+}
+
+.service-grid i{
+font-size:24px;
+margin-bottom:8px;
+}
+
+.logout{
+background:#ff2d55;
+padding:15px;
+text-align:center;
+border-radius:15px;
+font-weight:bold;
+font-size:18px;
+cursor:pointer;
+margin-bottom:20px;
+}
+
+.wallet-page{
+width:100%;
+max-width:450px;
+min-height:100vh;
+background:#15162c;
+padding-bottom:90px;
+}
+
+.balance-top{
+background:linear-gradient(135deg,#ff6a00,#ffb347,#ffd700);
+padding:30px 20px;
+text-align:center;
+}
+
+.balance-top i{
+font-size:55px;
+margin-bottom:10px;
+}
+
+.balance-top h1{
+font-size:48px;
+margin:10px 0;
+}
+
+.stats{
+display:flex;
+justify-content:space-around;
+margin-top:25px;
+}
+
+.wallet-card{
+margin:15px;
+background:#23244d;
+border-radius:20px;
+padding:15px;
+}
+
+.circle-row{
+display:flex;
+justify-content:space-around;
+}
+
+.circle{
+width:110px;
+height:110px;
+border:10px solid #3d3f88;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:24px;
+font-weight:bold;
+}
+
+.transfer-btn{
+margin-top:20px;
+padding:15px;
+border-radius:30px;
+text-align:center;
+font-weight:bold;
+background:linear-gradient(90deg,#ff6a00,#ffb347,#ffd700);
+color:#000;
+}
+
+.icon-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:8px;
+margin-top:20px;
+text-align:center;
+}
+
+.icon-box i{
+font-size:20px;
+background:linear-gradient(135deg,#ff6a00,#ffb347);
+width:42px;
+height:42px;
+border-radius:12px;
+display:flex;
+align-items:center;
+justify-content:center;
+margin:0 auto 5px auto;
+color:white;
+}
+
+.bottom-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+margin:15px;
+}
+
+.small-box{
+background:#23244d;
+height:120px;
+border-radius:15px;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+font-size:22px;
+font-weight:bold;
+}
+
+/* RECOMMENDED SECTION */
+
+.recommended-box{
+margin:15px;
+background:#24153d;
+border-radius:18px;
+overflow:hidden;
+border:1px solid rgba(255,255,255,.1);
+}
+
+.recommended-title{
+padding:12px 15px;
+font-size:22px;
+font-weight:bold;
+color:white;
+background:linear-gradient(90deg,#6f42ff,#9b59ff);
+}
+
+.recommended-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:10px;
+padding:12px;
+}
+
+.recommend-card{
+background:#342255;
+border-radius:12px;
+overflow:hidden;
+}
+
+.recommend-card img{
+width:100%;
+height:110px;
+object-fit:cover;
+display:block;
+}
+
+.recommend-card p{
+text-align:center;
+padding:8px;
+font-size:12px;
+font-weight:bold;
+}
+
+.kraken-box{
+margin:15px;
+background:#24153d;
+border-radius:18px;
+padding:15px;
+display:flex;
+gap:15px;
+align-items:center;
+}
+
+.kraken-box img{
+width:130px;
+height:130px;
+object-fit:cover;
+border-radius:12px;
+}
+
+.kraken-content{
+flex:1;
+}
+
+.kraken-content h2{
+margin-bottom:10px;
+}
+
+.kraken-content p{
+margin:6px 0;
+color:#ddd;
+}
+
+.play-now{
+margin-top:12px;
+padding:12px;
+text-align:center;
+border-radius:25px;
+font-weight:bold;
+background:linear-gradient(90deg,#ff6ad5,#6fa8ff);
+}
+
+.play-now{
+margin-top:12px;
+padding:12px;
+}
+
+.nav-item.active{
+    color:#000;
+    font-weight:bold;
+}
+
+.nav-item.active i{
+    background:#000;
+    color:#ffd700;
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+
+        /* --- CSS STYLE END --- */
+    </style>
+</head>
+<body>
+
+    <div id="homePage">
+
+    <div class="app-container">
+        
+        <header class="header">
+            <div class="logo">SUPER <span>WIN</span></div>
+            <div class="header-right">
+                <div class="balance">₹0.00 <i class="fa-solid fa-circle-plus"></i></div>
+                <div class="lang"><i class="fa-solid fa-download"></i> 🇺🇸 EN</div>
+            </div>
+        </header>
+
+        <div class="banner">
+            <div class="banner-content">
+                <h2>RECHARGE BONUS<br>FOR NEW PLAYERS</h2>
+                <p>Recharge Now & Unlock Exclusive Rewards</p>
+            </div>
+        </div>
+
+        <div class="notice-bar">
+            <i class="fa-solid fa-volume-high" style="color: #bc4e9c;"></i>
+            <marquee scrollamount="4">Our customer service will never send any links to members—if you receive a link from someone claiming to be staff...</marquee>
+            <button class="detail-btn">Detail</button>
+        </div>
+
+        <div class="categories">
+            <button class="tab-btn active"><i class="fa-solid fa-fire"></i> Popular</button>
+            <button class="tab-btn"><i class="fa-solid fa-circle-8"></i> Lottery</button>
+            <button class="tab-btn"><i class="fa-solid fa-rocket"></i> Mini games</button>
+        </div>
+
+        <section class="game-section">
+            <div class="section-title">
+                <h3>Popular</h3>
+                <a href="#">ALL <i class="fa-solid fa-angle-right"></i></a>
+            </div>
+            <div class="game-grid">
+                <div class="game-card wingo" onclick="openWingo()">
+    <div class="card-overlay">WINGO</div>
+</div>
+                <div class="game-card aviator" onclick="openAviator()">
+    <div class="card-overlay">AVIATOR</div>
+</div>
+                <div class="game-card cricket" onclick="openCricket()">
+    <div class="card-overlay">CRICKET</div>
+</div>
+                <div class="game-card pubg" onclick="openPubg()">
+    <div class="card-overlay">PUBG 1MIN</div>
+</div>
+                <div class="game-card slots" onclick="openSlots()">
+    <div class="card-overlay">SLOTS</div>
+</div>
+                 <div class="game-card vortex" onclick="openVortex()">
+    <div class="card-overlay">VORTEX</div>
+</div>
+            </div>
+        </section>
+
+         <!-- Recommended Games -->
+
+<div class="recommended-box">
+
+<div class="recommended-title">
+Recommended Games
+</div>
+
+<div class="recommended-grid">
+
+<div class="recommend-card" onclick="openMoneyComing()">
+<img src="https://i.postimg.cc/WpfDp2n0/Screenshot-20260608-072319-Chrome.jpg">
+<p>MONEY COMING</p>
+</div>
+
+<div class="recommend-card" onclick="openFortuneGems2()">
+<img src="https://i.postimg.cc/Dfc91ZDC/Screenshot-20260608-072312-Chrome.jpg">
+<p>FORTUNE GEMS 2</p>
+</div>
+
+<div class="recommend-card" onclick="openFortuneGems()">
+<img src="https://i.postimg.cc/T1qd5LH0/Screenshot-20260608-120637-Chrome.jpg">
+<p>FORTUNE GEMS</p>
+</div>
+
+<div class="recommend-card" onclick="openHotSpin()">
+<img src="https://i.postimg.cc/Dy9JXLZm/Screenshot-20260608-120221-Chrome.jpg">
+<p>HOT SPIN</p>
+</div>
+
+<div class="recommend-card" onclick="openCrazy777()">
+<img src="https://i.postimg.cc/05mFdq5L/Screenshot-20260608-121721-Chrome.jpg">
+<p>CRAZY 777</p>
+</div>
+
+<div class="recommend-card" onclick="openWildFireWins()">
+<img src="https://i.postimg.cc/sDMyRL31/Screenshot-20260608-121751-Chrome.jpg">
+<p>WILDFIRE WINS</p>
+</div>
+
+</div>
+
+</div>
+
+<!-- Kraken Card -->
+
+<div class="kraken-box">
+
+<img src="https://i.postimg.cc/j2GVMswg/Screenshot-20260606-204250-Chrome.jpg">
+
+<div class="kraken-content">
+
+<h2>Power Of The Kraken</h2>
+
+<p>⭐⭐⭐⭐⭐ 5.0 Score</p>
+
+<p>Slot Game #01 Rank</p>
+
+<p>300K Winner | 1500x Max Win</p>
+
+<div class="play-now">
+Play Now
+</div>
+
+</div>
+
+</div>
+
+        <section class="leaderboard-section">
+            <div class="section-title">
+                <h3>Today's earnings chart</h3>
+            </div>
+            
+            <div class="podium">
+                <div class="podium-item rank-2">
+                    <div class="avatar-container">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" alt="User">
+                    </div>
+                    <p class="username">Mem***KT4</p>
+                    <span class="earning">₹198,238.04</span>
+                    <div class="bar">02</div>
+                </div>
+                <div class="podium-item rank-1">
+                    <div class="avatar-container">
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150" alt="User">
+                    </div>
+                    <p class="username">Mem***Y1K</p>
+                    <span class="earning">₹14,146,790.00</span>
+                    <div class="bar">01</div>
+                </div>
+                <div class="podium-item rank-3">
+                    <div class="avatar-container">
+                        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150" alt="User">
+                    </div>
+                    <p class="username">Mem***CJA</p>
+                    <span class="earning">₹108,584.00</span>
+                    <div class="bar">03</div>
+                </div>
+            </div>
+
+            <div class="leaderboard-list">
+                <div class="list-item">
+                    <span class="rank-num">4</span>
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100" class="list-avatar">
+                    <span class="list-username">Mem***UUU</span>
+                    <span class="list-amount">₹38,248,420.00</span>
+                </div>
+                <div class="list-item">
+                    <span class="rank-num">5</span>
+                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100" class="list-avatar">
+                    <span class="list-username">Mem***4SJ</span>
+                    <span class="list-amount">₹25,923,157.96</span>
+                </div>
+                <div class="list-item">
+                    <span class="rank-num">6</span>
+                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100" class="list-avatar">
+                    <span class="list-username">AGY***AJA</span>
+                    <span class="list-amount">₹19,089,953.12</span>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer-info">
+            <p><span class="dot"></span> The platform advocates fairness, justice, and openness. We mainly operate fair lottery, blockchain games, casinos, and slot machine games.</p>
+        </footer>
+
+        <div style="height: 70px;"></div>
+
+        <nav class="bottom-nav">
+            <div id="homeNav" class="nav-item active" onclick="setActive(this);showHome()">
+  <i class="fa-solid fa-gamepad"></i>
+  <span>Home</span>
+</div>
+            <div class="nav-item">
+                <i class="fa-solid fa-gift"></i>
+                <span>Activity</span>
+            </div>
+            <div class="nav-item promotion-center">
+                <div class="promo-circle">
+                    <i class="fa-solid fa-gem"></i>
+                </div>
+                <span style="margin-top: 27px; color: #7a7b9a;">Promotion</span>
+            </div>
+            <div id="walletNav" class="nav-item" onclick="setActive(this);showWallet()">
+    <i class="fa-solid fa-wallet"></i>
+    <span>Wallet</span>
+</div>
+            <div id="accountNav" class="nav-item"
+onclick="setActive(this);showAccount()">
+    <i class="fa-solid fa-user"></i>
+    <span>Account</span>
+</div>
+        </nav>
+
+    </div>
+
+    </div>
+
+    <div id="accountPage" style="display:none;">
+
+        <div class="header">
+    <a href="#" onclick="showHome()" style="color:#fff; text-decoration:none;">
+        <i class="fa-solid fa-arrow-left"></i>
+    </a>
+    <div style="margin-left:10px; font-size:18px; font-weight:bold;">
+        Account
+    </div>
+</div>
+
+<div class="container">
+
+<div class="top">
+
+<div class="profile">
+
+<img src="https://i.pravatar.cc/150?img=32">
+
+<div>
+<h2>MEMBERNNG3PIHZ</h2>
+
+<div class="uid">
+UID : 5171918
+</div>
+
+<p style="margin-top:10px;">
+Last Login : 2026-06-07
+</p>
+
+</div>
+</div>
+</div>
+
+<div class="card">
+
+<h2>Total Balance</h2>
+
+<div class="balance">₹0.00</div>
+
+<div class="wallet-row">
+
+<div>
+<i class="fa-solid fa-wallet"></i>
+<p>Wallet</p>
+</div>
+
+<div>
+<i class="fa-solid fa-money-bill"></i>
+<p>Deposit</p>
+</div>
+
+<div>
+<i class="fa-solid fa-credit-card"></i>
+<p>Withdraw</p>
+</div>
+
+<div>
+<i class="fa-solid fa-crown"></i>
+<p>VIP</p>
+</div>
+
+</div>
+</div>
+
+<div class="grid">
+
+<div class="box">
+<h3>Game History</h3>
+<p>My Game History</p>
+</div>
+
+<div class="box">
+<h3>Transaction</h3>
+<p>Transaction History</p>
+</div>
+
+<div class="box">
+<h3>Deposit</h3>
+<p>Deposit History</p>
+</div>
+
+<div class="box">
+<h3>Withdraw</h3>
+<p>Withdraw History</p>
+</div>
+
+</div>
+
+<div class="menu">
+
+<div class="item">
+<span>Notification</span>
+<span>24 ></span>
+</div>
+
+<div class="item">
+<span>Gifts</span>
+<span>></span>
+</div>
+
+<div class="item">
+<span>Game Statistics</span>
+<span>></span>
+</div>
+
+<div class="item">
+<span>Language</span>
+<span>English ></span>
+</div>
+
+</div>
+
+<div class="service">
+
+<h2>Service Center</h2>
+
+<div class="service-grid">
+
+<div>
+<i class="fa-solid fa-gear"></i>
+<p>Settings</p>
+</div>
+
+<div>
+<i class="fa-solid fa-message"></i>
+<p>Feedback</p>
+</div>
+
+<div>
+<i class="fa-solid fa-bullhorn"></i>
+<p>Announcement</p>
+</div>
+
+<div>
+<i class="fa-solid fa-headset"></i>
+<p>Support</p>
+</div>
+
+<div>
+<i class="fa-solid fa-book"></i>
+<p>Guide</p>
+</div>
+
+<div>
+<i class="fa-solid fa-circle-info"></i>
+<p>About</p>
+</div>
+
+</div>
+</div>
+
+<div class="logout">
+<i class="fa-solid fa-power-off"></i>
+Logout
+</div>
+
+</div>
+
+</div>
+
+<div id="walletPage" style="display:none;" class="wallet-page">
+
+<div class="header">
+<a href="#" onclick="showHome()">
+<i class="fa-solid fa-arrow-left"></i>
+</a>
+Wallet
+</div>
+
+<div class="balance-top">
+
+<i class="fa-solid fa-wallet"></i>
+
+<h1>₹0.00</h1>
+
+<p>Total Balance</p>
+
+<div class="stats">
+<div>
+<h3>0</h3>
+<p>Total Amount</p>
+</div>
+
+<div>
+<h3>0</h3>
+<p>Total Deposit</p>
+</div>
+</div>
+
+</div>
+
+<div class="wallet-card">
+
+<div class="circle-row">
+
+<div class="circle-box">
+<div class="circle">0%</div>
+<p>₹0.00</p>
+<h4>Main Wallet</h4>
+</div>
+
+<div class="circle-box">
+<div class="circle">0%</div>
+<p>₹0.00</p>
+<h4>3rd Party Wallet</h4>
+</div>
+
+</div>
+
+<div class="transfer-btn">
+Main Wallet Transfer
+</div>
+
+<div class="icon-grid">
+
+<div class="icon-box">
+<i class="fa-solid fa-wallet"></i>
+<p>Deposit</p>
+</div>
+
+<div class="icon-box">
+<i class="fa-solid fa-money-bill-transfer"></i>
+<p>Withdraw</p>
+</div>
+
+<div class="icon-box">
+<i class="fa-solid fa-file-invoice"></i>
+<p>Deposit History</p>
+</div>
+
+<div class="icon-box">
+<i class="fa-solid fa-clock-rotate-left"></i>
+<p>Withdraw History</p>
+</div>
+
+<div class="icon-box">
+<i class="fa-solid fa-clock"></i>
+<p>Transaction</p>
+</div>
+
+<div class="icon-box">
+<i class="fa-solid fa-arrow-right-arrow-left"></i>
+<p>Transfer</p>
+</div>
+
+<div class="icon-box">
+<i class="fa-solid fa-chart-line"></i>
+<p>Records</p>
+</div>
+
+<div class="icon-box">
+<i class="fa-solid fa-shield"></i>
+<p>Security</p>
+</div>
+
+</div>
+
+</div>
+
+<div class="bottom-grid">
+
+<div class="small-box">
+0.00
+<span>ARGame</span>
+</div>
+
+<div class="small-box">
+0.00
+<span>Lottery</span>
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+function setActive(clicked){
+
+document.querySelectorAll('.nav-item').forEach(function(item){
+
+item.classList.remove('active');
+
+});
+
+clicked.classList.add('active');
+
+}    
+
+function showHome(){
+
+document.getElementById("homePage").style.display="block";
+document.getElementById("accountPage").style.display="none";
+document.getElementById("walletPage").style.display="none";
+
+document.querySelectorAll('.nav-item').forEach(item=>{
+    item.classList.remove('active');
+});
+
+document.getElementById("homeNav").classList.add("active");
+}
+
+function showWallet(){
+
+document.getElementById("homePage").style.display="none";
+document.getElementById("accountPage").style.display="none";
+document.getElementById("walletPage").style.display="block";
+
+document.querySelectorAll('.nav-item').forEach(item=>{
+    item.classList.remove('active');
+});
+
+document.getElementById("walletNav").classList.add("active");
+}
+
+function showAccount(){
+
+document.getElementById("homePage").style.display="none";
+document.getElementById("walletPage").style.display="none";
+document.getElementById("accountPage").style.display="block";
+
+// NAV FIX (safe method)
+document.querySelectorAll('.nav-item').forEach(item=>{
+    item.classList.remove('active');
+});
+
+document.getElementById("accountNav").classList.add("active");
+
+}
+
+function openWingo(){
+    window.location.href = "wingo.html";
+}
+
+function openAviator(){
+    window.location.href = "aviator.html";
+}
+
+function openCricket(){
+    window.location.href = "cricket.html";
+}
+
+function openPubg(){
+    window.location.href = "pubg.html";
+}
+
+function openSlots(){
+    window.location.href = "slots.html";
+}
+
+function openVortex(){
+    window.location.href = "vortex.html";
+}
+
+function openMoneyComing(){
+    window.location.href = "money-coming.html";
+}
+
+function openFortuneGems2(){
+    window.location.href = "fortune-gems-2.html";
+}
+
+function openFortuneGems(){
+    window.location.href = "fortune-gems.html";
+}
+
+function openHotSpin(){
+    window.location.href = "hot-spin.html";
+}
+
+function openCrazy777(){
+    window.location.href = "crazy-777.html";
+}
+
+function openWildFireWins(){
+    window.location.href = "wildfire-wins.html";
+}
+</script>
+
+</body>
+</html>
