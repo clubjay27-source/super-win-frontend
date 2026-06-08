@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
  <html lang="en">
     <head>
      <meta charset="utf-8">
@@ -909,25 +909,7 @@ padding:12px;
 </head>
 <body>
 
-     <div id="authPage" style="display:flex;flex-direction:column;justify-content:center;align-items:center;height:100vh;background:#15162c;color:#fff;padding:20px;">
-
-    <h2 style="margin-bottom:20px;">Super Win Login</h2>
-
-    <input id="username" placeholder="Username" style="padding:10px;margin:5px;width:100%;border-radius:10px;border:none;">
-    
-    <input id="password" type="password" placeholder="Password" style="padding:10px;margin:5px;width:100%;border-radius:10px;border:none;">
-
-    <button onclick="login()" style="padding:10px;margin:5px;width:100%;background:#ff6a00;border:none;color:#fff;border-radius:10px;">
-        Login
-    </button>
-
-    <button onclick="signup()" style="padding:10px;margin:5px;width:100%;background:#00dbde;border:none;color:#000;border-radius:10px;">
-        Signup
-    </button>
-
-</div>
-
-    <div id="homePage" style="display:none;">
+    <div id="homePage">
 
     <div class="app-container">
         
@@ -1421,75 +1403,6 @@ Main Wallet Transfer
 
 <script>
 
- window.onload = function () {
-
-    checkLogin();
-
-    loadBalance();
-    loadUser();
-
-    if(localStorage.getItem("user")){
-        document.getElementById("authPage").style.display = "none";
-        document.getElementById("homePage").style.display = "block";
-    }
-};
- 
-
-function signup(){
-    let user = document.getElementById("username").value;
-    let pass = document.getElementById("password").value;
-
-    localStorage.setItem("user", user);
-    localStorage.setItem("pass", pass);
-
-    window.location.href = "login.html";
-}
-
-function login(){
-    let user = document.getElementById("username").value;
-    let pass = document.getElementById("password").value;
-
-    let sUser = localStorage.getItem("user");
-    let sPass = localStorage.getItem("pass");
-
-    if(user == sUser && pass == sPass){
-
-        localStorage.setItem("loggedIn", "true");
-window.location.href = "home.html";   // ya tumhare home page ka name
-
-    } else {
-        alert("Invalid login details");
-    }
-}
- 
-const BASE_URL = "https://super-win.onrender.com";
-
- async function loadBalance() {
-    try {
-        let res = await fetch(`${BASE_URL}/balance`);
-        let data = await res.json();
-
-        document.querySelector(".balance").innerHTML = `₹${data.balance}`;
-        document.querySelector(".balance-top h1").innerHTML = `₹${data.balance}`;
-
-    } catch (err) {
-        console.log("Balance error:", err);
-    }
-}
-
- async function loadUser() {
-    try {
-        let res = await fetch(`${BASE_URL}/user`);
-        let data = await res.json();
-
-        document.querySelector("#username").innerText = data.username;
-        document.querySelector("#uid").innerText = data.uid;
-
-    } catch (err) {
-        console.log("User error:", err);
-    }
-}
-
 function setActive(clicked){
 
 document.querySelectorAll('.nav-item').forEach(function(item){
@@ -1497,17 +1410,11 @@ document.querySelectorAll('.nav-item').forEach(function(item){
 item.classList.remove('active');
 
 });
- 
+
 clicked.classList.add('active');
 
-} 
+}    
 
-function logout(){
-    localStorage.removeItem("loggedIn");
-    document.getElementById("authPage").style.display = "flex";
-    document.getElementById("homePage").style.display = "none";
-}
- 
 function showHome(){
 
 document.getElementById("homePage").style.display="block";
