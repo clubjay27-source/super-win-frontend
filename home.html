@@ -1402,6 +1402,33 @@ Main Wallet Transfer
 </div>
 
 <script>
+const BASE_URL = "https://super-win.onrender.com";
+
+ async function loadBalance() {
+    try {
+        let res = await fetch(`${BASE_URL}/balance`);
+        let data = await res.json();
+
+        document.querySelector(".balance").innerHTML = `₹${data.balance}`;
+        document.querySelector(".balance-top h1").innerHTML = `₹${data.balance}`;
+
+    } catch (err) {
+        console.log("Balance error:", err);
+    }
+}
+
+ async function loadUser() {
+    try {
+        let res = await fetch(`${BASE_URL}/user`);
+        let data = await res.json();
+
+        document.querySelector("#username").innerText = data.username;
+        document.querySelector("#uid").innerText = data.uid;
+
+    } catch (err) {
+        console.log("User error:", err);
+    }
+}
 
 function setActive(clicked){
 
@@ -1410,11 +1437,16 @@ document.querySelectorAll('.nav-item').forEach(function(item){
 item.classList.remove('active');
 
 });
-
+ 
 clicked.classList.add('active');
 
-}    
-
+} 
+ 
+window.onload = function () {
+    loadBalance();
+    loadUser();
+};
+ 
 function showHome(){
 
 document.getElementById("homePage").style.display="block";
