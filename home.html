@@ -1421,12 +1421,11 @@ Main Wallet Transfer
 
 <script>
 
- window.onload = function(){
-    if(localStorage.getItem("user")){
-        document.getElementById("authPage").style.display = "none";
-        document.getElementById("homePage").style.display = "block";
-    }
-}
+ window.onload = function () {
+    loadBalance();
+    loadUser();
+};
+ 
 
 function signup(){
     let user = document.getElementById("username").value;
@@ -1506,11 +1505,12 @@ item.classList.remove('active');
 clicked.classList.add('active');
 
 } 
- 
-window.onload = function () {
-    loadBalance();
-    loadUser();
-};
+
+function logout(){
+    localStorage.removeItem("loggedIn");
+    document.getElementById("authPage").style.display = "flex";
+    document.getElementById("homePage").style.display = "none";
+}
  
 function showHome(){
 
