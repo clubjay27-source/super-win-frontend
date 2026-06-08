@@ -909,7 +909,25 @@ padding:12px;
 </head>
 <body>
 
-    <div id="homePage">
+     <div id="authPage" style="display:flex;flex-direction:column;justify-content:center;align-items:center;height:100vh;background:#15162c;color:#fff;padding:20px;">
+
+    <h2 style="margin-bottom:20px;">Super Win Login</h2>
+
+    <input id="username" placeholder="Username" style="padding:10px;margin:5px;width:100%;border-radius:10px;border:none;">
+    
+    <input id="password" type="password" placeholder="Password" style="padding:10px;margin:5px;width:100%;border-radius:10px;border:none;">
+
+    <button onclick="login()" style="padding:10px;margin:5px;width:100%;background:#ff6a00;border:none;color:#fff;border-radius:10px;">
+        Login
+    </button>
+
+    <button onclick="signup()" style="padding:10px;margin:5px;width:100%;background:#00dbde;border:none;color:#000;border-radius:10px;">
+        Signup
+    </button>
+
+</div>
+
+    <div id="homePage" style="display:none;">
 
     <div class="app-container">
         
@@ -1402,6 +1420,53 @@ Main Wallet Transfer
 </div>
 
 <script>
+
+ window.onload = function(){
+    if(localStorage.getItem("user")){
+        document.getElementById("authPage").style.display = "none";
+        document.getElementById("homePage").style.display = "block";
+    }
+}
+
+function signup(){
+    let user = document.getElementById("username").value;
+    let pass = document.getElementById("password").value;
+
+    if(user == "" || pass == ""){
+        alert("Username or Password required");
+        return;
+    }
+
+    localStorage.setItem("user", user);
+    localStorage.setItem("pass", pass);
+
+    // 🔥 AUTO LOGIN AFTER SIGNUP
+    document.getElementById("authPage").style.display = "none";
+    document.getElementById("homePage").style.display = "block";
+}
+
+function login(){
+    let user = document.getElementById("username").value;
+    let pass = document.getElementById("password").value;
+
+    let sUser = localStorage.getItem("user");
+    let sPass = localStorage.getItem("pass");
+
+    if(user == sUser && pass == sPass){
+
+        // 🔥 DIRECT HOME OPEN
+        document.getElementById("authPage").style.display = "none";
+        document.getElementById("homePage").style.display = "block";
+
+        // optional cleanup
+        document.getElementById("username").value = "";
+        document.getElementById("password").value = "";
+
+    } else {
+        alert("Invalid login details");
+    }
+}
+ 
 const BASE_URL = "https://super-win.onrender.com";
 
  async function loadBalance() {
