@@ -394,7 +394,29 @@
 
     <!-- --- JAVASCRIPT LOGIC ENGINE START --- -->
     <script>
-        const API_BASE = "https://super-win.onrender.com/api/admin";
+        function protectAdmin() {
+    const token = localStorage.getItem("token");
+    const user = JSON.parse(localStorage.getItem("user") || "null");
+
+    if (!token || !user) {
+        window.location.href = "/login.html";
+        return;
+    }
+
+    if (user.role !== "admin") {
+        alert("Access Denied");
+        window.location.href = "/home.html";
+    }
+}
+
+  function handleAdminLogout() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    window.location.href = "/login.html";
+}      
+
+protectAdmin();
+        const API_BASE = "https://super-win.onrender.com/api";
 
         // Auth Protection Safeguard
         function getAdminToken() {
