@@ -1167,12 +1167,12 @@ Last Login : 2026-06-07
 
 <div class="wallet-row">
 
-<div>
+<div onclick="showWallet()" style="cursor:pointer;">
 <i class="fa-solid fa-wallet"></i>
 <p>Wallet</p>
 </div>
 
-<div>
+<div onclick="openDeposit()" style="cursor:pointer;">
 <i class="fa-solid fa-money-bill"></i>
 <p>Deposit</p>
 </div>
@@ -1277,7 +1277,7 @@ Last Login : 2026-06-07
 </div>
 </div>
 
-<div class="logout">
+<div class="logout" onclick="logoutUser()">
 <i class="fa-solid fa-power-off"></i>
 Logout
 </div>
@@ -1471,6 +1471,17 @@ Cancel
 
 <script> 
 
+ function logoutUser(){
+
+    if(confirm("Are you sure you want to logout?")){
+
+        localStorage.clear();
+        sessionStorage.clear();
+
+        window.location.href = "login.html";
+    }
+}
+
  let balance = 0;
 
 function openDeposit(){
@@ -1486,10 +1497,15 @@ function addBalance(){
     let amount =
     parseFloat(document.getElementById("depositAmount").value);
 
-    if(isNaN(amount) || amount <= 0){
-        alert("Enter valid amount");
-        return;
-    }
+    if(isNaN(amount)){
+    alert("Enter valid amount");
+    return;
+}
+
+if(amount < 300){
+    alert("Minimum deposit is ₹300");
+    return;
+}
 
     balance += amount;
 
