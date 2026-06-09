@@ -1438,6 +1438,21 @@ border:none;
 border-radius:10px;
 ">
 
+ <h3 style="margin-top:15px;">Pay To UPI</h3>
+<p>superwin@paytm</p>
+
+<input
+type="text"
+id="utr"
+placeholder="Enter UTR Number"
+style="
+width:100%;
+padding:12px;
+margin-top:10px;
+border:none;
+border-radius:10px;
+">
+
 <button onclick="addBalance()"
 style="
 width:100%;
@@ -1492,38 +1507,62 @@ function closeDeposit(){
     document.getElementById("depositPopup").style.display="none";
 }
 
-function addBalance(){
+async function addBalance(){
 
     let amount =
     parseFloat(document.getElementById("depositAmount").value);
 
+    let utr =
+    document.getElementById("utr").value.trim();
+
     if(isNaN(amount)){
-    alert("Enter valid amount");
-    return;
-}
+        alert("Enter valid amount");
+        return;
+    }
 
-if(amount < 300){
-    alert("Minimum deposit is ₹300");
-    return;
-}
+    if(amount < 300){
+        alert("Minimum deposit is ₹300");
+        return;
+    }
 
-    balance += amount;
+    if(!utr){
+        alert("Enter UTR Number");
+        return;
+    }
 
-    document.querySelector(".balance-top h1").innerText =
-    "₹" + balance.toFixed(2);
+    let token = localStorage.getItem("token");
 
-    document.querySelector(".card .balance").innerText =
-    "₹" + balance.toFixed(2);
+    let res = await fetch(
+        "https://super-win.onrender.com",
+        {
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json",
+                "Authorization":"Bearer " + token
+            },
+            body:JSON.stringify({
+                amount:amount,
+                utr:utr
+            })
+        }
+    );
 
-    document.querySelector(".header .balance").innerHTML =
-    "₹" + balance.toFixed(2) +
-    ' <i class="fa-solid fa-circle-plus"></i>';
+    let data = await res.json();
 
-    document.getElementById("depositAmount").value="";
+    if(res.ok){
 
-    closeDeposit();
+        alert("Deposit Request Submitted");
 
-    alert("Deposit Successful");
+        document.getElementById("depositAmount").value="";
+        document.getElementById("utr").value="";
+
+        closeDeposit();
+
+    }else{
+
+        alert(data.error || "Deposit Failed");
+
+    }
 }
 
 function setActive(clicked){
