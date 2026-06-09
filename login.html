@@ -346,7 +346,13 @@ JSON.stringify(result.user)
 );
 }
 
-window.location.href="/home.html";
+if(result.user.role === "admin"){
+        window.location.href = "/admin.html";
+    } 
+    else {
+        window.location.href = "/home.html";
+    }
+}
 
 }else{
 
