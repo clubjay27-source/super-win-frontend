@@ -332,21 +332,16 @@ if (response.ok) {
     }
 
     if (response.ok) {
-    // 1. टोकन और यूजर डेटा को लोकल स्टोरेज में सेव करें
     if (result.token) {
         localStorage.setItem("token", result.token);
     }
-    
     if (result.user) {
         localStorage.setItem("user", JSON.stringify(result.user));
         
-        // 2. बैकएंड से आ रहे रोल को निकालें
-        const role = result.user.role; 
+        // 🚨 यह लाइन आपको सच बताएगी कि सर्वर से क्या रोल आ रहा है
+        alert("ALERT -> Server returned role: " + result.user.role + " for user: " + result.user.name);
 
-        alert("Login Successful! Role: " + role);
-
-        // 3. सही पेज पर भेजें (आगे से '/' हटा दिया है ताकि Netlify पर सही चले)
-        if (role === "admin") {
+        if (result.user.role === "admin") {
             window.location.href = "admin.html";
         } else {
             window.location.href = "home.html";
