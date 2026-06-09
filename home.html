@@ -1341,7 +1341,7 @@ Main Wallet Transfer
 
 <div class="icon-grid">
 
-<div class="icon-box">
+<div class="icon-box" onclick="openDeposit()">
 <i class="fa-solid fa-wallet"></i>
 <p>Deposit</p>
 </div>
@@ -1401,7 +1401,114 @@ Main Wallet Transfer
 
 </div>
 
-<script>
+ <!-- Deposit Popup -->
+
+<div id="depositPopup" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.7);
+z-index:9999;
+justify-content:center;
+align-items:center;
+">
+
+<div style="
+background:#23244d;
+padding:20px;
+border-radius:15px;
+width:90%;
+max-width:350px;
+text-align:center;
+">
+
+<h2>Deposit Balance</h2>
+
+<input type="number"
+id="depositAmount"
+placeholder="Enter Amount"
+style="
+width:100%;
+padding:12px;
+margin-top:15px;
+border:none;
+border-radius:10px;
+">
+
+<button onclick="addBalance()"
+style="
+width:100%;
+margin-top:15px;
+padding:12px;
+border:none;
+border-radius:10px;
+background:#ffd700;
+font-weight:bold;
+cursor:pointer;
+">
+Deposit
+</button>
+
+<button onclick="closeDeposit()"
+style="
+width:100%;
+margin-top:10px;
+padding:12px;
+border:none;
+border-radius:10px;
+background:#ff2d55;
+color:white;
+cursor:pointer;
+">
+Cancel
+</button>
+
+</div>
+</div>
+
+<script> 
+
+ let balance = 0;
+
+function openDeposit(){
+    document.getElementById("depositPopup").style.display="flex";
+}
+
+function closeDeposit(){
+    document.getElementById("depositPopup").style.display="none";
+}
+
+function addBalance(){
+
+    let amount =
+    parseFloat(document.getElementById("depositAmount").value);
+
+    if(isNaN(amount) || amount <= 0){
+        alert("Enter valid amount");
+        return;
+    }
+
+    balance += amount;
+
+    document.querySelector(".balance-top h1").innerText =
+    "₹" + balance.toFixed(2);
+
+    document.querySelector(".card .balance").innerText =
+    "₹" + balance.toFixed(2);
+
+    document.querySelector(".header .balance").innerHTML =
+    "₹" + balance.toFixed(2) +
+    ' <i class="fa-solid fa-circle-plus"></i>';
+
+    document.getElementById("depositAmount").value="";
+
+    closeDeposit();
+
+    alert("Deposit Successful");
+}
 
 function setActive(clicked){
 
