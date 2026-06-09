@@ -325,43 +325,29 @@ document.getElementById("loader").style.display="none";
 loginBtn.disabled=false;
 loginBtn.innerHTML="LOGIN";
 
-if(response.ok){
+if (response.ok) {
 
-if(result.token){
-localStorage.setItem("token",result.token);
-}
-
-if(result.user){
-localStorage.setItem(
-"user",
-JSON.stringify(result.user)
-);
-}
-
-alert("Login Successful");
- if(result.user){
-localStorage.setItem(
-"user",
-JSON.stringify(result.user)
-);
-}
-
-if(result.user.role === "admin"){
-        window.location.href = "/admin.html";
-    } 
-    else {
-        window.location.href = "/home.html";
+    if (result.token) {
+        localStorage.setItem("token", result.token);
     }
-}
 
-}else{
+    if (result.user) {
+        localStorage.setItem("user", JSON.stringify(result.user));
 
-alert(
-result.error ||
-result.message ||
-"Invalid Credentials"
-);
+        // 👇 SAFE ROLE CHECK (IMPORTANT)
+        const role = result.user.role;
 
+        alert("Login Successful");
+
+        if (role === "admin") {
+            window.location.href = "/admin.html";
+        } else {
+            window.location.href = "/home.html";
+        }
+
+    } else {
+        alert("User data missing from server");
+    }
 }
 
 }catch(error){
