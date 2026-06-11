@@ -1419,23 +1419,27 @@
     </div>
 
     <div id="depositPopup" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,.8); z-index:99999; justify-content:center; align-items:center;">
-        <div style="background:#23244d; padding:25px; border-radius:15px; width:90%; max-width:360px; text-align:center; color:#fff; box-shadow: 0px 4px 20px rgba(0,0,0,0.5); box-sizing: border-box;">
-            <h2 style="margin-top:0; font-size:22px;">Deposit Balance</h2>
-            
-            <div style="margin: 15px 0; background: #fff; padding: 10px; border-radius: 10px; display: inline-block;">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=86303335@ybl&pn=SuperWin" alt="Scan QR" style="width:150px; height:150px; display:block;">
-            </div>
-            
-            <h3 style="color:#ffd700; margin:5px 0;">Pay To UPI</h3>
-            <p style="background:rgba(255,255,255,0.1); padding:8px; border-radius:5px; font-weight:bold; margin: 5px 0 15px 0; user-select: all; font-size:14px;">86303335@ybl</p>
-            
-            <input type="number" id="depositAmount" placeholder="Enter Amount (Min ₹300)" style="width:100%; padding:12px; margin-bottom:10px; border:none; border-radius:10px; background:#1a1b35; color:#fff; box-sizing: border-box;">
-            <input type="text" id="utr" placeholder="Enter 12 Digit UTR Number" style="width:100%; padding:12px; margin-bottom:15px; border:none; border-radius:10px; background:#1a1b35; color:#fff; box-sizing: border-box;">
-            
-            <button onclick="addBalance()" style="width:100%; padding:12px; border:none; border-radius:10px; background:#ffd700; font-weight:bold; cursor:pointer; color:#000; font-size:16px; margin-bottom:10px;">Submit Deposit</button>
-            <button onclick="closeDeposit()" style="width:100%; padding:12px; border:none; border-radius:10px; background:#ff2d55; color:white; font-weight:bold; cursor:pointer; font-size:16px;">Cancel</button>
+    <div style="background:#23244d; padding:25px; border-radius:15px; width:90%; max-width:360px; text-align:center; color:#fff; box-shadow: 0px 4px 20px rgba(0,0,0,0.5); box-sizing: border-box;">
+        <h2 style="margin-top:0; font-size:22px;">Deposit Balance</h2>
+        
+        <div style="margin: 15px 0; background: #fff; padding: 10px; border-radius: 10px; display: inline-block;">
+            <img id="dynamicQR" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=loading" alt="Scan QR" style="width:150px; height:150px; display:block;">
         </div>
+        
+        <h3 style="color:#ffd700; margin:5px 0;">Pay To UPI</h3>
+        
+        <div style="display:flex; gap:5px; align-items:center; background:rgba(255,255,255,0.1); padding:8px; border-radius:5px; margin: 5px 0 15px 0;">
+            <p id="liveUpiId" style="font-weight:bold; margin:0; user-select: all; font-size:14px; flex:1; text-align:left; overflow:hidden;">loading...</p>
+            <button onclick="copyUpiId()" style="background:#ffd700; border:none; padding:5px 10px; font-weight:bold; border-radius:3px; cursor:pointer; color:#000; font-size:12px;">Copy</button>
+        </div>
+        
+        <input type="number" id="depositAmount" placeholder="Enter Amount (Min ₹300)" style="width:100%; padding:12px; margin-bottom:10px; border:none; border-radius:10px; background:#1a1b35; color:#fff; box-sizing: border-box;">
+        <input type="text" id="utr" placeholder="Enter 12 Digit UTR Number" style="width:100%; padding:12px; margin-bottom:15px; border:none; border-radius:10px; background:#1a1b35; color:#fff; box-sizing: border-box;">
+        
+        <button onclick="addBalance()" style="width:100%; padding:12px; border:none; border-radius:10px; background:#ffd700; font-weight:bold; cursor:pointer; color:#000; font-size:16px; margin-bottom:10px;">Submit Deposit</button>
+        <button onclick="closeDeposit()" style="width:100%; padding:12px; border:none; border-radius:10px; background:#ff2d55; color:white; font-weight:bold; cursor:pointer; font-size:16px;">Cancel</button>
     </div>
+</div>
 
     <div id="withdrawPopup" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,.8); z-index:99999; justify-content:center; align-items:center;">
         <div style="background:#23244d; padding:25px; border-radius:15px; width:90%; max-width:360px; text-align:center; color:#fff; box-shadow: 0px 4px 20px rgba(0,0,0,0.5); box-sizing: border-box;">
@@ -1573,58 +1577,78 @@
             }
         }
 
-        function openDeposit(){
-            document.getElementById("depositPopup").style.display="flex";
+    
+async function openDeposit(){
+    document.getElementById("depositPopup").style.display="flex";
+    try {
+        let res = await fetch("https://super-win.onrender.com/api/get_upi");
+        let data = await res.json();
+        if(data.upi_id) {
+            document.getElementById("liveUpiId").innerText = data.upi_id;
+            
+            document.getElementById("dynamicQR").src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=${data.upi_id}&pn=SuperWin`;
         }
+    } catch(e) {
+        document.getElementById("liveUpiId").innerText = "Error loading UPI";
+    }
+}
+function copyUpiId() {
+    let upiText = document.getElementById("liveUpiId").innerText;
+    if(upiText === "loading..." || upiText === "Error loading UPI") return;
+    
+    navigator.clipboard.writeText(upiText).then(() => {
+        alert("UPI ID Copied: " + upiText);
+    }).catch(err => {
+        console.error("Failed to copy: ", err);
+    });
+}
 
-        function closeDeposit(){
-            document.getElementById("depositPopup").style.display="none";
+
+async function addBalance(){
+    let amount = parseFloat(document.getElementById("depositAmount").value);
+    let utr = document.getElementById("utr").value.trim();
+
+    if(isNaN(amount)){
+        alert("Enter valid amount");
+        return;
+    }
+    if(amount < 300){
+        alert("Minimum deposit is ₹300");
+        return;
+    }
+    if(!utr || utr.length < 12){
+        alert("Enter valid 12 Digit UTR Number");
+        return;
+    }
+
+    let token = localStorage.getItem("token");
+    try {
+        
+        let res = await fetch("https://super-win.onrender.com/api/deposit", {
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json",
+                "Authorization":"Bearer " + token
+            },
+            body:JSON.stringify({
+                amount:amount,
+                utr:utr
+            })
+        });
+
+        let data = await res.json();
+        if(res.ok){
+            alert("your request sumbited");
+            document.getElementById("depositAmount").value="";
+            document.getElementById("utr").value="";
+            closeDeposit();
+        } else {
+            alert(data.error || "Deposit Failed");
         }
-
-        async function addBalance(){
-            let amount = parseFloat(document.getElementById("depositAmount").value);
-            let utr = document.getElementById("utr").value.trim();
-
-            if(isNaN(amount)){
-                alert("Enter valid amount");
-                return;
-            }
-            if(amount < 300){
-                alert("Minimum deposit is ₹300");
-                return;
-            }
-            if(!utr){
-                alert("Enter UTR Number");
-                return;
-            }
-
-            let token = localStorage.getItem("token");
-            try {
-                let res = await fetch("https://super-win.onrender.com/api/deposite", {
-                    method:"POST",
-                    headers:{
-                        "Content-Type":"application/json",
-                        "Authorization":"Bearer " + token
-                    },
-                    body:JSON.stringify({
-                        amount:amount,
-                        utr:utr
-                    })
-                });
-
-                let data = await res.json();
-                if(res.ok){
-                    alert("Deposit Request Submitted");
-                    document.getElementById("depositAmount").value="";
-                    document.getElementById("utr").value="";
-                    closeDeposit();
-                } else {
-                    alert(data.error || "Deposit Failed");
-                }
-            } catch(e) {
-                alert("Server error, please try again.");
-            }
-        }
+    } catch(e) {
+        alert("Server error, please try again.");
+    }
+} 
 
         function setActive(clicked){
             document.querySelectorAll('.nav-item').forEach(function(item){
