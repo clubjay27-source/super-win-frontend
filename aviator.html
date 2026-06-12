@@ -1,634 +1,735 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Super Win - Admin Dashboard</title>
-    <!-- FontAwesome & Google Fonts -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Aviator Authentic UI</title>
+    <script src="https://cdn.socketio.org/4.7.2/socket.io.min.js"></script>
     <style>
-        /* --- PREMIUM ADMIN STYLE START --- */
+        /* --- BRANDING & CSS RESET --- */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background: linear-gradient(135deg, #0b0c1b 0%, #15162c 100%);
-            color: #fff;
-            min-height: 100vh;
+            background-color: #0b0c0e;
+            color: #ffffff;
             display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 0;
+            margin: 0;
         }
 
-        /* Layout Architecture */
-        .sidebar {
-            width: 260px;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(15px);
-            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        /* Full App Wrapper */
+        .aviator-app {
+            width: 100%;
+            max-width: 412px; /* Perfect Mobile Ratio */
+            background-color: #101114;
             display: flex;
             flex-direction: column;
-            position: fixed;
-            height: 100vh;
-            z-index: 10;
-        }
-
-        .main-content {
-            margin-left: 260px;
-            flex: 1;
-            padding: 30px;
             min-height: 100vh;
-            background: linear-gradient(180deg, rgba(255, 140, 0, 0.05), transparent 400px);
+            border: 1px solid #1c1d22;
         }
 
-        /* Sidebar Branding & Navigation */
-        .sidebar-brand {
-            padding: 25px 20px;
-            font-size: 24px;
-            font-weight: 900;
-            font-style: italic;
-            text-shadow: 0 0 10px #fff, 0 0 20px #ffd700;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            text-align: center;
-        }
-        .sidebar-brand span { color: #ffd700; }
-
-        .menu-list {
-            list-style: none;
-            padding: 20px 10px;
-        }
-
-        .menu-item {
-            padding: 14px 15px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: #b5b6d0;
-            cursor: pointer;
-            margin-bottom: 8px;
-            transition: all 0.3s ease;
-            font-weight: 500;
-        }
-
-        .menu-item:hover, .menu-item.active {
-            background: linear-gradient(90deg, #ff6a00, #ffb347);
-            color: #000;
-            font-weight: 700;
-            box-shadow: 0 4px 15px rgba(255, 106, 0, 0.3);
-        }
-
-        .menu-item i { font-size: 18px; }
-
-        /* Top Header */
-        .top-header {
+        /* Top Header Navigation */
+        .top-navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 8px 12px;
+            background-color: #1b1c21;
         }
 
-        .admin-profile {
+        .nav-left-group {
             display: flex;
             align-items: center;
-            gap: 12px;
-            background: rgba(255, 255, 255, 0.07);
-            padding: 8px 16px;
-            border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            gap: 14px;
         }
 
-        .admin-avatar {
-            width: 32px;
-            height: 32px;
+        .back-icon {
+            font-size: 16px;
+            color: #9299a6;
+            cursor: pointer;
+        }
+
+        .logo-text {
+            color: #cb0629;
+            font-weight: 900;
+            font-style: italic;
+            font-size: 20px;
+            letter-spacing: -0.5px;
+        }
+
+        .help-badge {
+            background: #2c2d34;
             border-radius: 50%;
-            border: 2px solid #ffd700;
+            width: 18px;
+            height: 18px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 11px;
+            color: #9299a6;
+            font-weight: bold;
         }
 
-        /* Stats Grid Dashboard */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            margin-bottom: 35px;
-        }
-
-        .stat-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 22px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-
-        .stat-card::after {
-            content: '';
-            position: absolute;
-            top: 0; right: 0; width: 60px; height: 60px;
-            background: radial-gradient(circle, rgba(255,215,0,0.1) 0%, transparent 70%);
-        }
-
-        .stat-title {
-            font-size: 13px;
-            color: #b5b6d0;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 10px;
-        }
-
-        .stat-value {
-            font-size: 26px;
-            font-weight: 800;
-            color: #fff;
-        }
-        .stat-value.highlight { color: #ffd700; }
-        .stat-value.pending { color: #ff9f43; }
-
-        .stat-icon-wrapper {
-            position: absolute;
-            right: 20px;
-            bottom: 20px;
-            opacity: 0.15;
-            font-size: 32px;
-            color: #ffd700;
-        }
-
-        /* Modern Custom Data Tables */
-        .table-container {
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 20px;
-            overflow-x: auto;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
-        }
-
-        .table-title {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 18px;
+        .nav-right-group {
             display: flex;
             align-items: center;
             gap: 10px;
         }
-        .table-title::before {
-            content: '';
-            width: 4px;
-            height: 18px;
-            background: #ff6a00;
-            display: inline-block;
-            border-radius: 2px;
-        }
 
-        .custom-table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-        }
-
-        .custom-table th {
-            padding: 14px 16px;
-            background: rgba(255, 255, 255, 0.03);
-            color: #b5b6d0;
-            font-size: 13px;
-            text-transform: uppercase;
-            font-weight: 600;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .custom-table td {
-            padding: 14px 16px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            font-size: 14px;
-        }
-
-        .custom-table tr:last-child td { border: none; }
-
-        /* Badges & Actions Button styling */
-        .badge {
-            padding: 5px 12px;
+        .wallet-pill {
+            background: linear-gradient(to right, #121c32, #0d1629);
+            border: 1px solid #1a325c;
             border-radius: 20px;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            display: inline-block;
-        }
-        .badge.approved { background: rgba(46, 204, 113, 0.15); color: #2ecc71; border: 1px solid rgba(46, 204, 113, 0.3); }
-        .badge.pending { background: rgba(241, 196, 15, 0.15); color: #f1c40f; border: 1px solid rgba(241, 196, 15, 0.3); }
-        .badge.rejected { background: rgba(231, 76, 60, 0.15); color: #e74c3c; border: 1px solid rgba(231, 76, 60, 0.3); }
-
-        .btn-action-group {
             display: flex;
+            align-items: center;
+            padding: 2px 2px 2px 8px;
             gap: 6px;
         }
 
-        .btn-action {
-            border: none;
-            padding: 6px 12px;
-            border-radius: 8px;
-            cursor: pointer;
+        .wallet-icon {
+            width: 16px;
+            height: 16px;
+            background: radial-gradient(circle, #ffdf00, #d4af37);
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 5px rgba(255,223,0,0.5);
+        }
+
+        .wallet-bal {
+            color: #ffffff;
             font-weight: 700;
+            font-size: 13px;
+        }
+
+        .wallet-add {
+            background-color: #1251c6;
+            border: none;
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            font-weight: 900;
             font-size: 12px;
-            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .live-currency-lbl {
+            font-size: 12px;
+            color: #5bb326;
+            font-weight: bold;
+        }
+
+        .hamburger-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 3.5px;
+            cursor: pointer;
+            background: #2c2d34;
+            padding: 6px;
+            border-radius: 4px;
+        }
+
+        .hamburger-menu span {
+            width: 14px;
+            height: 2px;
+            background-color: #9299a6;
+        }
+
+        /* Top Bar History Badges */
+        .history-strip {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background-color: #141518;
+            overflow-x: hidden;
+            border-bottom: 1px solid #1c1d22;
+        }
+
+        .m-badge {
+            font-size: 10.5px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 12px;
+            color: #fff;
+            background: #1c1d22;
+        }
+        .m-badge.low { background-color: #1d2b47; color: #4387f5; }
+        .m-badge.mid { background-color: #2e1c4d; color: #9843f5; }
+        .m-badge.high { background-color: #4c1130; color: #f5439b; }
+
+        .history-dropdown-btn {
+            background: #1c1d22;
+            color: #9299a6;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            margin-left: auto;
+            cursor: pointer;
+        }
+
+        /* --- THEATER SCREEN BOX CLONE --- */
+        .theater-screen {
+            background-color: #141518;
+            padding: 6px 8px;
+        }
+
+        .screen-canvas {
+            background: 
+                repeating-conic-gradient(from 0deg at 50% 50%, rgba(26, 68, 102, 0.15) 0deg 15deg, transparent 15deg 30deg),
+                radial-gradient(circle at 50% 50%, #17212f 0%, #080a0e 100%);
+            height: 195px;
+            border-radius: 14px;
+            position: relative;
+            border: 1px solid #1c1d22;
+            overflow: hidden;
+        }
+
+        .meta-row {
+            position: absolute;
+            top: 8px;
+            width: 100%;
+            padding: 0 12px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            color: #5d6370;
+            z-index: 15;
+            font-weight: bold;
+        }
+        .meta-row .round-box {
             display: flex;
             align-items: center;
             gap: 4px;
         }
-        .btn-approve { background: #2ecc71; color: #000; }
-        .btn-approve:hover { background: #27ae60; transform: translateY(-1px); }
-        .btn-reject { background: #e74c3c; color: #fff; }
-        .btn-reject:hover { background: #c0392b; transform: translateY(-1px); }
-
-        .logout-btn {
-            margin-top: auto;
-            background: rgba(231, 76, 60, 0.1);
-            color: #e74c3c;
-            border: 1px solid rgba(231, 76, 60, 0.2);
-        }
-        .logout-btn:hover {
-            background: #e74c3c !important;
-            color: #fff !important;
+        .meta-row .arrow-down-icon {
+            font-size: 8px;
+            color: #5d6370;
         }
 
-        /* Views management */
-        .admin-view { display: none; }
-        .admin-view.active-view { display: block; }
+        .live-multiplier-big {
+            position: absolute;
+            top: 48%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 58px;
+            font-weight: 900;
+            color: #ffffff;
+            z-index: 10;
+            text-shadow: 0px 4px 15px rgba(0, 0, 0, 0.75);
+        }
 
-        /* Loader */
-        .table-loading {
+        /* Vector Graph Engine */
+        .animation-viewport {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .curve-svg {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+
+        .plane-wrapper {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            z-index: 5;
+            width: 65px;
+            height: 38px;
+            transform: translate(-50%, 50%);
+            will-change: left, bottom;
+            display: none;
+        }
+
+        /* Left Side Ticks */
+        .left-axis-ticks {
+            position: absolute;
+            left: 8px;
+            top: 30px;
+            bottom: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            z-index: 1;
+        }
+        .axis-dot {
+            width: 4px;
+            height: 4px;
+            background-color: #2b61ab;
+            border-radius: 50%;
+            opacity: 0.8;
+        }
+
+        /* Bottom Grid Dots */
+        .bottom-grid-dots {
+            position: absolute;
+            bottom: 6px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 14px;
+            z-index: 1;
+        }
+        .grid-dot {
+            width: 4px;
+            height: 4px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            opacity: 0.7;
+        }
+
+        /* --- BETTING CARDS --- */
+        .betting-panel {
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .bet-card {
+            background-color: #1b1c21;
+            border-radius: 18px;
+            padding: 12px;
+            border: 1px solid #232429;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-header-tabs {
+            display: flex;
+            background-color: #101114;
+            border-radius: 24px;
+            padding: 2.5px;
+            width: 170px;
+            margin: 0 auto 12px auto;
+        }
+
+        .tab-item {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #757c8a;
+            font-size: 12px;
+            padding: 5px 0;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 700;
             text-align: center;
-            padding: 30px;
-            color: #ffd700;
-            font-weight: 500;
+        }
+
+        .tab-item.active {
+            background-color: #2c2d34;
+            color: #ffffff;
+        }
+
+        .action-row {
+            display: flex;
+            gap: 10px;
+            align-items: stretch;
+        }
+
+        .left-controls-block {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            width: 140px;
+        }
+
+        .numeric-adjuster {
+            display: flex;
+            align-items: center;
+            background-color: #000000;
+            border-radius: 24px;
+            height: 38px;
+            justify-content: space-between;
+            padding: 0 4px;
+        }
+
+        .adjust-btn {
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            font-size: 20px;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 300;
+        }
+
+        .numeric-adjuster input {
+            width: 65px;
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 700;
+            outline: none;
+        }
+
+        .giant-bet-trigger {
+            flex: 1;
+            background-color: #28c711;
+            border: none;
+            border-radius: 16px;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            padding: 10px;
+            box-shadow: 0 4px 12px rgba(40, 199, 17, 0.25);
+            transition: background-color 0.2s ease;
+        }
+
+        .giant-bet-trigger.booked {
+            background-color: #d29406 !important;
+            box-shadow: 0 4px 12px rgba(210, 148, 6, 0.25);
+        }
+
+        .giant-bet-trigger.active-bet {
+            background-color: #cb0629 !important;
+            box-shadow: 0 4px 12px rgba(203, 6, 41, 0.25);
+        }
+
+        .giant-bet-trigger .lbl-main {
+            font-size: 16px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        .giant-bet-trigger .lbl-sub {
+            font-size: 13px;
+            font-weight: bold;
+            opacity: 0.9;
+        }
+
+        .quick-pills-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 4px;
+        }
+
+        .pill-opt {
+            background-color: #101114;
+            border: none;
+            color: #707785;
+            padding: 4px 0;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .bottom-data-ledger {
+            margin-top: auto;
+            background-color: #141518;
+            padding: 8px;
+        }
+
+        .ledger-tabs-header {
+            display: flex;
+            background-color: #0e0f12;
+            padding: 3px;
+            border-radius: 20px;
+        }
+
+        .ledger-tab {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #707785;
+            padding: 8px 0;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .ledger-tab.active {
+            background-color: #2c2d34;
+            color: #ffffff;
+            border-radius: 16px;
+        }
+
+        .meta-all-bets-title {
+            font-size: 11px;
+            color: #9299a6;
+            font-weight: bold;
+            padding: 6px 4px 0 4px;
         }
     </style>
 </head>
 <body>
 
-    <!-- Sidebar Menu Panel -->
-    <aside class="sidebar">
-        <div class="sidebar-brand">SUPER <span>WIN</span></div>
-        <ul class="menu-list">
-            <li class="menu-item active" onclick="switchView('dashboardView', this)"><i class="fa-solid fa-chart-pie"></i> Dashboard</li>
-            <li class="menu-item" onclick="switchView('usersView', this)"><i class="fa-solid fa-users"></i> User Management</li>
-            <li class="menu-item" onclick="switchView('depositsView', this)"><i class="fa-solid fa-money-bill-wave"></i> Deposits</li>
-            <li class="menu-item" onclick="switchView('withdrawsView', this)"><i class="fa-solid fa-building-columns"></i> Withdrawals</li>
-            <li class="menu-item logout-btn" onclick="handleAdminLogout()"><i class="fa-solid fa-power-off"></i> Safe Logout</li>
-        </ul>
-    </aside>
-
-    <!-- Main Content Workspace -->
-    <main class="main-content">
-        <header class="top-header">
-            <h2>System Control Panel</h2>
-            <div class="admin-profile">
-                <img src="https://i.pravatar.cc/150?img=33" class="admin-avatar" alt="Admin">
-                <span style="font-weight: 600; font-size: 14px;">Master Admin</span>
+    <div class="aviator-app">
+        <header class="top-navbar">
+            <div class="nav-left-group">
+                <span class="back-icon" onclick="window.location.href='home.html'">&#10094;</span>
+                <span class="logo-text">Aviator</span>
+                <span class="help-badge">?</span>
+            </div>
+            <div class="nav-right-group">
+                <div class="wallet-pill">
+                    <span class="wallet-icon"></span>
+                    <span class="wallet-bal" id="wallet-balance">₹0.00</span>
+                    <button class="wallet-add" onclick="window.location.href='deposit.html'">+</button>
+                </div>
             </div>
         </header>
 
-        <!-- ================= VIEW 1: DASHBOARD OVERVIEW ================= -->
-        <div id="dashboardView" class="admin-view active-view">
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-title">Total Registered Users</div>
-                    <div class="stat-value" id="statTotalUsers">0</div>
-                    <div class="stat-icon-wrapper"><i class="fa-solid fa-users"></i></div>
+        <div class="history-strip" id="history-container">
+            <span class="m-badge low">1.50x</span>
+            <span class="m-badge mid">2.40x</span>
+            <span class="m-badge high">12.20x</span>
+        </div>
+
+        <div class="theater-screen">
+            <div class="screen-canvas">
+                <div class="meta-row">
+                    <div class="round-box">
+                        <span>Live Session</span>
+                    </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-title">Total Approved Deposits</div>
-                    <div class="stat-value highlight" id="statTotalDeposit">₹0.00</div>
-                    <div class="stat-icon-wrapper"><i class="fa-solid fa-wallet"></i></div>
+                
+                <div class="live-multiplier-big" id="live-counter">Waiting</div>
+                
+                <div class="left-axis-ticks">
+                    <div class="axis-dot"></div><div class="axis-dot"></div>
+                    <div class="axis-dot"></div><div class="axis-dot"></div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-title">Total Disbursed Withdrawals</div>
-                    <div class="stat-value" id="statTotalWithdraw">₹0.00</div>
-                    <div class="stat-icon-wrapper"><i class="fa-solid fa-money-bill-transfer"></i></div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-title">Pending Deposits</div>
-                    <div class="stat-value pending" id="statPendingDeposits">0</div>
-                    <div class="stat-icon-wrapper"><i class="fa-solid fa-clock"></i></div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-title">Pending Withdrawals</div>
-                    <div class="stat-value pending" id="statPendingWithdraws">0</div>
-                    <div class="stat-icon-wrapper"><i class="fa-solid fa-hourglass-half"></i></div>
+
+                <div class="animation-viewport">
+                    <svg class="curve-svg" viewBox="0 0 400 200" preserveAspectRatio="none">
+                        <path id="trajectory-fill" d="M 20 180 L 20 180 L 20 180 Z" fill="rgba(218, 4, 43, 0.2)"></path>
+                        <path id="trajectory-line" d="M 20 180 Q 20 180, 20 180" fill="none" stroke="#e0052d" stroke-width="4.5" stroke-linecap="round"></path>
+                    </svg>
+
+                    <div class="plane-wrapper" id="jet-carrier">
+                        <svg viewBox="0 0 60 40" width="100%" height="100%">
+                            <path d="M10,22 L25,20 L50,23 L55,18 L48,12 L25,16 Z" fill="#cf0427" />
+                            <line x1="55" y1="10" x2="55" y2="26" stroke="#ffffff" stroke-width="2.5"/>
+                        </svg>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- ================= VIEW 2: USERS MANAGEMENT ================= -->
-        <div id="usersView" class="admin-view">
-            <div class="table-container">
-                <div class="table-title">Registered Players System Logs</div>
-                <table class="custom-table">
-                    <thead>
-                        <tr>
-                            <th>User ID</th>
-                            <th>Full Name</th>
-                            <th>Phone Identity</th>
-                            <th>Role Status</th>
-                            <th>Wallet Balance</th>
-                        </tr>
-                    </thead>
-                    <tbody id="usersTableBody">
-                        <tr><td colspan="5" class="table-loading"><i class="fa-solid fa-circle-notch fa-spin"></i> Processing Ledger Data...</td></tr>
-                    </tbody>
-                </table>
+        <div class="betting-panel">
+            <div class="bet-card">
+                <div class="action-row">
+                    <div class="left-controls-block">
+                        <div class="numeric-adjuster">
+                            <button class="adjust-btn" onclick="modifyInput('bet-val-1', -10)">&#8722;</button>
+                            <input type="number" id="bet-val-1" value="10.00">
+                            <button class="adjust-btn" onclick="modifyInput('bet-val-1', 10)">&#43;</button>
+                        </div>
+                        <div class="quick-pills-row">
+                            <button class="pill-opt" onclick="directSet('bet-val-1', 10)">10</button>
+                            <button class="pill-opt" onclick="directSet('bet-val-1', 100)">100</button>
+                        </div>
+                    </div>
+                    <button class="giant-bet-trigger" id="btn-trigger-1" onclick="handleBetClick('1')">
+                        <span class="lbl-main" id="lbl-main-1">BET</span>
+                        <span class="lbl-sub" id="btn-lbl-1">10.00 INR</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="bet-card">
+                <div class="action-row">
+                    <div class="left-controls-block">
+                        <div class="numeric-adjuster">
+                            <button class="adjust-btn" onclick="modifyInput('bet-val-2', -10)">&#8722;</button>
+                            <input type="number" id="bet-val-2" value="10.00">
+                            <button class="adjust-btn" onclick="modifyInput('bet-val-2', 10)">&#43;</button>
+                        </div>
+                        <div class="quick-pills-row">
+                            <button class="pill-opt" onclick="directSet('bet-val-2', 10)">10</button>
+                            <button class="pill-opt" onclick="directSet('bet-val-2', 100)">100</button>
+                        </div>
+                    </div>
+                    <button class="giant-bet-trigger" id="btn-trigger-2" onclick="handleBetClick('2')">
+                        <span class="lbl-main" id="lbl-main-2">BET</span>
+                        <span class="lbl-sub" id="btn-lbl-2">10.00 INR</span>
+                    </button>
+                </div>
             </div>
         </div>
+    </div>
 
-        <!-- ================= VIEW 3: DEPOSITS MANAGEMENT ================= -->
-        <div id="depositsView" class="admin-view">
-            <div class="table-container">
-                <div class="table-title">Deposit Request Stream</div>
-                <table class="custom-table">
-                    <thead>
-                        <tr>
-                            <th>Order ID</th>
-                            <th>User Profile</th>
-                            <th>Requested Capital</th>
-                            <th>UTR Reference Number</th>
-                            <th>Current State</th>
-                            <th>Actions Control</th>
-                        </tr>
-                    </thead>
-                    <tbody id="depositsTableBody">
-                        <tr><td colspan="6" class="table-loading"><i class="fa-solid fa-circle-notch fa-spin"></i> Fetching Live Banking Requests...</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- ================= VIEW 4: WITHDRAWALS MANAGEMENT ================= -->
-        <div id="withdrawsView" class="admin-view">
-            <div class="table-container">
-                <div class="table-title">Settlement Withdrawal Vault</div>
-                <table class="custom-table">
-                    <thead>
-                        <tr>
-                            <th>Req ID</th>
-                            <th>User Profile</th>
-                            <th>Payout Target</th>
-                            <th>Status Badge</th>
-                            <th>Authorization Matrix</th>
-                        </tr>
-                    </thead>
-                    <tbody id="withdrawsTableBody">
-                        <tr><td colspan="5" class="table-loading"><i class="fa-solid fa-circle-notch fa-spin"></i> Synchronization with payout queries...</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-    </main>
-
-    <!-- --- JAVASCRIPT LOGIC ENGINE START --- -->
     <script>
-        function protectAdmin() {
-    const token = localStorage.getItem("token");
-    const user = JSON.parse(localStorage.getItem("user") || "null");
-
-    if (!token || !user) {
-        window.location.href = "/login.html";
-        return;
-    }
-
-    if (user.role !== "admin") {
-        alert("Access Denied");
-        window.location.href = "/home.html";
-    }
-}
-
-  function handleAdminLogout() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    window.location.href = "/login.html";
-}      
-
-protectAdmin();
-        const API_BASE = "https://super-win.onrender.com/api";
-
-        // Auth Protection Safeguard
-        function getAdminToken() {
-            let token = localStorage.getItem("token");
-            if (!token) {
-                alert("Access Denied: Admin session token not found!");
-                window.location.href = "login.html";
-                return null;
-            }
-            return token;
+        const token = localStorage.getItem("token");
+        if (!token) {
+            window.location.href = "login.html";
         }
 
-        // View Router Switching Engine
-        function switchView(viewId, element) {
-            document.querySelectorAll('.admin-view').forEach(view => view.classList.remove('active-view'));
-            document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
-            
-            document.getElementById(viewId).classList.add('active-view');
-            element.classList.add('active');
+        // Connect securely to your render server
+        const socket = io("https://super-win.onrender.com", {
+            auth: { token: token }
+        });
 
-            // Lazy Initialization for Views
-            if (viewId === 'dashboardView') loadDashboardStats();
-            if (viewId === 'usersView') loadUsersLedger();
-            if (viewId === 'depositsView') loadDepositsStream();
-            if (viewId === 'withdrawsView') loadWithdrawalsVault();
-        }
+        const counterView = document.getElementById('live-counter');
+        const jetCarrier = document.getElementById('jet-carrier');
+        const splinePath = document.getElementById('trajectory-line');
+        const splineFill = document.getElementById('trajectory-fill');
 
-        // REST Core: Fetch Dashboard Statistics
-        async function loadDashboardStats() {
-            const token = getAdminToken();
-            if (!token) return;
-
-            try {
-                let res = await fetch(`${API_BASE}/admin/dashboard`, {
-                    headers: { "Authorization": `Bearer ${token}` }
-                });
-                let data = await res.json();
-                if (res.ok) {
-                    document.getElementById("statTotalUsers").innerText = data.total_users;
-                    document.getElementById("statTotalDeposit").innerText = `₹${data.total_deposit.toFixed(2)}`;
-                    document.getElementById("statTotalWithdraw").innerText = `₹${data.total_withdraw.toFixed(2)}`;
-                    document.getElementById("statPendingDeposits").innerText = data.pending_deposits;
-                    document.getElementById("statPendingWithdraws").innerText = data.pending_withdraws;
-                }
-            } catch (err) {
-                console.error("Dashboard Sync Exception:", err);
-            }
-        }
-
-        // REST Core: Load Players Grid
-        async function loadUsersLedger() {
-            const token = getAdminToken();
-            if (!token) return;
-
-            try {
-                let res = await fetch(`${API_BASE}/admin/users`, {
-                    headers: { "Authorization": `Bearer ${token}` }
-                });
-                let data = await res.json();
-                if (res.ok) {
-                    let rows = "";
-                    data.users.forEach(user => {
-                        rows += `
-                            <tr>
-                                <td><strong>#${user.id}</strong></td>
-                                <td>${user.name}</td>
-                                <td><i class="fa-solid fa-phone-flip" style="opacity:0.5; font-size:12px;"></i> ${user.phone}</td>
-                                <td><span class="badge" style="background:rgba(255,255,255,0.06); color:#fff;">${user.role}</span></td>
-                                <td style="color:#ffd700; font-weight:700;">₹${parseFloat(user.balance).toFixed(2)}</td>
-                            </tr>
-                        `;
-                    });
-                    document.getElementById("usersTableBody").innerHTML = rows || "<tr><td colspan='5' style='text-align:center;'>No user logs found.</td></tr>";
-                }
-            } catch (err) {
-                document.getElementById("usersTableBody").innerHTML = "<tr><td colspan='5' style='color:#e74c3c;'>Failed to compile records.</td></tr>";
-            }
-        }
-
-        // REST Core: Load Financial Inflows (Deposits)
-        async function loadDepositsStream() {
-            const token = getAdminToken();
-            if (!token) return;
-
-            try {
-                let res = await fetch(`${API_BASE}/admin/deposits`, {
-                    headers: { "Authorization": `Bearer ${token}` }
-                });
-                let data = await res.json();
-                if (res.ok) {
-                    let rows = "";
-                    data.deposits.forEach(dep => {
-                        let actionHTML = (dep.status === 'pending') ? `
-                            <div class="btn-action-group">
-                                <button class="btn-action btn-approve" onclick="processDeposit(${dep.id}, 'approve')"><i class="fa-solid fa-check"></i> Clear</button>
-                                <button class="btn-action btn-reject" onclick="processDeposit(${dep.id}, 'reject')"><i class="fa-solid fa-xmark"></i> Drop</button>
-                            </div>
-                        ` : `<span style="font-size:12px; opacity:0.4;">Locked</span>`;
-
-                        rows += `
-                            <tr>
-                                <td>#${dep.id}</td>
-                                <td><strong>${dep.name || 'User'}</strong><br><small style="opacity:0.5;">${dep.phone || ''}</small></td>
-                                <td style="color:#2ecc71; font-weight:700;">₹${parseFloat(dep.amount).toFixed(2)}</td>
-                                <td style="font-family:monospace; letter-spacing:0.5px;">${dep.utr_number}</td>
-                                <td><span class="badge ${dep.status}">${dep.status}</span></td>
-                                <td>${actionHTML}</td>
-                            </tr>
-                        `;
-                    });
-                    document.getElementById("depositsTableBody").innerHTML = rows || "<tr><td colspan='6' style='text-align:center;'>Zero active deposit queries.</td></tr>";
-                }
-            } catch (err) {
-                document.getElementById("depositsTableBody").innerHTML = "<tr><td colspan='6' style='color:#e74c3c;'>Stream loading terminated.</td></tr>";
-            }
-        }
-
-        // Control Matrix Trigger: Deposit Processing Execution
-        async function processDeposit(id, strategy) {
-            const token = getAdminToken();
-            if (!confirm(`Are you sure you want to ${strategy} deposit order #${id}?`)) return;
-
-            try {
-                let endpoint = strategy === 'approve' ? 'approve_deposit' : 'reject_deposit';
-                let res = await fetch(`${API_BASE}/admin/${endpoint}`, {
-                    method: 'POST',
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ id: id })
-                });
-                let data = await res.json();
-                alert(data.message || data.error);
-                loadDepositsStream();
-            } catch (err) {
-                alert("Execution error occurred.");
-            }
-        }
-
-        // REST Core: Load Financial Outflows (Withdrawals Vault)
-        async function loadWithdrawalsVault() {
-            const token = getAdminToken();
-            if (!token) return;
-
-            try {
-                let res = await fetch(`${API_BASE}/admin/withdraws`, {
-                    headers: { "Authorization": `Bearer ${token}` }
-                });
-                let data = await res.json();
-                if (res.ok) {
-                    let rows = "";
-                    data.withdraws.forEach(wth => {
-                        let actionHTML = (wth.status === 'pending') ? `
-                            <div class="btn-action-group">
-                                <button class="btn-action btn-approve" onclick="processWithdrawal(${wth.id}, 'approve')"><i class="fa-solid fa-signature"></i> Approve</button>
-                                <button class="btn-action btn-reject" onclick="processWithdrawal(${wth.id}, 'reject')"><i class="fa-solid fa-ban"></i> Void</button>
-                            </div>
-                        ` : `<span style="font-size:12px; opacity:0.4;">Finalized</span>`;
-
-                        rows += `
-                            <tr>
-                                <td>#${wth.id}</td>
-                                <td><strong>${wth.name || 'User'}</strong><br><small style="opacity:0.5;">${wth.phone || ''}</small></td>
-                                <td style="color:#e74c3c; font-weight:700;">₹${parseFloat(wth.amount).toFixed(2)}</td>
-                                <td><span class="badge ${wth.status}">${wth.status}</span></td>
-                                <td>${actionHTML}</td>
-                            </tr>
-                        `;
-                    });
-                    document.getElementById("withdrawsTableBody").innerHTML = rows || "<tr><td colspan='5' style='text-align:center;'>No withdrawal settlements pending.</td></tr>";
-                }
-            } catch (err) {
-                document.getElementById("withdrawsTableBody").innerHTML = "<tr><td colspan='5' style='color:#e74c3c;'>Vault communication error.</td></tr>";
-            }
-        }
-
-        // Control Matrix Trigger: Withdrawal Processing Execution
-        async function processWithdrawal(id, strategy) {
-            const token = getAdminToken();
-            if (!confirm(`Authorize ${strategy} sequence for allocation order #${id}?`)) return;
-
-            try {
-                let endpoint = strategy === 'approve' ? 'approve_withdraw' : 'reject_withdraw';
-                let res = await fetch(`${API_BASE}/admin/${endpoint}`, {
-                    method: 'POST',
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ id: id })
-                });
-                let data = await res.json();
-                alert(data.message || data.error);
-                loadWithdrawalsVault();
-            } catch (err) {
-                alert("Execution error occurred.");
-            }
-        }
-
-        // Session Termination Management
-        function handleAdminLogout() {
-            if (confirm("Terminate secure admin operations control loop?")) {
-                localStorage.removeItem("token");
-                window.location.href = "login.html";
-            }
-        }
-
-        // Runtime Boot Loop Lifecycle Initializer
-        window.onload = function() {
-            loadDashboardStats();
+        let localBetState = {
+            "1": { status: "idle" }, // idle, booked, active, cashed
+            "2": { status: "idle" }
         };
+
+        socket.on('balance_update', (data) => {
+            document.getElementById('wallet-balance').innerText = `₹${parseFloat(data.balance).toFixed(2)}`;
+        });
+
+        socket.on('game_tick', (data) => {
+            if (data.status === 'waiting') {
+                counterView.style.color = '#ffffff';
+                counterView.innerText = `Starts in ${data.countdown}s`;
+                jetCarrier.style.display = 'none';
+                resetTrajectory();
+            } 
+            else if (data.status === 'flying') {
+                jetCarrier.style.display = 'block';
+                counterView.style.color = '#ffffff';
+                counterView.innerText = data.multiplier.toFixed(2) + 'x';
+                updateAnimation(data.multiplier);
+
+                // Update text targets if active bet is running
+                ["1", "2"].forEach(box => {
+                    if (localBetState[box].status === "active") {
+                        let amt = parseFloat(document.getElementById(`bet-val-${box}`).value);
+                        document.getElementById(`lbl-main-${box}`).innerText = "CASH OUT";
+                        document.getElementById(`btn-lbl-${box}`).innerText = `₹ ${(amt * data.multiplier).toFixed(2)}`;
+                    }
+                });
+            } 
+            else if (data.status === 'crashed') {
+                counterView.innerText = "Flew Away!";
+                counterView.style.color = '#cb0629';
+                resetButtonsUI();
+            }
+        });
+
+        socket.on('bet_status', (data) => {
+            let box = data.box;
+            let status = data.status;
+            localBetState[box].status = status;
+
+            let btn = document.getElementById(`btn-trigger-${box}`);
+            let lbl = document.getElementById(`lbl-main-${box}`);
+
+            if (status === 'booked' || status === 'booked_next') {
+                btn.classList.add('booked');
+                lbl.innerText = "CANCEL";
+            }
+        });
+
+        socket.on('cash_out_success', (data) => {
+            let box = data.box;
+            localBetState[box].status = "idle";
+            let btn = document.getElementById(`btn-trigger-${box}`);
+            btn.classList.remove('active-bet', 'booked');
+            document.getElementById(`lbl-main-${box}`).innerText = "BET";
+            refreshButtonSubLabel(box);
+        });
+
+        socket.on('error', (data) => {
+            alert(data.message);
+            resetButtonsUI();
+        });
+
+        function handleBetClick(boxId) {
+            let state = localBetState[boxId].status;
+            let amt = parseFloat(document.getElementById(`bet-val-${boxId}`).value);
+
+            if (state === "idle") {
+                socket.emit('place_bet', { token: token, box: boxId, amount: amt });
+            } 
+            else if (state === "active") {
+                socket.emit('cash_out', { token: token, box: boxId });
+            }
+        }
+
+        function updateAnimation(mult) {
+            let normState = (mult - 1) / 10; 
+            if (normState > 1) normState = 1;
+
+            let xCoordinates = 20 + (normState * 295);
+            let yCoordinates = 180 - (normState * 115);
+
+            jetCarrier.style.left = `${xCoordinates}px`;
+            jetCarrier.style.bottom = `${200 - yCoordinates}px`;
+
+            let pathD = `M 20 180 Q ${xCoordinates * 0.5} 180, ${xCoordinates} ${yCoordinates}`;
+            splinePath.setAttribute('d', pathD);
+            let fillD = `${pathD} L ${xCoordinates} 180 L 20 180 Z`;
+            splineFill.setAttribute('d', fillD);
+        }
+
+        function resetTrajectory() {
+            splinePath.setAttribute('d', 'M 20 180 L 20 180');
+            splineFill.setAttribute('d', 'M 20 180 L 20 180');
+        }
+
+        function resetButtonsUI() {
+            ["1", "2"].forEach(box => {
+                localBetState[box].status = "idle";
+                let btn = document.getElementById(`btn-trigger-${box}`);
+                btn.className = "giant-bet-trigger";
+                document.getElementById(`lbl-main-${box}`).innerText = "BET";
+                refreshButtonSubLabel(box);
+            });
+        }
+
+        function modifyInput(nodeId, offset) {
+            const field = document.getElementById(nodeId);
+            let output = (parseFloat(field.value) || 10) + offset;
+            if (output < 10) output = 10;
+            field.value = output.toFixed(2);
+            refreshButtonSubLabel(nodeId === 'bet-val-1' ? '1' : '2');
+        }
+
+        function directSet(nodeId, exactVal) {
+            document.getElementById(nodeId).value = exactVal.toFixed(2);
+            refreshButtonSubLabel(nodeId === 'bet-val-1' ? '1' : '2');
+        }
+
+        function refreshButtonSubLabel(box) {
+            let val = parseFloat(document.getElementById(`bet-val-${box}`).value) || 10;
+            document.getElementById(`btn-lbl-${box}`).innerText = val.toFixed(2) + " INR";
+        }
     </script>
 </body>
 </html>
