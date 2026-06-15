@@ -125,66 +125,7 @@
             justify-content: center;
         }
 
-        .live-currency-lbl {
-            font-size: 12px;
-            color: #5bb326;
-            font-weight: bold;
-        }
-
-        .hamburger-menu {
-            display: flex;
-            flex-direction: column;
-            gap: 3.5px;
-            cursor: pointer;
-            background: #2c2d34;
-            padding: 6px;
-            border-radius: 4px;
-        }
-
-        .hamburger-menu span {
-            width: 14px;
-            height: 2px;
-            background-color: #9299a6;
-        }
-
-        /* Top Bar History Badges */
-        .history-strip {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 12px;
-            background-color: #141518;
-            overflow-x: hidden;
-            border-bottom: 1px solid #1c1d22;
-        }
-
-        .m-badge {
-            font-size: 10.5px;
-            font-weight: 700;
-            padding: 2px 8px;
-            border-radius: 12px;
-            color: #fff;
-            background: #1c1d22;
-        }
-        .m-badge.low { background-color: #1d2b47; color: #4387f5; }
-        .m-badge.mid { background-color: #2e1c4d; color: #9843f5; }
-        .m-badge.high { background-color: #4c1130; color: #f5439b; }
-
-        .history-dropdown-btn {
-            background: #1c1d22;
-            color: #9299a6;
-            border-radius: 50%;
-            width: 18px;
-            height: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 10px;
-            margin-left: auto;
-            cursor: pointer;
-        }
-
-        /* --- THEATER SCREEN BOX CLONE --- */
+        /* --- THEATER SCREEN BOX --- */
         .theater-screen {
             background-color: #141518;
             padding: 6px 8px;
@@ -212,15 +153,6 @@
             color: #5d6370;
             z-index: 15;
             font-weight: bold;
-        }
-        .meta-row .round-box {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .meta-row .arrow-down-icon {
-            font-size: 8px;
-            color: #5d6370;
         }
 
         .live-multiplier-big {
@@ -284,24 +216,6 @@
             opacity: 0.8;
         }
 
-        /* Bottom Grid Dots */
-        .bottom-grid-dots {
-            position: absolute;
-            bottom: 6px;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            padding: 0 14px;
-            z-index: 1;
-        }
-        .grid-dot {
-            width: 4px;
-            height: 4px;
-            background-color: #ffffff;
-            border-radius: 50%;
-            opacity: 0.7;
-        }
-
         /* --- BETTING CARDS --- */
         .betting-panel {
             padding: 8px;
@@ -317,33 +231,6 @@
             border: 1px solid #232429;
             display: flex;
             flex-direction: column;
-        }
-
-        .card-header-tabs {
-            display: flex;
-            background-color: #101114;
-            border-radius: 24px;
-            padding: 2.5px;
-            width: 170px;
-            margin: 0 auto 12px auto;
-        }
-
-        .tab-item {
-            flex: 1;
-            background: transparent;
-            border: none;
-            color: #757c8a;
-            font-size: 12px;
-            padding: 5px 0;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: 700;
-            text-align: center;
-        }
-
-        .tab-item.active {
-            background-color: #2c2d34;
-            color: #ffffff;
         }
 
         .action-row {
@@ -450,44 +337,6 @@
             cursor: pointer;
             text-align: center;
         }
-
-        .bottom-data-ledger {
-            margin-top: auto;
-            background-color: #141518;
-            padding: 8px;
-        }
-
-        .ledger-tabs-header {
-            display: flex;
-            background-color: #0e0f12;
-            padding: 3px;
-            border-radius: 20px;
-        }
-
-        .ledger-tab {
-            flex: 1;
-            background: transparent;
-            border: none;
-            color: #707785;
-            padding: 8px 0;
-            font-size: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            text-align: center;
-        }
-
-        .ledger-tab.active {
-            background-color: #2c2d34;
-            color: #ffffff;
-            border-radius: 16px;
-        }
-
-        .meta-all-bets-title {
-            font-size: 11px;
-            color: #9299a6;
-            font-weight: bold;
-            padding: 6px 4px 0 4px;
-        }
     </style>
 </head>
 <body>
@@ -507,12 +356,6 @@
                 </div>
             </div>
         </header>
-
-        <div class="history-strip" id="history-container">
-            <span class="m-badge low">1.50x</span>
-            <span class="m-badge mid">2.40x</span>
-            <span class="m-badge high">12.20x</span>
-        </div>
 
         <div class="theater-screen">
             <div class="screen-canvas">
@@ -594,7 +437,7 @@
             window.location.href = "login.html";
         }
 
-        // Connect securely to your render server
+        // Backend Server Connection Map Structure
         const socket = io("https://super-win.onrender.com", {
             auth: { token: token }
         });
@@ -605,7 +448,7 @@
         const splineFill = document.getElementById('trajectory-fill');
 
         let localBetState = {
-            "1": { status: "idle" }, // idle, booked, active, cashed
+            "1": { status: "idle" }, 
             "2": { status: "idle" }
         };
 
@@ -624,13 +467,20 @@
                 jetCarrier.style.display = 'block';
                 counterView.style.color = '#ffffff';
                 counterView.innerText = data.multiplier.toFixed(2) + 'x';
+                
+                // Active Math Matrix Path
                 updateAnimation(data.multiplier);
 
-                // Update text targets if active bet is running
+                // Auto Sync Real-time Engine
                 ["1", "2"].forEach(box => {
-                    if (localBetState[box].status === "active") {
-                        let amt = parseFloat(document.getElementById(`bet-val-${box}`).value);
-                        document.getElementById(`lbl-main-${box}`).innerText = "CASH OUT";
+                    let btn = document.getElementById(`btn-trigger-${box}`);
+                    let lbl = document.getElementById(`lbl-main-${box}`);
+                    let amt = parseFloat(document.getElementById(`bet-val-${box}`).value);
+                    
+                    if (localBetState[box].status === "booked" || localBetState[box].status === "active") {
+                        localBetState[box].status = "active";
+                        btn.className = "giant-bet-trigger active-bet";
+                        lbl.innerText = "CASH OUT";
                         document.getElementById(`btn-lbl-${box}`).innerText = `₹ ${(amt * data.multiplier).toFixed(2)}`;
                     }
                 });
@@ -651,7 +501,7 @@
             let lbl = document.getElementById(`lbl-main-${box}`);
 
             if (status === 'booked' || status === 'booked_next') {
-                btn.classList.add('booked');
+                btn.className = "giant-bet-trigger booked";
                 lbl.innerText = "CANCEL";
             }
         });
@@ -660,7 +510,7 @@
             let box = data.box;
             localBetState[box].status = "idle";
             let btn = document.getElementById(`btn-trigger-${box}`);
-            btn.classList.remove('active-bet', 'booked');
+            btn.className = "giant-bet-trigger";
             document.getElementById(`lbl-main-${box}`).innerText = "BET";
             refreshButtonSubLabel(box);
         });
@@ -680,19 +530,23 @@
             else if (state === "active") {
                 socket.emit('cash_out', { token: token, box: boxId });
             }
+            else if (state === "booked" || state === "booked_next") {
+                resetButtonsUI();
+            }
         }
 
         function updateAnimation(mult) {
-            let normState = (mult - 1) / 10; 
+            let normState = (mult - 1) / 5; 
             if (normState > 1) normState = 1;
+            if (normState < 0) normState = 0;
 
-            let xCoordinates = 20 + (normState * 295);
-            let yCoordinates = 180 - (normState * 115);
+            let xCoordinates = 20 + (normState * 310);
+            let yCoordinates = 175 - (normState * 125);
 
             jetCarrier.style.left = `${xCoordinates}px`;
-            jetCarrier.style.bottom = `${200 - yCoordinates}px`;
+            jetCarrier.style.top = `${yCoordinates}px`; 
 
-            let pathD = `M 20 180 Q ${xCoordinates * 0.5} 180, ${xCoordinates} ${yCoordinates}`;
+            let pathD = `M 20 180 Q ${xCoordinates * 0.45} 180, ${xCoordinates} ${yCoordinates}`;
             splinePath.setAttribute('d', pathD);
             let fillD = `${pathD} L ${xCoordinates} 180 L 20 180 Z`;
             splineFill.setAttribute('d', fillD);
@@ -721,6 +575,7 @@
             refreshButtonSubLabel(nodeId === 'bet-val-1' ? '1' : '2');
         }
 
+        // Strict String Alignment Function
         function directSet(nodeId, exactVal) {
             document.getElementById(nodeId).value = exactVal.toFixed(2);
             refreshButtonSubLabel(nodeId === 'bet-val-1' ? '1' : '2');
