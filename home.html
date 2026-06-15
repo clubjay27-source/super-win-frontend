@@ -1536,28 +1536,33 @@
                             <th>Agent Tier</th>
                             <th>Team Wager (₹)</th>
                             <th>Rebate %</th>
+                            <th>Deposit</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td style="font-weight: bold; color: #ffcc00;">Lv 1 (Bronze)</td>
-                            <td>0 - 50,000</td>
-                            <td style="color:#38ef7d; font-weight:bold;">0.60%</td>
+                            <td>500</td>
+                            <td style="color:#38ef7d; font-weight:bold;">6.0%</td>
+                            <td><i class="fa-solid fa-circle-plus" style="color: #ffd700; cursor: pointer; font-size: 16px;" onclick="openDeposit()"></i></td>
                         </tr>
                         <tr>
                             <td style="font-weight: bold; color: #e5e5e5;">Lv 2 (Silver)</td>
-                            <td>50,001 - 2 Lakh</td>
-                            <td style="color:#38ef7d; font-weight:bold;">0.80%</td>
+                            <td>1100</td>
+                            <td style="color:#38ef7d; font-weight:bold;">6.0%</td>
+                            <td><i class="fa-solid fa-circle-plus" style="color: #ffd700; cursor: pointer; font-size: 16px;" onclick="openDeposit()"></i></td>
                         </tr>
                         <tr>
                             <td style="font-weight: bold; color: #ffd700;">Lv 3 (Gold)</td>
-                            <td>2 Lakh - 10 Lakh</td>
-                            <td style="color:#38ef7d; font-weight:bold;">1.20%</td>
+                            <td>3000</td>
+                            <td style="color:#38ef7d; font-weight:bold;">8.0%</td>
+                            <td><i class="fa-solid fa-circle-plus" style="color: #ffd700; cursor: pointer; font-size: 16px;" onclick="openDeposit()"></i></td>
                         </tr>
                         <tr>
                             <td style="font-weight: bold; color: #00e5ff;">Lv 4 (Diamond)</td>
-                            <td>10 Lakh+</td>
-                            <td style="color:#38ef7d; font-weight:bold;">2.00%</td>
+                            <td>5k</td>
+                            <td style="color:#38ef7d; font-weight:bold;">10.0%</td>
+                            <td><i class="fa-solid fa-circle-plus" style="color: #ffd700; cursor: pointer; font-size: 16px;" onclick="openDeposit()"></i></td>
                         </tr>
                     </tbody>
                 </table>
@@ -1592,6 +1597,11 @@ async function openDeposit(){
         document.getElementById("liveUpiId").innerText = "Error loading UPI";
     }
 }
+
+function closeDeposit() {
+    document.getElementById("depositPopup").style.display = "none";
+}
+      
 function copyUpiId() {
     let upiText = document.getElementById("liveUpiId").innerText;
     if(upiText === "loading..." || upiText === "Error loading UPI") return;
