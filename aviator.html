@@ -439,8 +439,9 @@
 
         // Backend Server Connection Map Structure
         const socket = io("https://super-win.onrender.com", {
-            auth: { token: token }
-        });
+    auth: { token: token },
+    transports: ['websocket', 'polling'] // Render bypass ke liye zaroori hai
+});
 
         const counterView = document.getElementById('live-counter');
         const jetCarrier = document.getElementById('jet-carrier');
