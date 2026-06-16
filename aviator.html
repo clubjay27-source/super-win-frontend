@@ -298,7 +298,6 @@
             transition: transform 0.08s ease, background-color 0.2s ease, filter 0.1s ease;
         }
 
-        /* Responsive Click/Press effect */
         .giant-bet-trigger:active {
             transform: scale(0.95);
             filter: brightness(0.9);
@@ -345,138 +344,157 @@
             text-align: center;
         }
 
-        /* --- INTEGRATED HISTORY PANEL SYSTEM --- */
+        /* --- AUTHENTIC AVIATOR HISTORY SYSTEM --- */
         .history-section {
-            margin-top: 4px;
+            margin-top: 6px;
             padding: 0 8px 16px 8px;
             flex: 1;
             display: flex;
             flex-direction: column;
+            background-color: #101114;
         }
 
-        /* Tabs Swapper Layout */
+        /* Nav Tab Header Container */
         .tabs-header {
             display: flex;
             background-color: #141518;
-            border-radius: 10px;
-            padding: 3px;
+            border-radius: 20px;
+            padding: 2px;
             border: 1px solid #1c1d22;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         .tab-btn {
             flex: 1;
             background: transparent;
             border: none;
-            color: #707785;
-            padding: 8px 0;
-            font-size: 13px;
+            color: #787d85;
+            padding: 6px 0;
+            font-size: 12px;
             font-weight: bold;
             cursor: pointer;
-            border-radius: 8px;
+            border-radius: 18px;
             text-align: center;
-            transition: all 0.2s ease;
+            transition: all 0.15s ease;
         }
 
         .tab-btn.active {
-            background-color: #1b1c21;
+            background-color: #2c2d34;
             color: #ffffff;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.4);
         }
 
-        /* Lists Wrapper Panels */
-        .tabs-content-container {
+        /* Section Head Title Status */
+        .panel-meta-title {
+            font-size: 11px;
+            font-weight: 900;
+            color: #9299a6;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            padding-left: 4px;
+            letter-spacing: 0.3px;
+        }
+        
+        .panel-meta-title span {
+            display: block;
+            font-size: 14px;
+            color: #ffffff;
+            margin-top: 2px;
+        }
+
+        /* Realtime Table Element Layout */
+        .aviator-table-wrapper {
             flex: 1;
-            min-height: 200px;
+            max-height: 260px;
+            overflow-y: auto;
         }
 
+        .aviator-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .aviator-table th {
+            font-size: 10px;
+            color: #5d6370;
+            font-weight: 700;
+            padding: 6px 4px;
+            border-bottom: 1px solid #1c1d22;
+        }
+
+        .aviator-table td {
+            font-size: 12px;
+            padding: 8px 4px;
+            vertical-align: middle;
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        .aviator-table tr {
+            border-bottom: 1px solid rgba(28, 29, 34, 0.5);
+        }
+
+        /* User Profile Alignment */
+        .user-col-profile {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #9299a6;
+        }
+
+        .avatar-circle {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #2b2c33;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+        }
+
+        /* Column Specific Text Modifications */
+        .text-right {
+            text-align: right;
+        }
+        .text-center {
+            text-align: center;
+        }
+
+        .mult-badge-pill {
+            font-size: 10px;
+            font-weight: 900;
+            padding: 2px 6px;
+            border-radius: 10px;
+            background: #1c1d22;
+            color: #9299a6;
+            display: inline-block;
+        }
+
+        .row-win .mult-badge-pill {
+            background: rgba(40, 199, 17, 0.12);
+            color: #28c711;
+            border: 1px solid rgba(40, 199, 17, 0.2);
+        }
+
+        .row-win .cashout-amt {
+            color: #28c711;
+            font-weight: 700;
+        }
+
+        /* Display Panel Switches */
         .tab-panel {
             display: none;
-            max-height: 280px;
-            overflow-y: auto;
-            padding-right: 2px;
         }
 
         .tab-panel.active {
             display: block;
-        }
-
-        /* Scrollbar customization */
-        .tab-panel::-webkit-scrollbar {
-            width: 4px;
-        }
-        .tab-panel::-webkit-scrollbar-thumb {
-            background: #232429;
-            border-radius: 10px;
-        }
-
-        /* Row Layout For Data Logs */
-        .history-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 12px;
-            background-color: #1b1c21;
-            border-radius: 10px;
-            margin-bottom: 6px;
-            border-left: 4px solid #5d6370;
-            border: 1px solid #1f2026;
-        }
-
-        .history-row.win {
-            border-left: 4px solid #28c711;
-        }
-
-        .history-row.crash {
-            border-left: 4px solid #cb0629;
-        }
-
-        .log-left div {
-            font-size: 12px;
-            font-weight: bold;
-            color: #ffffff;
-        }
-
-        .log-left span {
-            font-size: 10px;
-            color: #5d6370;
-        }
-
-        .log-right {
-            text-align: right;
-        }
-
-        .mult-pill {
-            font-size: 11px;
-            font-weight: 900;
-            padding: 2px 7px;
-            border-radius: 20px;
-            background: #101114;
-            color: #ffffff;
-            display: inline-block;
-        }
-
-        .history-row.win .mult-pill {
-            background-color: rgba(40, 199, 17, 0.12);
-            color: #28c711;
-        }
-
-        .history-row.crash .mult-pill {
-            background-color: rgba(203, 6, 41, 0.12);
-            color: #cb0629;
-        }
-
-        .log-status-text {
-            font-size: 11px;
-            margin-top: 2px;
-            font-weight: bold;
         }
     </style>
 </head>
 <body>
 
     <div class="aviator-app">
-        <!-- HEADER MAP -->
         <header class="top-navbar">
             <div class="nav-left-group">
                 <span class="back-icon" onclick="window.location.href='home.html'">&#10094;</span>
@@ -492,7 +510,6 @@
             </div>
         </header>
 
-        <!-- THEATER GRAPH SCREEN -->
         <div class="theater-screen">
             <div class="screen-canvas">
                 <div class="meta-row">
@@ -524,7 +541,6 @@
             </div>
         </div>
 
-        <!-- BETTING CARDS CONTROL PANEL -->
         <div class="betting-panel">
             <div class="bet-card">
                 <div class="action-row">
@@ -567,40 +583,100 @@
             </div>
         </div>
 
-        <!-- INTEGRATED REAL-TIME HISTORY TABS PANEL -->
         <div class="history-section">
             <div class="tabs-header">
-                <button class="tab-btn active" onclick="switchTab('game-history')">History (Global)</button>
-                <button class="tab-btn" onclick="switchTab('my-history')">Bet History (You)</button>
+                <button class="tab-btn active" id="tab-all-bets" onclick="switchTab('all-bets')">All Bets</button>
+                <button class="tab-btn" id="tab-my-bets" onclick="switchTab('my-bets')">My Bets</button>
+                <button class="tab-btn" id="tab-top-bets" onclick="switchTab('top-bets')">Top</button>
             </div>
 
-            <div class="tabs-content-container">
-                <!-- Tab 1: Game History Panel -->
-                <div class="tab-panel active" id="panel-game-history">
-                    <div class="history-row crash">
-                        <div class="log-left"><div>Round #73912</div><span>Just Now</span></div>
-                        <div class="log-right"><span class="mult-pill">1.32x</span><div class="log-status-text" style="color:#cb0629;">Crashed</div></div>
-                    </div>
-                    <div class="history-row win">
-                        <div class="log-left"><div>Round #73911</div><span>1 min ago</span></div>
-                        <div class="log-right"><span class="mult-pill">4.15x</span><div class="log-status-text" style="color:#28c711;">Fly Away</div></div>
-                    </div>
-                    <div class="history-row win">
-                        <div class="log-left"><div>Round #73910</div><span>3 mins ago</span></div>
-                        <div class="log-right"><span class="mult-pill">2.80x</span><div class="log-status-text" style="color:#28c711;">Fly Away</div></div>
-                    </div>
+            <div class="tab-panel active" id="panel-all-bets">
+                <div class="panel-meta-title">All Bets <span id="live-bet-count">96</span></div>
+                <div class="aviator-table-wrapper">
+                    <table class="aviator-table">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th class="text-right">Bet INR</th>
+                                <th class="text-center">X</th>
+                                <th class="text-right">Cash out INR</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-all-bets-body">
+                            <tr class="row-win">
+                                <td><div class="user-col-profile"><span class="avatar-circle">👤</span><span>d***8</span></div></td>
+                                <td class="text-right">8,000.00</td>
+                                <td class="text-center"><span class="mult-badge-pill">1.50x</span></td>
+                                <td class="text-right cashout-amt">12,000.00</td>
+                            </tr>
+                            <tr>
+                                <td><div class="user-col-profile"><span class="avatar-circle">👤</span><span>q***7</span></div></td>
+                                <td class="text-right">8,000.00</td>
+                                <td class="text-center"><span class="mult-badge-pill">-</span></td>
+                                <td class="text-right cashout-amt">-</td>
+                            </tr>
+                            <tr class="row-win">
+                                <td><div class="user-col-profile"><span class="avatar-circle">👤</span><span>y***2</span></div></td>
+                                <td class="text-right">8,000.00</td>
+                                <td class="text-center"><span class="mult-badge-pill">2.10x</span></td>
+                                <td class="text-right cashout-amt">16,800.00</td>
+                            </tr>
+                            <tr>
+                                <td><div class="user-col-profile"><span class="avatar-circle">👤</span><span>w***0</span></div></td>
+                                <td class="text-right">7,904.00</td>
+                                <td class="text-center"><span class="mult-badge-pill">-</span></td>
+                                <td class="text-right cashout-amt">-</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
+            </div>
 
-                <!-- Tab 2: Personal User Bets History Panel -->
-                <div class="tab-panel" id="panel-my-history">
-                    <div class="history-row win">
-                        <div class="log-left"><div>Bet Amount: ₹100.00</div><span>Success Cashout</span></div>
-                        <div class="log-right"><span class="mult-pill">2.10x</span><div class="log-status-text" style="color:#28c711;">+₹210.00</div></div>
-                    </div>
-                    <div class="history-row crash">
-                        <div class="log-left"><div>Bet Amount: ₹50.00</div><span>Missed</span></div>
-                        <div class="log-right"><span class="mult-pill">1.00x</span><div class="log-status-text" style="color:#cb0629;">-₹50.00</div></div>
-                    </div>
+            <div class="tab-panel" id="panel-my-bets">
+                <div class="panel-meta-title">Your History Summary</div>
+                <div class="aviator-table-wrapper">
+                    <table class="aviator-table">
+                        <thead>
+                            <tr>
+                                <th>Item ID</th>
+                                <th class="text-right">Bet INR</th>
+                                <th class="text-center">X</th>
+                                <th class="text-right">Cash out INR</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-my-bets-body">
+                            <tr class="row-win">
+                                <td><div class="user-col-profile"><span class="avatar-circle">⭐</span><span>You</span></div></td>
+                                <td class="text-right">100.00</td>
+                                <td class="text-center"><span class="mult-badge-pill">2.50x</span></td>
+                                <td class="text-right cashout-amt">250.00</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="tab-panel" id="panel-top-bets">
+                <div class="panel-meta-title">Highest Record Wins</div>
+                <div class="aviator-table-wrapper">
+                    <table class="aviator-table">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th class="text-right">Bet INR</th>
+                                <th class="text-center">X</th>
+                                <th class="text-right">Cash out INR</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="row-win">
+                                <td><div class="user-col-profile"><span class="avatar-circle">🏆</span><span>m***2</span></div></td>
+                                <td class="text-right">500.00</td>
+                                <td class="text-center"><span class="mult-badge-pill">85.40x</span></td>
+                                <td class="text-right cashout-amt">42,700.00</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -612,7 +688,6 @@
             window.location.href = "login.html";
         }
 
-        // Backend Server Connection Map Structure
         const socket = io("https://super-win.onrender.com", {
             auth: { token: token },
             transports: ['websocket', 'polling']
@@ -663,8 +738,8 @@
                 counterView.innerText = "Flew Away!";
                 counterView.style.color = '#cb0629';
                 
-                // Realtime global game crash history push
-                pushGlobalGameHistory(data.multiplier);
+                // Live updates game grid row 
+                addGlobalTableLog("Guest_" + Math.floor(Math.random()*90), 100, data.multiplier);
                 resetButtonsUI();
             }
         });
@@ -691,8 +766,7 @@
             document.getElementById(`lbl-main-${box}`).innerText = "BET";
             refreshButtonSubLabel(box);
 
-            // Realtime personal user bet history push
-            pushPersonalBetHistory(data.amount, data.multiplier, data.winAmount);
+            addPersonalTableLog(data.amount, data.multiplier, data.winAmount);
         });
 
         socket.on('error', (data) => {
@@ -765,45 +839,50 @@
             document.getElementById(`btn-lbl-${box}`).innerText = val.toFixed(2) + " INR";
         }
 
-        /* --- TABS SYSTEM LOGIC --- */
-        function switchTab(tabName) {
-            // Remove active classes
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
+        /* --- AUTHENTIC TABS MATRIX CONTROLLER --- */
+        function switchTab(targetId) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
 
-            // Set current target active
-            if (tabName === 'game-history') {
-                document.getElementById('panel-game-history').classList.add('active');
-                event.currentTarget.classList.add('active');
+            if (targetId === 'all-bets') {
+                document.getElementById('panel-all-bets').classList.add('active');
+                document.getElementById('tab-all-bets').classList.add('active');
+            } else if (targetId === 'my-bets') {
+                document.getElementById('panel-my-bets').classList.add('active');
+                document.getElementById('tab-my-bets').classList.add('active');
             } else {
-                document.getElementById('panel-my-history').classList.add('active');
-                event.currentTarget.classList.add('active');
+                document.getElementById('panel-top-bets').classList.add('active');
+                document.getElementById('tab-top-bets').classList.add('active');
             }
         }
 
-        /* --- DATA APPEND INSERTERS FOR SOCKET --- */
-        function pushGlobalGameHistory(mult) {
-            const container = document.getElementById('panel-game-history');
-            const statusColor = mult >= 2.0 ? '#28c711' : '#cb0629';
-            const statusText = mult >= 2.0 ? 'Fly Away' : 'Crashed';
-            const typeClass = mult >= 2.0 ? 'win' : 'crash';
-            
+        /* --- TABLE LIVE PUSH METHODS --- */
+        function addGlobalTableLog(username, betAmt, mult) {
+            const tbody = document.getElementById('table-all-bets-body');
+            const isWin = mult > 1.10; 
+            const formattedX = isWin ? `${mult.toFixed(2)}x` : '-';
+            const formattedCash = isWin ? (betAmt * mult).toFixed(2) : '-';
+
             const html = `
-                <div class="history-row ${typeClass}">
-                    <div class="log-left"><div>Round #${Math.floor(Math.random() * 90000) + 10000}</div><span>Just Now</span></div>
-                    <div class="log-right"><span class="mult-pill">${mult.toFixed(2)}x</span><div class="log-status-text" style="color:${statusColor};">${statusText}</div></div>
-                </div>`;
-            container.insertAdjacentHTML('afterbegin', html);
+                <tr class="${isWin ? 'row-win' : ''}">
+                    <td><div class="user-col-profile"><span class="avatar-circle">👤</span><span>${username}</span></div></td>
+                    <td class="text-right">${betAmt.toFixed(2)}</td>
+                    <td class="text-center"><span class="mult-badge-pill">${formattedX}</span></td>
+                    <td class="text-right cashout-amt">${formattedCash}</td>
+                </tr>`;
+            tbody.insertAdjacentHTML('afterbegin', html);
         }
 
-        function pushPersonalBetHistory(amount, mult, winAmt) {
-            const container = document.getElementById('panel-my-history');
+        function addPersonalTableLog(betAmt, mult, cashOut) {
+            const tbody = document.getElementById('table-my-bets-body');
             const html = `
-                <div class="history-row win">
-                    <div class="log-left"><div>Bet Amount: ₹${amount.toFixed(2)}</div><span>Success Cashout</span></div>
-                    <div class="log-right"><span class="mult-pill">${mult.toFixed(2)}x</span><div class="log-status-text" style="color:#28c711;">+₹${winAmt.toFixed(2)}</div></div>
-                </div>`;
-            container.insertAdjacentHTML('afterbegin', html);
+                <tr class="row-win">
+                    <td><div class="user-col-profile"><span class="avatar-circle">⭐</span><span>You</span></div></td>
+                    <td class="text-right">${betAmt.toFixed(2)}</td>
+                    <td class="text-center"><span class="mult-badge-pill">${mult.toFixed(2)}x</span></td>
+                    <td class="text-right cashout-amt">${cashOut.toFixed(2)}</td>
+                </tr>`;
+            tbody.insertAdjacentHTML('afterbegin', html);
         }
     </script>
 </body>
