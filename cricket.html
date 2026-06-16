@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cricket Game Exact Clone</title>
+    <style>
+        /* --- GLOBAL CSS RESET & SYSTEM TEXT --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #0b0c0e;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* App Layout Container */
+        .cricket-app-frame {
+            width: 100%;
+            max-width: 395px; /* Exact mobile aspect-ratio bounding box */
+            background-color: #101114;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            border: 1px solid #1c1d22;
+            position: relative;
+        }
+
+        /* Top Header Area Navigation */
+        .header-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+            background-color: #1b1c21;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .arrow-back {
+            font-size: 18px;
+            color: #ffffff;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .brand-title {
+            color: #ffffff;
+            font-weight: 900;
+            text-transform: uppercase;
+            font-size: 21px;
+            font-family: 'Arial Black', Impact, sans-serif;
+            letter-spacing: 0.2px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .currency-info {
+            font-size: 13px;
+            color: #61b827;
+            font-weight: bold;
+        }
+        .currency-info span {
+            color: #8e95a3;
+            font-size: 11px;
+        }
+
+        .wallet-container {
+            background: linear-gradient(180deg, #16243f 0%, #0c1527 100%);
+            border: 1px solid #1f3b6b;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            padding: 3px 4px 3px 8px;
+            gap: 8px;
+        }
+
+        .coin-icon {
+            width: 16px;
+            height: 16px;
+            background: radial-gradient(circle, #ffe600 0%, #dca600 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 4px rgba(255,230,0,0.6);
+        }
+
+        .wallet-amount {
+            color: #ffffff;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .wallet-add-btn {
+            background-color: #1557d4;
+            border: none;
+            color: #ffffff;
+            width: 18px;
+            height: 18px;
+            border-radius: 3px;
+            font-weight: 900;
+            font-size: 11px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-burger-btn {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            cursor: pointer;
+            background: #2b2c33;
+            padding: 7px 6px;
+            border-radius: 3px;
+            margin-left: 2px;
+        }
+        .menu-burger-btn span {
+            width: 14px;
+            height: 2px;
+            background-color: #9ea5b3;
+        }
+
+        /* History Ribbon Strip */
+        .history-ribbon {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background-color: #141518;
+            border-bottom: 1px solid #1a1b20;
+            overflow: hidden;
+        }
+
+        .badge-multiplier {
+            font-size: 11px;
+            font-weight: bold;
+            padding: 1px 10px;
+            border-radius: 10px;
+            color: #2da1f7;
+            background: #14243b;
+        }
+        .badge-multiplier.purple-high {
+            color: #b546fa;
+            background: #27123a;
+        }
+
+        .history-more-trigger {
+            background: #1c1d22;
+            color: #8a91a1;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            margin-left: auto;
+            cursor: pointer;
+        }
+
+        /* --- THEATER VIEW CANVAS LAYER (EXACT REPLICA) --- */
+        .canvas-viewport-box {
+            background-color: #141518;
+            padding: 5px 8px;
+        }
+
+        .stadium-main-stage {
+            height: 205px;
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(to bottom, #011326 0%, #03254c 45%, #0d4682 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            border: 1px solid #1c1d22;
+        }
+
+        /* Status Metrics Overlay Header */
+        .canvas-top-meta {
+            position: absolute;
+            top: 5px;
+            width: 100%;
+            padding: 0 10px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            color: #798394;
+            z-index: 10;
+            font-weight: 500;
+        }
+        .canvas-top-meta .round-id-box {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        /* Deep Stadium Floodlight Projectors */
+        .floodlight-array {
+            position: absolute;
+            top: 30px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 8px;
+        }
+        .light-beam-cluster {
+            display: flex;
+            gap: 2px;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 1px;
+            border-radius: 1px;
+        }
+        .light-bulb-node {
+            width: 7px;
+            height: 5px;
+            background-color: #ffffff;
+            box-shadow: 0 0 8px #ffffff, 0 0 15px #6eb4ff;
+            border-radius: 1px;
+        }
+
+        /* Audience Seating Stands Strip */
+        .audience-stands-strip {
+            height: 48px;
+            background: repeating-linear-gradient(
+                0deg,
+                #11151c,
+                #11151c 2px,
+                #1b212c 2px,
+                #1b212c 4px
+            );
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Multi-colored Railing Panels Divider Bands */
+        .railing-barrier-top {
+            height: 4px;
+            background: repeating-linear-gradient(to right, #ffcc00 0px, #ffcc00 15px, #c62828 15px, #c62828 30px);
+            width: 100%;
+        }
+        .railing-barrier-bottom {
+            height: 4px;
+            background: repeating-linear-gradient(to right, #0091ea 0px, #0091ea 20px, #00bfa5 20px, #00bfa5 40px);
+            width: 100%;
+        }
+
+        /* Active Green Grass Ground Pitch Layout */
+        .outfield-grass-pitch {
+            height: 38px;
+            background: linear-gradient(to bottom, #4c961a 0%, #356e10 100%);
+            position: relative;
+            z-index: 3;
+            border-top: 1px solid #63b329;
+            padding-top: 18px;
+        }
+
+        /* Main Big Shadow Typography Counter Display */
+        .score-multiplier-hud {
+            position: absolute;
+            bottom: 44px;
+            left: 18px;
+            font-size: 46px;
+            font-weight: 900;
+            color: #ffffff;
+            z-index: 8;
+            font-family: 'Arial Black', Impact, sans-serif;
+            text-shadow: 2px 2px 0px #000000, 4px 4px 0px rgba(0,0,0,0.4);
+            letter-spacing: -0.5px;
+        }
+
+        /* Exact Red Cricket Ball Graphics Element */
+        .cricket-ball-sprite {
+            position: absolute;
+            bottom: 38px;
+            left: -60px;
+            width: 52px;
+            height: 52px;
+            z-index: 5;
+            will-change: left, bottom, transform;
+        }
+        .ball-sphere-core {
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 35% 35%, #ff4b4b 0%, #cc0202 60%, #5e0000 100%);
+            border-radius: 50%;
+            box-shadow: inset -3px -3px 8px rgba(0,0,0,0.6), 0 6px 12px rgba(0,0,0,0.5);
+            position: relative;
+        }
+        /* White Seam Line Stitching Integration */
+        .ball-sphere-core::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 3px;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.45);
+            transform: translateX(-50%) rotate(12deg);
+            border-radius: 50%;
+        }
+
+        /* Timeline Metric Ticks Scale Line Layout */
+        .timeline-ticks-scale {
+            width: 100%;
+            height: 1px;
+            background-color: rgba(255, 255, 255, 0.3);
+            position: relative;
+        }
+
+        .labels-metric-wrap {
+            display: flex;
+            justify-content: space-between;
+            padding: 2px 10px 0 10px;
+        }
+
+        .tick-label-node {
+            font-size: 8px;
+            color: rgba(255,255,255,0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-weight: bold;
+        }
+        .tick-label-node::before {
+            content: '';
+            width: 1px;
+            height: 3px;
+            background: rgba(255,255,255,0.4);
+            margin-top: -3px;
+            margin-bottom: 2px;
+        }
+
+        /* Miniature Red Running Timeline Scale Guide Dot */
+        .timeline-guide-dot {
+            position: absolute;
+            bottom: 19px;
+            left: 15px;
+            width: 5px;
+            height: 5px;
+            background-color: #ff1744;
+            border-radius: 50%;
+            z-index: 9;
+            box-shadow: 0 0 5px #ff0000;
+        }
+
+        /* --- CONTROL TERMINAL CONSOLES INTERFACE (SAME-TO-SAME) --- */
+        .betting-panel-wrapper {
+            padding: 6px 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .console-bet-card {
+            background-color: #1b1c21;
+            border-radius: 14px;
+            padding: 10px 12px;
+            border: 1px solid #222329;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .console-tab-header {
+            display: flex;
+            background-color: #0f1013;
+            border-radius: 20px;
+            padding: 2px;
+            width: 155px;
+            margin: 0 auto 10px auto;
+        }
+
+        .console-tab-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #6e7582;
+            font-size: 11.5px;
+            padding: 4px 0;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .console-tab-btn.active {
+            background-color: #2b2c33;
+            color: #ffffff;
+        }
+
+        .console-action-row {
+            display: flex;
+            gap: 8px;
+            align-items: stretch;
+        }
+
+        .console-left-modifiers {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            width: 130px;
+        }
+
+        /* Number Field Box Adjuster */
+        .stepper-input-container {
+            display: flex;
+            align-items: center;
+            background-color: #000000;
+            border-radius: 20px;
+            height: 34px;
+            justify-content: space-between;
+            padding: 0 4px;
+            border: 1px solid #222329;
+        }
+
+        .stepper-action-btn {
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            font-size: 18px;
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stepper-input-container input {
+            width: 60px;
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            text-align: center;
+            font-size: 15px;
+            font-weight: bold;
+            outline: none;
+        }
+        .stepper-input-container input::-webkit-outer-spin-button,
+        .stepper-input-container input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Quick Pills Selection Matrix Grid */
+        .pills-grid-layout {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 4px;
+        }
+
+        .pill-trigger-btn {
+            background-color: #101114;
+            border: none;
+            color: #6a707d;
+            padding: 3.5px 0;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        /* Giant Vivid Green Action Accent Button Layout */
+        .giant-action-submit-btn {
+            flex: 1;
+            background: linear-gradient(180deg, #2ecc71 0%, #27ae60 100%);
+            border: none;
+            border-radius: 12px;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            padding: 6px;
+            box-shadow: 0 3px 8px rgba(39, 174, 96, 0.3);
+        }
+
+        .giant-action-submit-btn .title-bold {
+            font-size: 17px;
+            font-weight: 900;
+            letter-spacing: 0.3px;
+        }
+
+        .giant-action-submit-btn .sub-amount-lbl {
+            font-size: 14px;
+            font-weight: bold;
+            margin-top: -1px;
+        }
+
+        /* Ledger Navigation Footer Grid Sheets Layout */
+        .bottom-ledger-footer {
+            margin-top: auto;
+            background-color: #141518;
+            padding: 6px 8px;
+        }
+
+        .ledger-tab-headers-row {
+            display: flex;
+            background-color: #0e0f12;
+            padding: 2px;
+            border-radius: 15px;
+        }
+
+        .ledger-panel-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #6a707d;
+            padding: 6px 0;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .ledger-panel-btn.active {
+            background-color: #2b2c33;
+            color: #ffffff;
+            border-radius: 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cricket-app-frame">
+        <header class="header-top-bar">
+            <div class="header-left">
+                <span class="arrow-back">&#10094;</span>
+                <span class="brand-title">Cricket</span>
+            </div>
+            <div class="header-right">
+                <span class="currency-info">0 <span>INR</span></span>
+                <div class="wallet-container">
+                    <span class="coin-icon"></span>
+                    <span class="wallet-amount">₹0.00</span>
+                    <button class="wallet-add-btn">+</button>
+                </div>
+                <div class="menu-burger-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </header>
+
+        <div class="history-ribbon">
+            <span class="badge-multiplier">1.66x</span>
+            <span class="badge-multiplier">1.47x</span>
+            <span class="badge-multiplier">1.46x</span>
+            <span class="badge-multiplier">1.67x</span>
+            <span class="badge-multiplier purple-high">5.93x</span>
+            <div class="history-more-trigger">&#9662;</div>
+        </div>
+
+        <div class="canvas-viewport-box">
+            <div class="stadium-main-stage">
+                <div class="canvas-top-meta">
+                    <div class="round-id-box">
+                        <span>Round ID: 14097596</span>
+                        <span>&#9662;</span>
+                    </div>
+                    <div>Ping:375ms</div>
+                </div>
+                
+                <div class="floodlight-array">
+                    <div class="light-beam-cluster">
+                        <div class="light-bulb-node"></div><div class="light-bulb-node"></div><div class="light-bulb-node"></div><div class="light-bulb-node"></div>
+                    </div>
+                    <div class="light-beam-cluster">
+                        <div class="light-bulb-node"></div><div class="light-bulb-node"></div><div class="light-bulb-node"></div><div class="light-bulb-node"></div>
+                    </div>
+                    <div class="light-beam-cluster">
+                        <div class="light-bulb-node"></div><div class="light-bulb-node"></div><div class="light-bulb-node"></div><div class="light-bulb-node"></div>
+                    </div>
+                    <div class="light-beam-cluster">
+                        <div class="light-bulb-node"></div><div class="light-bulb-node"></div><div class="light-bulb-node"></div><div class="light-bulb-node"></div>
+                    </div>
+                </div>
+
+                <div class="score-multiplier-hud" id="hud-counter">1.00x</div>
+                
+                <div class="cricket-ball-sprite" id="ball-actor">
+                    <div class="ball-sphere-core"></div>
+                </div>
+
+                <div class="audience-stands-strip">
+                    <div class="railing-barrier-top"></div>
+                    <div class="railing-barrier-bottom"></div>
+                </div>
+                
+                <div class="outfield-grass-pitch">
+                    <div class="timeline-guide-dot" id="timeline-dot"></div>
+
+                    <div class="timeline-ticks-scale"></div>
+                    <div class="labels-metric-wrap">
+                        <div class="tick-label-node">1</div>
+                        <div class="tick-label-node">2</div>
+                        <div class="tick-label-node">5</div>
+                        <div class="tick-label-node">10</div>
+                        <div class="tick-label-node">20</div>
+                        <div class="tick-label-node">50</div>
+                        <div class="tick-label-node">100</div>
+                        <div class="tick-label-node">200</div>
+                        <div class="tick-label-node">500</div>
+                        <div class="tick-label-node">&infin;</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="betting-panel-wrapper">
+            
+            <div class="console-bet-card">
+                <div class="console-tab-header">
+                    <button class="console-tab-btn active">Bet</button>
+                    <button class="console-tab-btn">Auto</button>
+                </div>
+                <div class="console-action-row">
+                    <div class="console-left-modifiers">
+                        <div class="stepper-input-container">
+                            <button class="stepper-action-btn" onclick="offsetBetField('bet-field-1', -10)">&#8722;</button>
+                            <input type="number" id="bet-field-1" value="10">
+                            <button class="stepper-action-btn" onclick="offsetBetField('bet-field-1', 10)">&#43;</button>
+                        </div>
+                        <div class="pills-grid-layout">
+                            <button class="pill-trigger-btn" onclick="directSetBet('bet-field-1', 10)">10</button>
+                            <button class="pill-trigger-btn" onclick="directSetBet('bet-field-1', 100)">100</button>
+                            <button class="pill-trigger-btn" onclick="directSetBet('bet-field-1', 500)">500</button>
+                            <button class="pill-trigger-btn" onclick="directSetBet('bet-field-1', 1000)">1000</button>
+                        </div>
+                    </div>
+                    <button class="giant-action-submit-btn">
+                        <span class="title-bold">BET</span>
+                        <span class="sub-amount-lbl" id="submit-lbl-1">10 INR</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="console-bet-card">
+                <div class="console-tab-header">
+                    <button class="console-tab-btn active">Bet</button>
+                    <button class="console-tab-btn">Auto</button>
+                </div>
+                <div class="console-action-row">
+                    <div class="console-left-modifiers">
+                        <div class="stepper-input-container">
+                            <button class="stepper-action-btn" onclick="offsetBetField('bet-field-2', -10)">&#8722;</button>
+                            <input type="number" id="bet-field-2" value="10">
+                            <button class="stepper-action-btn" onclick="offsetBetField('bet-field-2', 10)">&#43;</button>
+                        </div>
+                        <div class="pills-grid-layout">
+                            <button class="pill-trigger-btn" onclick="directSetBet('bet-field-2', 10)">10</button>
+                            <button class="pill-trigger-btn" onclick="directSetBet('bet-field-2', 100)">100</button>
+                            <button class="pill-trigger-btn" onclick="directSetBet('bet-field-2', 500)">500</button>
+                            <button class="pill-trigger-btn" onclick="directSetBet('bet-field-2', 1000)">1000</button>
+                        </div>
+                    </div>
+                    <button class="giant-action-submit-btn">
+                        <span class="title-bold">BET</span>
+                        <span class="sub-amount-lbl" id="submit-lbl-2">10 INR</span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <footer class="bottom-ledger-footer">
+            <div class="ledger-tab-headers-row">
+                <button class="ledger-panel-btn active">All Bets</button>
+                <button class="ledger-panel-btn">My Bets</button>
+                <button class="ledger-panel-btn">Top</button>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const hudCounter = document.getElementById('hud-counter');
+        const ballActor = document.getElementById('ball-actor');
+        const timelineDot = document.getElementById('timeline-dot');
+
+        let liveValue = 1.00;
+        let flightCrashThreshold = 3.26;
+        let rotationalDegree = 0;
+
+        function runStadiumSimulation() {
+            liveValue = 1.00;
+            flightCrashThreshold = (Math.random() * 4.8 + 1.1).toFixed(2);
+            hudCounter.style.color = '#ffffff';
+            ballActor.style.opacity = '1';
+
+            const gameTimelineClock = setInterval(() => {
+                if (liveValue < flightCrashThreshold) {
+                    liveValue += 0.02;
+                    hudCounter.innerText = liveValue.toFixed(2) + 'x';
+
+                    let progressPercent = (liveValue - 1) / (flightCrashThreshold - 1 || 1);
+                    if (progressPercent > 1) progressPercent = 1;
+
+                    // Absolute pixel horizontal layout calculations
+                    let computedX = -35 + (progressPercent * 290);
+                    
+                    // Trigonometric parabolic sine jump loop wave tracking vectors
+                    let bounceAmplitude = Math.abs(Math.sin(progressPercent * Math.PI * 2.2)) * 55;
+                    let computedY = 38 + bounceAmplitude;
+
+                    rotationalDegree += 7;
+
+                    // Apply coordinate vectors smoothly onto ball bounding layout element
+                    ballActor.style.left = `${computedX}px`;
+                    ballActor.style.bottom = `${computedY}px`;
+                    ballActor.style.transform = `rotate(${rotationalDegree}deg)`;
+
+                    // Synchronize progress line indicator tiny red dot layout frame values
+                    let timelineX = 15 + (progressPercent * 345);
+                    timelineDot.style.left = `${timelineX}px`;
+
+                } else {
+                    clearInterval(gameTimelineClock);
+                    hudCounter.innerText = "Out / Flew Away!";
+                    hudCounter.style.color = '#ff1744';
+                    
+                    // Instantly fade out the core ball object model node
+                    ballActor.style.opacity = '0';
+
+                    // Loop recovery and resetting timeout gap
+                    setTimeout(runStadiumSimulation, 3000);
+                }
+            }, 45);
+        }
+
+        // Initialize Core automation pipeline array trigger
+        runStadiumSimulation();
+
+        function offsetBetField(inputId, delta) {
+            const node = document.getElementById(inputId);
+            let currentVal = parseInt(node.value) || 10;
+            let finalVal = currentVal + delta;
+            if (finalVal < 1) finalVal = 1;
+
+            node.value = finalVal;
+            updateButtonLabels(inputId, finalVal);
+        }
+
+        function directSetBet(inputId, staticVal) {
+            const node = document.getElementById(inputId);
+            node.value = staticVal;
+            updateButtonLabels(inputId, staticVal);
+        }
+
+        function updateButtonLabels(inputId, numericValue) {
+            const labelTarget = inputId === 'bet-field-1' ? 'submit-lbl-1' : 'submit-lbl-2';
+            document.getElementById(labelTarget).innerText = numericValue + " INR";
+        }
+    </script>
+</body>
+</html>
