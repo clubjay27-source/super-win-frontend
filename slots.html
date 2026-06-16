@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aviator Luxury Exact Clone - Fixed Rotation</title>
+    <style>
+        /* --- GLOBAL SYSTEM RESET --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #0b0c0e;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Mobile Viewport Wrapper Container */
+        .aviator-app-frame {
+            width: 100%;
+            max-width: 395px;
+            background-color: #101114;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            border: 1px solid #1c1d22;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Premium Top Navigation Header Bar */
+        .header-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+            background-color: #1b1c21;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .menu-hamburger {
+            display: flex;
+            flex-direction: column;
+            gap: 3.5px;
+            cursor: pointer;
+        }
+        .menu-hamburger span {
+            width: 16px;
+            height: 2px;
+            background-color: #cbced4;
+        }
+
+        .brand-logo-txt {
+            color: #e50914;
+            font-weight: 900;
+            font-style: italic;
+            text-transform: uppercase;
+            font-size: 22px;
+            letter-spacing: -0.5px;
+        }
+        .brand-logo-txt span {
+            color: #ffffff;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .wallet-pill-box {
+            background: #141518;
+            border: 1px solid #2b2c33;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            padding: 4px 10px;
+            gap: 6px;
+        }
+
+        .wallet-balance-lbl {
+            color: #2ecc71;
+            font-weight: bold;
+            font-size: 13.5px;
+        }
+
+        .recharge-accent-btn {
+            background-color: #e50914;
+            border: none;
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 3px 10px;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        /* History Ribbon Strip Slider */
+        .history-ribbon-strip {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            background-color: #141518;
+            border-bottom: 1px solid #1c1d22;
+            overflow: hidden;
+        }
+
+        .ribbon-badges-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            overflow: hidden;
+            flex: 1;
+        }
+
+        .aviator-badge {
+            font-size: 11px;
+            font-weight: bold;
+            padding: 2px 9px;
+            border-radius: 4px;
+            color: #3498db;
+            background: rgba(52, 152, 219, 0.15);
+            border: 1px solid rgba(52, 152, 219, 0.3);
+            white-space: nowrap;
+            animation: badgePop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes badgePop {
+            from { opacity: 0; transform: scale(0.6); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .aviator-badge.high-purple {
+            color: #9b59b6;
+            background: rgba(155, 89, 182, 0.15);
+            border: 1px solid rgba(155, 89, 182, 0.3);
+        }
+
+        .history-dropdown-trigger {
+            color: #6e7582;
+            font-size: 10px;
+            cursor: pointer;
+        }
+
+        /* --- THE AVIATOR THEATER STAGE CANVAS AREA --- */
+        .theater-stage-box {
+            background-color: #141518;
+            padding: 4px 8px;
+        }
+
+        .main-flight-arena {
+            height: 195px;
+            border-radius: 6px;
+            position: relative;
+            overflow: hidden;
+            background-color: #000000;
+            border: 1px solid #1c1d22;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Background Radar Grid Matrix Lines Mesh */
+        .radar-grid-mesh {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 24px 24px;
+            background-position: bottom left;
+            z-index: 1;
+        }
+
+        /* Giant Live Center Scale Counter */
+        .live-multiplier-counter {
+            font-size: 52px;
+            font-weight: 900;
+            color: #ffffff;
+            z-index: 5;
+            font-family: 'Arial Black', Impact, sans-serif;
+            letter-spacing: -1px;
+            transition: color 0.2s ease;
+        }
+
+        /* Curved Red Line SVG Canvas Node */
+        .svg-vector-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+        }
+        .flight-curve-path {
+            stroke: #e50914;
+            stroke-width: 3.5;
+            fill: none;
+            stroke-linecap: round;
+        }
+
+        /* Red Plane Aeroplane Graphics Object Element */
+        .aeroplane-actor-sprite {
+            position: absolute;
+            bottom: -50px;
+            left: -50px;
+            width: 38px;
+            height: 38px;
+            z-index: 4;
+            will-change: left, bottom, transform;
+            transform-origin: center center;
+        }
+
+        /* SVG Inner Custom Red Icon Matrix */
+        .aeroplane-actor-sprite svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0px 4px 10px rgba(229, 9, 20, 0.7));
+        }
+
+        /* Flight Stage Context Overlay */
+        .arena-top-meta {
+            position: absolute;
+            top: 6px;
+            width: 100%;
+            padding: 0 10px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 9.5px;
+            color: #4a4d57;
+            z-index: 6;
+            font-weight: bold;
+        }
+
+        /* --- CONTROL ENTRY TERMINAL TILES --- */
+        .betting-deck-wrapper {
+            padding: 6px 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .console-bet-tile {
+            background-color: #1b1c21;
+            border-radius: 12px;
+            padding: 10px;
+            border: 1px solid #222329;
+        }
+
+        .console-action-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .left-numeric-modifiers {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            width: 125px;
+        }
+
+        .stepper-input-container {
+            display: flex;
+            align-items: center;
+            background-color: #0e0f12;
+            border-radius: 20px;
+            height: 32px;
+            justify-content: space-between;
+            padding: 0 4px;
+            border: 1px solid #26272f;
+        }
+
+        .stepper-btn {
+            background: transparent;
+            border: none;
+            color: #8e95a3;
+            font-size: 16px;
+            width: 26px;
+            height: 26px;
+            cursor: pointer;
+        }
+
+        .stepper-input-container input {
+            width: 55px;
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+            outline: none;
+        }
+
+        .pills-quick-matrix {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 4px;
+        }
+
+        .pill-btn {
+            background-color: #0e0f12;
+            border: 1px solid #222329;
+            color: #8e95a3;
+            padding: 4px 0;
+            border-radius: 15px;
+            font-size: 10.5px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        /* Giant Vivid Golden/Green Premium Action Button */
+        .giant-bet-trigger-btn {
+            flex: 1;
+            background: linear-gradient(180deg, #2ecc71 0%, #27ae60 100%);
+            border: none;
+            border-radius: 10px;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(39, 174, 96, 0.25);
+            transition: transform 0.1s ease;
+        }
+        .giant-bet-trigger-btn:active {
+            transform: scale(0.97);
+        }
+        .giant-bet-trigger-btn .txt-main {
+            font-size: 18px;
+            font-weight: 900;
+            letter-spacing: 0.5px;
+        }
+        .giant-bet-trigger-btn .txt-sub {
+            font-size: 12.5px;
+            font-weight: bold;
+            opacity: 0.9;
+        }
+
+        /* --- TOAST ALERTS INTERFACE OVERLAY --- */
+        .insufficient-funds-toast {
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            background: #d32f2f;
+            color: #ffffff;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+            z-index: 100;
+            transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid #ff5252;
+        }
+        .insufficient-funds-toast.active-toast {
+            top: 60px;
+        }
+
+        /* --- LIVE BOT SHEET LEDGER RECORD HISTORY BOX --- */
+        .live-bets-ledger-panel {
+            background-color: #141518;
+            border: 1px solid #1c1d22;
+            border-radius: 8px;
+            margin: 2px 8px 8px 8px;
+            padding: 8px;
+            height: 150px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ledger-panel-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 9.5px;
+            color: #525763;
+            font-weight: bold;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #1c1d22;
+            text-transform: uppercase;
+        }
+        .ledger-panel-header span { flex: 1; }
+        .ledger-panel-header span.right-align { text-align: right; }
+        .ledger-panel-header span.center-align { text-align: center; }
+
+        .ledger-rows-viewport {
+            flex: 1;
+            overflow-y: auto;
+            margin-top: 4px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .ledger-rows-viewport::-webkit-scrollbar { width: 0px; }
+
+        .bot-data-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            padding: 3.5px 0;
+            border-bottom: 1px solid #111216;
+            animation: rowFadeIn 0.25s ease-out;
+        }
+        @keyframes rowFadeIn {
+            from { opacity: 0; transform: translateY(-3px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .bot-data-row span { flex: 1; }
+        .bot-username { color: #8e95a3; font-family: monospace; }
+        .bot-bet-val { color: #ffffff; }
+        .bot-mult-val { color: #2ecc71; text-align: center; font-weight: bold; }
+        .bot-mult-val.lost { color: #4a4d57; }
+        .bot-cashout-val { color: #2ecc71; text-align: right; font-weight: bold; }
+        .bot-cashout-val.lost { color: #2c2e36; }
+
+        /* Footer Bottom Menu Ledger */
+        .footer-tabs-strip {
+            margin-top: auto;
+            background-color: #18191e;
+            padding: 6px;
+            display: flex;
+            gap: 4px;
+        }
+        .footer-tab-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #6e7582;
+            padding: 6px 0;
+            font-size: 11.5px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+        }
+        .footer-tab-btn.active {
+            background-color: #2c2d38;
+            color: #ffffff;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="aviator-app-frame">
+        <!-- NOTIFICATION TOAST -->
+        <div class="insufficient-funds-toast" id="funds-toast">
+            ⚠ Insufficient Balance! Please recharge your wallet.
+        </div>
+
+        <header class="header-top-bar">
+            <div class="header-left">
+                <div class="menu-hamburger"><span></span><span></span><span></span></div>
+                <div class="brand-logo-txt">Aviator<span>Game</span></div>
+            </div>
+            <div class="header-right">
+                <div class="wallet-pill-box">
+                    <span class="wallet-balance-lbl">₹0.00</span>
+                </div>
+                <button class="recharge-accent-btn">Recharge</button>
+            </div>
+        </header>
+
+        <!-- TOP CRASH MULTIPLIERS HISTORY RIBBON -->
+        <div class="history-ribbon-strip">
+            <div class="ribbon-badges-wrapper" id="history-badges-shelf">
+                <span class="aviator-badge">1.22x</span>
+                <span class="aviator-badge high-purple">4.18x</span>
+                <span class="aviator-badge">1.05x</span>
+                <span class="aviator-badge">2.61x</span>
+                <span class="aviator-badge">1.80x</span>
+            </div>
+            <div class="history-dropdown-trigger">&#9662;</div>
+        </div>
+
+        <div class="theater-stage-box">
+            <div class="main-flight-arena">
+                <div class="arena-top-meta">
+                    <span>ROUND ID: 8497295</span>
+                    <span>ONLINE: 12,845</span>
+                </div>
+                
+                <div class="radar-grid-mesh"></div>
+                
+                <!-- Live Display Counter Index -->
+                <div class="live-multiplier-counter" id="hud-multiplier-lbl">1.00x</div>
+                
+                <!-- SVG Trajectory Curve Engine Path Line -->
+                <svg class="svg-vector-container">
+                    <path id="curve-vector-line" class="flight-curve-path" d="M 0 195 Q 0 195 0 195" />
+                </svg>
+
+                <!-- Jet Aeroplane Sprite Element Graphic (Fixed initial orientation angle) -->
+                <div class="aeroplane-actor-sprite" id="jet-actor-node">
+                    <svg viewBox="0 0 24 24" fill="#e50914" xmlns="http://www.w3.org/2000/svg" style="transform: rotate(45deg);">
+                        <path d="M21 16V14L13 9V3.5C13 2.67 12.33 2 11.5 2C10.67 2 10 2.67 10 3.5V9L2 14V16L10 13.5V19L8 20.5V22L11.5 21L15 22V20.5L13 19V13.5L21 16Z"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="betting-deck-wrapper">
+            <!-- Terminal Slot Block 1 -->
+            <div class="console-bet-tile">
+                <div class="console-action-row">
+                    <div class="left-numeric-modifiers">
+                        <div class="stepper-input-container">
+                            <button class="stepper-btn" onclick="offsetBetAmount('field-idx-1', -10)">-</button>
+                            <input type="number" id="field-idx-1" value="10">
+                            <button class="stepper-btn" onclick="offsetBetAmount('field-idx-1', 10)">+</button>
+                        </div>
+                        <div class="pills-quick-matrix">
+                            <button class="pill-btn" onclick="directSetAmount('field-idx-1', 10)">10</button>
+                            <button class="pill-btn" onclick="directSetAmount('field-idx-1', 100)">100</button>
+                            <button class="pill-btn" onclick="directSetAmount('field-idx-1', 200)">200</button>
+                            <button class="pill-btn" onclick="directSetAmount('field-idx-1', 500)">500</button>
+                        </div>
+                    </div>
+                    <button class="giant-bet-trigger-btn" onclick="triggerToastAlert()">
+                        <span class="txt-main">BET</span>
+                        <span class="txt-sub" id="lbl-sub-1">10.00 INR</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Terminal Slot Block 2 -->
+            <div class="console-bet-tile">
+                <div class="console-action-row">
+                    <div class="left-numeric-modifiers">
+                        <div class="stepper-input-container">
+                            <button class="stepper-btn" onclick="offsetBetAmount('field-idx-2', -10)">-</button>
+                            <input type="number" id="field-idx-2" value="10">
+                            <button class="stepper-btn" onclick="offsetBetAmount('field-idx-2', 10)">+</button>
+                        </div>
+                        <div class="pills-quick-matrix">
+                            <button class="pill-btn" onclick="directSetAmount('field-idx-2', 10)">10</button>
+                            <button class="pill-btn" onclick="directSetAmount('field-idx-2', 100)">100</button>
+                            <button class="pill-btn" onclick="directSetAmount('field-idx-2', 200)">200</button>
+                            <button class="pill-btn" onclick="directSetAmount('field-idx-2', 500)">500</button>
+                        </div>
+                    </div>
+                    <button class="giant-bet-trigger-btn" onclick="triggerToastAlert()">
+                        <span class="txt-main">BET</span>
+                        <span class="txt-sub" id="lbl-sub-2">10.00 INR</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- LIVE BOT SHEET LEDGER CONTAINER -->
+        <div class="live-bets-ledger-panel">
+            <div class="ledger-panel-header">
+                <span>User</span>
+                <span>Bet</span>
+                <span class="center-align">X</span>
+                <span class="right-align">Cashout</span>
+            </div>
+            <div class="ledger-rows-viewport" id="bot-rows-shelf">
+                <!-- System Dynamic Insertion Feed Rows -->
+            </div>
+        </div>
+
+        <footer class="footer-tabs-strip">
+            <button class="footer-tab-btn active">All Bets</button>
+            <button class="footer-tab-btn">My Bets</button>
+            <button class="footer-tab-btn">Top</button>
+        </footer>
+    </div>
+
+    <script>
+        const hudMultiplierLbl = document.getElementById('hud-multiplier-lbl');
+        const jetActorNode = document.getElementById('jet-actor-node');
+        const curveVectorLine = document.getElementById('curve-vector-line');
+        const fundsToast = document.getElementById('funds-toast');
+        const botRowsShelf = document.getElementById('bot-rows-shelf');
+        const historyBadgesShelf = document.getElementById('history-badges-shelf');
+
+        let liveValue = 1.00;
+        let flightCrashThreshold = 2.50;
+        let toastTrackerTimer = null;
+
+        // --- WALLET VALIDATOR SYSTEM POPUP TOAST ---
+        function triggerToastAlert() {
+            fundsToast.classList.remove('active-toast');
+            clearTimeout(toastTrackerTimer);
+            void fundsToast.offsetWidth;
+            fundsToast.classList.add('active-toast');
+            toastTrackerTimer = setTimeout(() => {
+                fundsToast.classList.remove('active-toast');
+            }, 3000);
+        }
+
+        // --- BOT BETS SIMULATION STREAM FEEDS ---
+        const fakeNames = ['Aman_77', 'Karan_Rx', 'AviatorGod', 'Raja_Bhai', 'LuckyPilot', 'JetMaster', 'Delta_99', 'WinStreak'];
+        
+        function pumpFakeBotRow() {
+            if (liveValue <= 1.05) return;
+            const name = fakeNames[Math.floor(Math.random() * fakeNames.length)] + Math.floor(Math.random() * 90 + 10);
+            const betAmt = Math.floor(Math.random() * 30 + 2) * 10;
+            const cashedOut = Math.random() > 0.4;
+            let targetMult = (Math.random() * (liveValue - 1.01) + 1.01).toFixed(2);
+
+            let rowHtml = '';
+            if (cashedOut && parseFloat(targetMult) < parseFloat(liveValue)) {
+                let prize = (betAmt * targetMult).toFixed(2);
+                rowHtml = `
+                    <div class="bot-data-row">
+                        <span class="bot-username">${name}</span>
+                        <span class="bot-bet-val">₹${betAmt}</span>
+                        <span class="bot-mult-val">${targetMult}x</span>
+                        <span class="bot-cashout-val">₹${prize}</span>
+                    </div>`;
+            } else {
+                rowHtml = `
+                    <div class="bot-data-row">
+                        <span class="bot-username">${name}</span>
+                        <span class="bot-bet-val">₹${betAmt}</span>
+                        <span class="bot-mult-val lost">-</span>
+                        <span class="bot-cashout-val lost">₹0.00</span>
+                    </div>`;
+            }
+
+            botRowsShelf.insertAdjacentHTML('afterbegin', rowHtml);
+            if (botRowsShelf.children.length > 20) {
+                botRowsShelf.removeChild(botRowsShelf.lastChild);
+            }
+        }
+
+        setInterval(() => {
+            if (liveValue < flightCrashThreshold && liveValue > 1.03) {
+                if (Math.random() > 0.45) pumpFakeBotRow();
+            }
+        }, 600);
+
+        // --- TOP BADGE SHEET UPDATE HOOK ---
+        function appendHistoryBadge(crashNum) {
+            const badge = document.createElement('span');
+            badge.classList.add('aviator-badge');
+            badge.innerText = crashNum + 'x';
+            if (parseFloat(crashNum) >= 2.00) {
+                badge.classList.add('high-purple');
+            }
+            historyBadgesShelf.insertBefore(badge, historyBadgesShelf.firstChild);
+            if (historyBadgesShelf.children.length > 8) {
+                historyBadgesShelf.removeChild(historyBadgesShelf.lastChild);
+            }
+        }
+
+        // --- FLIGHT JET PARABOLIC MATHEMATICS ENGINE ---
+        function executeFlightLoop() {
+            liveValue = 1.00;
+            flightCrashThreshold = (Math.random() * 5.0 + 1.05).toFixed(2);
+            hudMultiplierLbl.style.color = '#ffffff';
+            jetActorNode.style.opacity = '1';
+
+            const flightTimer = setInterval(() => {
+                if (liveValue < flightCrashThreshold) {
+                    liveValue += 0.015;
+                    hudMultiplierLbl.innerText = liveValue.toFixed(2) + 'x';
+
+                    // Mathematical progress coefficient vectors
+                    let pct = (liveValue - 1) / (flightCrashThreshold - 1 || 1);
+                    if (pct > 1) pct = 1;
+
+                    // Compute coordinates for current frame
+                    let cX = pct * 280; 
+                    let cY = 195 - (Math.pow(pct, 2) * 140); 
+
+                    // --- REAL-TIME ROTATION VECTOR CALCULATION ---
+                    // Derivative slope math formula calculates the accurate curve angle matching forward speed 
+                    let nextPct = pct + 0.001;
+                    let nextCX = nextPct * 280;
+                    let nextCY = 195 - (Math.pow(nextPct, 2) * 140);
+                    
+                    let deltaX = nextCX - cX;
+                    let deltaY = cY - nextCY; // Inverting Y delta screen coordinate map
+                    
+                    // Arc-tangent angle extraction math logic converter
+                    let angleRadius = Math.atan2(deltaY, deltaX);
+                    let degreeAngle = angleRadius * (180 / Math.PI);
+
+                    // Adjust position coordinates handles smoothly
+                    jetActorNode.style.left = `${cX - 10}px`;
+                    jetActorNode.style.bottom = `${195 - cY - 10}px`;
+                    
+                    // Dynamic flight trajectory plane matrix rotation override loop applied smoothly
+                    jetActorNode.style.transform = `rotate(${-degreeAngle}deg)`;
+
+                    // Generate live matching track vector path segments line onto SVG layout mesh
+                    curveVectorLine.setAttribute('d', `M 0 195 Q ${cX * 0.4} 195 ${cX} ${cY}`);
+
+                } else {
+                    clearInterval(flightTimer);
+                    hudMultiplierLbl.innerText = "Flew Away!";
+                    hudMultiplierLbl.style.color = '#cb1c24';
+                    jetActorNode.style.opacity = '0';
+                    
+                    // Reset SVG path string lines mapping grid
+                    curveVectorLine.setAttribute('d', 'M 0 195 Q 0 195 0 195');
+
+                    appendHistoryBadge(flightCrashThreshold);
+
+                    setTimeout(executeFlightLoop, 3500);
+                }
+            }, 40);
+        }
+
+        // Start core cycle triggers loop pipeline
+        executeFlightLoop();
+
+        // UI Handlers fields modifiers
+        function offsetBetAmount(id, val) {
+            const el = document.getElementById(id);
+            let cur = parseInt(el.value) || 10;
+            let fin = cur + val;
+            if (fin < 1) fin = 1;
+            el.value = fin;
+            syncLabels(id, fin);
+        }
+
+        function directSetAmount(id, val) {
+            document.getElementById(id).value = val;
+            syncLabels(id, val);
+        }
+
+        function syncLabels(id, val) {
+            const lbl = id === 'field-idx-1' ? 'lbl-sub-1' : 'lbl-sub-2';
+            document.getElementById(lbl).innerText = val + ".00 INR";
+        }
+    </script>
+</body>
+</html>
