@@ -1667,39 +1667,67 @@ async function addBalance(){
             clicked.classList.add('active');
         }    
 
+       // ================= NAVIGATION FUNCTIONS =================
+
         function showHome(){
             document.getElementById("homePage").style.display="block";
             document.getElementById("accountPage").style.display="none";
             document.getElementById("walletPage").style.display="none";
+            document.getElementById("promotionPage").style.display="none"; // Isko bhi yahan hide kiya
 
             document.querySelectorAll('.nav-item').forEach(item=>{
                 item.classList.remove('active');
             });
             document.getElementById("homeNav").classList.add("active");
+            
+            // Tab badalne par fresh data load hoga
+            loadUserProfile();
         }
 
         function showWallet(){
             document.getElementById("homePage").style.display="none";
             document.getElementById("accountPage").style.display="none";
             document.getElementById("walletPage").style.display="block";
+            document.getElementById("promotionPage").style.display="none";
 
             document.querySelectorAll('.nav-item').forEach(item=>{
                 item.classList.remove('active');
             });
             document.getElementById("walletNav").classList.add("active");
+            
+            loadUserProfile();
         }
 
         function showAccount(){
             document.getElementById("homePage").style.display="none";
             document.getElementById("walletPage").style.display="none";
             document.getElementById("accountPage").style.display="block";
+            document.getElementById("promotionPage").style.display="none";
 
             document.querySelectorAll('.nav-item').forEach(item=>{
                 item.classList.remove('active');
             });
             document.getElementById("accountNav").classList.add("active");
+            
+            loadUserProfile();
         }
 
+        function showPromotion(){
+            document.getElementById("homePage").style.display="none";
+            document.getElementById("accountPage").style.display="none";
+            document.getElementById("walletPage").style.display="none";
+            document.getElementById("promotionPage").style.display="block";
+
+            document.querySelectorAll('.nav-item').forEach(item=>{
+                item.classList.remove('active');
+            });
+            document.getElementById("promoNav").classList.add("active");
+            
+            loadUserProfile();
+        }
+
+
+        // ================= GAME REDIRECTS =================
         function openWingo(){ window.location.href = "wingo.html"; }
         function openAviator(){ window.location.href = "aviator.html"; }
         function openCricket(){ window.location.href = "cricket.html"; }
@@ -1713,39 +1741,55 @@ async function addBalance(){
         function openCrazy777(){ window.location.href = "crazy-777.html"; }
         function openWildFireWins(){ window.location.href = "wildfire-wins.html"; }
 
+
+        // ================= PROFILE & BALANCE FETCH =================
         async function loadUserProfile() {
-    let token = localStorage.getItem("token");
-    if (!token) return;
+            let token = localStorage.getItem("token");
+            if (!token) return;
 
-    try {
-        // Hum /api/user/me ka use kar rahe hain jo Name, UID aur Balance teeno deta hai
-        let res = await fetch("https://super-win.onrender.com/api/user/me", {
-            method: "GET",
-            headers: { "Authorization": "Bearer " + token }
-        });
-        let data = await res.json();
-        
-        if (res.ok && data.user) {
-            // 1. Name aur UID ko HTML mein set karna
-            if(document.getElementById("profileName")) document.getElementById("profileName").innerText = data.user.name || "User";
-            if(document.getElementById("profileUid")) document.getElementById("profileUid").innerText = "ID: " + (data.user.uid || "N/A");
-            
-            // 2. Balance ko format karke sahi jagah dikhana
-            let formattedBalance = "₹" + parseFloat(data.user.balance || 0).toFixed(2);
-            if(document.getElementById("topBalance")) document.getElementById("topBalance").innerText = formattedBalance;
-            if(document.getElementById("accountBalance")) document.getElementById("accountBalance").innerText = formattedBalance;
-            if(document.getElementById("walletPageBalance")) document.getElementById("walletPageBalance").innerText = formattedBalance;
-            
-            console.log("Profile and Balance successfully loaded!");
-        } else {
-            console.error("Profile fetch karne me error:", data.error);
+            try {
+                let res = await fetch("https://super-win.onrender.com/api/user/me", {
+                    method: "GET",
+                    headers: { "Authorization": "Bearer " + token }
+                });
+                let data = await res.json();
+                
+                if (res.ok && data.user) {
+                    // 1. Name aur UID ko set karna
+                    if(document.getElementById("profileName")) {
+                        document.getElementById("profileName").innerText = data.user.name || "User";
+                    }
+                    if(document.getElementById("profileUid")) {
+                        document.getElementById("profileUid").innerText = "UID : " + (data.user.uid || "--");
+                    }
+                    
+                    // 2. Balance ko format karke teeno alag-alag screens par set karna
+                    let formattedBalance = "₹" + parseFloat(data.user.balance || 0).toFixed(2);
+                    
+                    if(document.getElementById("topBalance")) {
+                        document.getElementById("topBalance").innerText = formattedBalance;
+                    }
+                    if(document.getElementById("accountBalance")) {
+                        document.getElementById("accountBalance").innerText = formattedBalance;
+                    }
+                    if(document.getElementById("walletPageBalance")) {
+                        document.getElementById("walletPageBalance").innerText = formattedBalance;
+                    }
+                    
+                    console.log("Profile, UID, and Balance loaded successfully!");
+                } else {
+                    console.error("Profile fetch karne me error:", data.error);
+                }
+            } catch (err) {
+                console.error("Profile load error:", err);
+            }
         }
-    } catch (err) {
-        console.error("Profile load error:", err);
-    }
-}
 
+        // Page load hote hi chalega
         document.addEventListener("DOMContentLoaded", loadUserProfile);
+        
+        // Har 5 second me background me data update karega
+        setInterval(loadUserProfile, 5000); 
 
         const originalShowAccount = showAccount;
         showAccount = function() {
