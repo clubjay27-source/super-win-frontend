@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Money Coming Casino Wheel - Insufficient Balance Fixed</title>
+    <style>
+        /* --- GLOBAL PREMIUM LUXURY RESET --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial Black', Gadget, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #120202;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-image: radial-gradient(circle, #3a0505 0%, #120202 100%);
+        }
+
+        /* Mobile Container Viewport App Frame */
+        .casino-app-frame {
+            width: 100%;
+            max-width: 395px;
+            background: linear-gradient(180deg, #1d0707 0%, #0c0202 100%);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            border: 2px solid #ffd700;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+        }
+
+        /* Top Header Navigation Strip */
+        .header-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.4);
+            border-bottom: 2px solid #5a0d0d;
+        }
+
+        .brand-jili-lbl {
+            background: linear-gradient(135deg, #ffe066 0%, #f5b041 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 18px;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+
+        .wallet-gold-pill {
+            background: #220505;
+            border: 1px solid #ffd700;
+            border-radius: 20px;
+            padding: 4px 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .wallet-gold-pill span {
+            color: #ffd700;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        /* --- INSUFFICIENT BALANCE NEON TOAST POPUP --- */
+        .insufficient-funds-toast {
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            background: #d32f2f;
+            color: #ffffff;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.6), 0 0 10px rgba(211, 47, 47, 0.5);
+            z-index: 100;
+            transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1.5px solid #ff5252;
+        }
+        .insufficient-funds-toast.active-toast {
+            top: 65px;
+        }
+
+        /* --- WHEEL THEATER MACHINE CASING --- */
+        .wheel-machine-casing {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px 10px;
+            position: relative;
+        }
+
+        /* Top Target Arrow Pointer Indicator ($ Diamond shape) */
+        .wheel-target-pointer {
+            width: 0;
+            height: 0;
+            border-left: 14px solid transparent;
+            border-right: 14px solid transparent;
+            border-top: 18px solid #ffd700;
+            position: absolute;
+            top: 10px;
+            z-index: 15;
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
+        }
+
+        /* Golden Round Rim Outer Container Frame */
+        .outer-rim-gold-frame {
+            width: 270px;
+            height: 270px;
+            background: radial-gradient(circle, #ffe875 20%, #d4af37 60%, #8a6f27 100%);
+            border-radius: 50%;
+            padding: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.7), 0 0 15px rgba(255, 215, 0, 0.4);
+            position: relative;
+            border: 2px solid #5a4512;
+        }
+
+        /* Internal Rotating Canvas Element Slot Matrix */
+        .spinner-canvas-node {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-color: #111;
+            display: block;
+            transition: transform 4s cubic-bezier(0.15, 0.85, 0.2, 1);
+            will-change: transform;
+        }
+
+        /* Central Gold Dollar Emblem Shield Hub Cap */
+        .central-dollar-hub {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 52px;
+            height: 52px;
+            background: radial-gradient(circle, #ffffff 10%, #ffd700 60%, #b8860b 100%);
+            border-radius: 50%;
+            border: 3px solid #5a4512;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            color: #4a3600;
+            font-size: 22px;
+            font-weight: 900;
+        }
+
+        /* --- MONEY COMING BRAND TILES BANNER --- */
+        .money-coming-banner {
+            margin-top: 5px;
+            font-size: 26px;
+            font-weight: 900;
+            text-align: center;
+            text-transform: uppercase;
+            font-style: italic;
+            background: linear-gradient(180deg, #ffffff 0%, #ff3333 40%, #800000 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.8));
+            letter-spacing: -0.5px;
+        }
+
+        /* --- BET MATRIX DASHBOARD ROWS --- */
+        .dashboard-bet-tier-shelf {
+            padding: 4px 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 5px;
+        }
+
+        .bet-info-strip-pill {
+            background: linear-gradient(90deg, #420a0a 0%, #6e1616 50%, #420a0a 100%);
+            border: 1.5px solid #d4af37;
+            border-radius: 8px;
+            padding: 6px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+        }
+        .bet-info-strip-pill .left-lbl {
+            color: #ffffff;
+        }
+        .bet-info-strip-pill .gold-val {
+            color: #ffcc00;
+            font-size: 14px;
+        }
+
+        /* --- ASLI GREEN SLOTS REELS MATRIX (From Image Reference) --- */
+        .slots-reel-container {
+            margin: 10px 15px;
+            background: #1e8449;
+            border: 3px solid #ffd700;
+            border-radius: 8px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr) 1.2fr;
+            height: 75px;
+            overflow: hidden;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.6);
+        }
+
+        .reel-window {
+            border-right: 2px solid #115b30;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            color: #ffd700;
+            font-weight: 900;
+            text-shadow: 1px 2px 4px rgba(0,0,0,0.8);
+            background: linear-gradient(180deg, #196f3d 0%, #229954 50%, #196f3d 100%);
+        }
+
+        .reel-window.scatter-column {
+            border-right: none;
+            background: linear-gradient(180deg, #b8860b 0%, #d4af37 50%, #b8860b 100%);
+            color: #ffffff;
+            font-size: 11px;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .scatter-badge {
+            background: #900c3f;
+            padding: 2px 4px;
+            border-radius: 3px;
+            border: 1px solid #ffd700;
+            font-size: 10px;
+            margin-top: 3px;
+        }
+
+        /* --- BOTTOM CONTROL ACTION BOARD PANELS --- */
+        .control-action-dock {
+            margin-top: auto;
+            background: linear-gradient(180deg, #1a0505 0%, #000000 100%);
+            border-top: 3px solid #d4af37;
+            padding: 12px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .win-indicator-display-box {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid #421111;
+            padding: 6px;
+            border-radius: 6px;
+        }
+        .win-indicator-display-box .lbl {
+            font-size: 11px;
+            color: #a89494;
+            text-transform: uppercase;
+        }
+        .win-indicator-display-box .val-amount {
+            font-size: 16px;
+            color: #00ffcc;
+            font-weight: 900;
+            text-shadow: 0 0 8px rgba(0, 255, 204, 0.4);
+        }
+
+        /* Giant Vivid Glowing Spin Circle Trigger Button */
+        .giant-spin-trigger-wrapper {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .giant-spin-btn {
+            width: 72px;
+            height: 72px;
+            background: radial-gradient(circle, #52be80 0%, #27ae60 70%, #196f3d 100%);
+            border: 4px solid #fff099;
+            border-radius: 50%;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 900;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.5), inset 0 0 8px rgba(255,255,255,0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            transition: transform 0.1s ease;
+        }
+        .giant-spin-btn:active {
+            transform: scale(0.93);
+        }
+
+        /* Bet Selection Selector Chip Tool */
+        .bet-adjuster-chip-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            background: #250707;
+            border: 1px solid #5c1414;
+            padding: 4px 8px;
+            border-radius: 6px;
+        }
+        .bet-adjuster-chip-box label {
+            font-size: 10px;
+            color: #ffd700;
+        }
+        .bet-adjuster-chip-box select {
+            background: #000;
+            color: #fff;
+            border: 1px solid #ffd700;
+            font-size: 13px;
+            padding: 2px 4px;
+            outline: none;
+            font-weight: bold;
+            border-radius: 4px;
+        }
+
+        /* Bottom Footer Bar */
+        .footer-version-tag {
+            font-size: 10px;
+            color: #4a3636;
+            text-align: center;
+            padding: 4px 0;
+            background-color: #000000;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="casino-app-frame">
+        <!-- INSUFFICIENT BALANCE NOTIFICATION TOAST -->
+        <div class="insufficient-funds-toast" id="funds-toast">
+            ⚠ Insufficient Balance! Please recharge your wallet.
+        </div>
+
+        <header class="header-top-bar">
+            <span class="brand-jili-lbl">JILI SLOTS</span>
+            <div class="wallet-gold-pill">
+                <span id="hud-balance-val">Ref ₹0.00</span>
+            </div>
+        </header>
+
+        <!-- WHEEL THEATER STAGE -->
+        <div class="wheel-machine-casing">
+            <!-- Target Top Selector Arrow Diamond Indicator Tip -->
+            <div class="wheel-target-pointer"></div>
+
+            <!-- Rotating Circle Rim Structure Frame -->
+            <div class="outer-rim-gold-frame">
+                <canvas id="wheel-canvas" class="spinner-canvas-node" width="500" height="500"></canvas>
+                <!-- Static Dollar Core Emblem Hub Shield Center Cap -->
+                <div class="central-dollar-hub">$</div>
+            </div>
+        </div>
+
+        <!-- LOGO BANNER SLOTS TITLES -->
+        <div class="money-coming-banner">Money Coming</div>
+
+        <!-- CENTRAL BET CONDITION SHARDS SCREEN INFO -->
+        <div class="dashboard-bet-tier-shelf">
+            <div class="bet-info-strip-pill">
+                <span class="left-lbl">Current Active Bet</span>
+                <span class="gold-val" id="lbl-active-bet">₹50.00</span>
+            </div>
+        </div>
+
+        <!-- GREEN SLOTS REELS ROW (From image reference 1781597217902.jpeg) -->
+        <div class="slots-reel-container">
+            <div class="reel-window" id="reel-1">10</div>
+            <div class="reel-window" id="reel-2">5</div>
+            <div class="reel-window" id="reel-3">5</div>
+            <div class="reel-window scatter-column">
+                <span>SCATTER</span>
+                <div class="scatter-badge">FREE</div>
+            </div>
+        </div>
+
+        <!-- CONTROL DOCK BASEFOOT ROW CONSOLE -->
+        <div class="control-action-dock">
+            <div class="bet-adjuster-chip-box">
+                <label>BET SIZE</label>
+                <select id="bet-selector" onchange="updateBetSize()">
+                    <option value="10">₹10.00</option>
+                    <option value="50" selected>₹50.00</option>
+                    <option value="100">₹100.00</option>
+                    <option value="500">₹500.00</option>
+                </select>
+            </div>
+
+            <div class="giant-spin-trigger-wrapper">
+                <button class="giant-spin-btn" id="spin-action-btn" onclick="executeLuckySpinCycle()">SPIN</button>
+            </div>
+
+            <div class="win-indicator-display-box">
+                <span class="lbl">WIN AMOUNT</span>
+                <span class="val-amount" id="hud-win-lbl">₹0.00</span>
+            </div>
+        </div>
+
+        <footer class="footer-version-tag">
+            v_491_292 | Balance Network Secure
+        </footer>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('wheel-canvas');
+        const ctx = canvas.getContext('2d');
+        const fundsToast = document.getElementById('funds-toast');
+        const hudWinLbl = document.getElementById('hud-win-lbl');
+        const lblActiveBet = document.getElementById('lbl-active-bet');
+        const betSelector = document.getElementById('bet-selector');
+        const reel1 = document.getElementById('reel-1');
+        const reel2 = document.getElementById('reel-2');
+        const reel3 = document.getElementById('reel-3');
+
+        // FIXED USER BALANCE SET TO ZERO AS REQUESTED
+        let userWalletCredits = 0.00; 
+        let selectedBetValue = 50.00;
+        let isWheelSpinning = false;
+        let toastTrackerTimer = null;
+
+        const sectors = [
+            { label: "1,000", color: "#fff399", txtColor: "#222" },
+            { label: "50", color: "#196f3d", txtColor: "#fff" },
+            { label: "200", color: "#ffe066", txtColor: "#222" },
+            { label: "2,000", color: "#cb1c24", txtColor: "#fff" },
+            { label: "500", color: "#ffe066", txtColor: "#222" },
+            { label: "100", color: "#196f3d", txtColor: "#fff" },
+            { label: "300", color: "#ffe066", txtColor: "#222" },
+            { label: "150", color: "#196f3d", txtColor: "#fff" }
+        ];
+
+        const totalSectorsCount = sectors.length;
+        const sectorRadianArcSize = (2 * Math.PI) / totalSectorsCount;
+
+        // --- DRAW WHEEL GRAPHICS ---
+        function renderCasinoWheelGraphics() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const wCenter = canvas.width / 2;
+            const wRadius = canvas.width / 2;
+
+            for (let i = 0; i < totalSectorsCount; i++) {
+                let sectorAngle = i * sectorRadianArcSize;
+                
+                ctx.beginPath();
+                ctx.fillStyle = sectors[i].color;
+                ctx.moveTo(wCenter, wCenter);
+                ctx.arc(wCenter, wCenter, wRadius, sectorAngle, sectorAngle + sectorRadianArcSize);
+                ctx.closePath();
+                ctx.fill();
+
+                ctx.strokeStyle = "rgba(212, 175, 55, 0.5)";
+                ctx.lineWidth = 3;
+                ctx.stroke();
+
+                ctx.save();
+                ctx.translate(wCenter, wCenter);
+                ctx.rotate(sectorAngle + (sectorRadianArcSize / 2) + (Math.PI / 2));
+                
+                ctx.fillStyle = sectors[i].txtColor;
+                ctx.font = "900 32px 'Arial Black', Gadget, sans-serif";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                
+                ctx.fillText(sectors[i].label, 0, -wRadius + 65);
+                ctx.restore();
+            }
+        }
+
+        renderCasinoWheelGraphics();
+
+        function updateBetSize() {
+            selectedBetValue = parseFloat(betSelector.value);
+            lblActiveBet.innerText = "₹" + selectedBetValue.toFixed(2);
+        }
+
+        // --- TOAST TRIGGER FOR INSUFFICIENT BALANCE ---
+        function triggerInsufficientFundsAlert() {
+            fundsToast.classList.remove('active-toast');
+            clearTimeout(toastTrackerTimer);
+            void fundsToast.offsetWidth; // Force Layout Reflow
+            fundsToast.classList.add('active-toast');
+            toastTrackerTimer = setTimeout(() => {
+                fundsToast.classList.remove('active-toast');
+            }, 3000);
+        }
+
+        // --- SPIN TRIGGER CYCLE ---
+        function executeLuckySpinCycle() {
+            if (isWheelSpinning) return;
+            
+            // CHECKING CRITERIA FOR ZERO BALANCE (TRIGGER SHOW ALERT)
+            if (userWalletCredits < selectedBetValue) {
+                triggerInsufficientFundsAlert();
+                return;
+            }
+        }
+    </script>
+</body>
+</html>
