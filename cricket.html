@@ -149,6 +149,14 @@
             overflow: hidden;
         }
 
+        .history-badges-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            overflow: hidden;
+            flex: 1;
+        }
+
         .badge-multiplier {
             font-size: 11px;
             font-weight: bold;
@@ -156,7 +164,15 @@
             border-radius: 10px;
             color: #2da1f7;
             background: #14243b;
+            white-space: nowrap;
+            animation: slideInBadge 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
+        
+        @keyframes slideInBadge {
+            from { opacity: 0; transform: scale(0.7) translateX(-20px); }
+            to { opacity: 1; transform: scale(1) translateX(0); }
+        }
+
         .badge-multiplier.purple-high {
             color: #b546fa;
             background: #27123a;
@@ -172,8 +188,8 @@
             align-items: center;
             justify-content: center;
             font-size: 9px;
-            margin-left: auto;
             cursor: pointer;
+            flex-shrink: 0;
         }
 
         /* --- THEATER VIEW CANVAS LAYER (EXACT REPLICA) --- */
@@ -581,14 +597,8 @@
             flex-direction: column;
             gap: 4px;
         }
-        /* Custom scrollbar hiding */
-        .ledger-rows-scrollarea::-webkit-scrollbar {
-            width: 3px;
-        }
-        .ledger-rows-scrollarea::-webkit-scrollbar-thumb {
-            background-color: #2b2c33;
-            border-radius: 2px;
-        }
+        .ledger-rows-scrollarea::-webkit-scrollbar { width: 3px; }
+        .ledger-rows-scrollarea::-webkit-scrollbar-thumb { background-color: #2b2c33; border-radius: 2px; }
 
         .single-ledger-row {
             display: flex;
@@ -673,11 +683,13 @@
         </header>
 
         <div class="history-ribbon">
-            <span class="badge-multiplier">1.66x</span>
-            <span class="badge-multiplier">1.47x</span>
-            <span class="badge-multiplier">1.46x</span>
-            <span class="badge-multiplier">1.67x</span>
-            <span class="badge-multiplier purple-high">5.93x</span>
+            <div class="history-badges-wrapper" id="history-badges-container">
+                <span class="badge-multiplier">1.66x</span>
+                <span class="badge-multiplier">1.47x</span>
+                <span class="badge-multiplier">1.46x</span>
+                <span class="badge-multiplier">1.67x</span>
+                <span class="badge-multiplier purple-high">5.93x</span>
+            </div>
             <div class="history-more-trigger">&#9662;</div>
         </div>
 
@@ -819,6 +831,7 @@
         const timelineDot = document.getElementById('timeline-dot');
         const toastAlert = document.getElementById('balance-toast');
         const ledgerContainer = document.getElementById('live-ledger-rows');
+        const historyBadgesContainer = document.getElementById('history-badges-container');
 
         let liveValue = 1.00;
         let flightCrashThreshold = 3.26;
@@ -827,17 +840,10 @@
 
         // --- INSUFFICIENT BALANCE ALERTS CONTROLLER ---
         function triggerBetValidation() {
-            // Remove active classes cleanly if double clicked fast
             toastAlert.classList.remove('show-toast');
             clearTimeout(toastTimeoutTimer);
-            
-            // Force browser layout repaint trigger trick 
             void toastAlert.offsetWidth; 
-            
-            // Push down visual alert panel
             toastAlert.classList.add('show-toast');
-            
-            // Retract view window strip back up after 3 seconds standard delay
             toastTimeoutTimer = setTimeout(() => {
                 toastAlert.classList.remove('show-toast');
             }, 3000);
@@ -847,12 +853,11 @@
         const fakeUserPrefixes = ['98xx***', '70xx***', '88xx***', '91xx***', '63xx***', 'Aviator_King', 'CricketPro', 'MaxBet', 'Lucky_Striker'];
         
         function injectFakeBetRow() {
-            if (liveValue <= 1.05) return; // Wait until match sets speed pace
+            if (liveValue <= 1.05) return;
 
             const randomUser = fakeUserPrefixes[Math.floor(Math.random() * fakeUserPrefixes.length)] + Math.floor(Math.random() * 90 + 10);
-            const randomBetValue = (Math.floor(Math.random() * 45) * 10 + 20); // 20 to 470 INR range bases
+            const randomBetValue = (Math.floor(Math.random() * 45) * 10 + 20);
 
-            // Probability logic check vectors whether bot cashed out before current stadium multiplier index
             const userCashedOut = Math.random() > 0.35; 
             let cashoutMultiplier = (Math.random() * (liveValue - 1) + 1).toFixed(2);
             
@@ -868,7 +873,6 @@
                         <span class="win-amt-node">₹${winPrizePool}</span>
                     </div>`;
             } else {
-                // User timed out/remained trapped until crash phase reached state boundary
                 rowStringTemplate = `
                     <div class="single-ledger-row">
                         <span class="user-id-node">${randomUser}</span>
@@ -880,20 +884,36 @@
 
             ledgerContainer.insertAdjacentHTML('afterbegin', rowStringTemplate);
 
-            // Clean memory overhead leak protection buffers caps
             if (ledgerContainer.children.length > 25) {
                 ledgerContainer.removeChild(ledgerContainer.lastChild);
             }
         }
 
-        // Run continuous bot background population streams loops
         setInterval(() => {
             if (liveValue < flightCrashThreshold && liveValue > 1.02) {
-                // Active match phase simulation feeds pumping ticks
                 if (Math.random() > 0.4) injectFakeBetRow();
             }
         }, 650);
 
+        // --- ADD CRASHED MULTIPLIER TO TOP RIBBON ---
+        function addCrashNumberToTopRibbon(finalCrashValue) {
+            const newBadge = document.createElement('span');
+            newBadge.classList.add('badge-multiplier');
+            newBadge.innerText = finalCrashValue + 'x';
+            
+            // Agar value 2.00x se badi h toh unique purple color style apply karo
+            if (parseFloat(finalCrashValue) >= 2.00) {
+                newBadge.classList.add('purple-high');
+            }
+            
+            // Ribbon me sabse pehle (Left side) add karega
+            historyBadgesContainer.insertBefore(newBadge, historyBadgesContainer.firstChild);
+            
+            // Limit ribbon items to avoid page overflow lag
+            if (historyBadgesContainer.children.length > 8) {
+                historyBadgesContainer.removeChild(historyBadgesContainer.lastChild);
+            }
+        }
 
         function runStadiumSimulation() {
             liveValue = 1.00;
@@ -909,39 +929,37 @@
                     let progressPercent = (liveValue - 1) / (flightCrashThreshold - 1 || 1);
                     if (progressPercent > 1) progressPercent = 1;
 
-                    // Absolute pixel horizontal layout calculations
                     let computedX = -35 + (progressPercent * 290);
-                    
-                    // Trigonometric parabolic sine jump loop wave tracking vectors
                     let bounceAmplitude = Math.abs(Math.sin(progressPercent * Math.PI * 2.2)) * 55;
                     let computedY = 38 + bounceAmplitude;
 
                     rotationalDegree += 7;
 
-                    // Apply coordinate vectors smoothly onto ball bounding layout element
                     ballActor.style.left = `${computedX}px`;
                     ballActor.style.bottom = `${computedY}px`;
                     ballActor.style.transform = `rotate(${rotationalDegree}deg)`;
 
-                    // Synchronize progress line indicator tiny red dot layout frame values
                     let timelineX = 15 + (progressPercent * 345);
                     timelineDot.style.left = `${timelineX}px`;
 
                 } else {
                     clearInterval(gameTimelineClock);
+                    
+                    // Game finish state save index tracking
+                    const roundCrashScore = flightCrashThreshold;
+                    
                     hudCounter.innerText = "Out / Flew Away!";
                     hudCounter.style.color = '#ff1744';
-                    
-                    // Instantly fade out the core ball object model node
                     ballActor.style.opacity = '0';
 
-                    // Loop recovery and resetting timeout gap
+                    // Uper ribbon bar me live result pass karna
+                    addCrashNumberToTopRibbon(roundCrashScore);
+
                     setTimeout(runStadiumSimulation, 3000);
                 }
             }, 45);
         }
 
-        // Initialize Core automation pipeline array trigger
         runStadiumSimulation();
 
         function offsetBetField(inputId, delta) {
