@@ -33,6 +33,7 @@
             min-height: 100vh;
             border: 1px solid #1c1d22;
             position: relative;
+            overflow: hidden;
         }
 
         /* Top Header Area Navigation */
@@ -361,7 +362,7 @@
             box-shadow: 0 0 5px #ff0000;
         }
 
-        /* --- CONTROL TERMINAL CONSOLES INTERFACE (SAME-TO-SAME) --- */
+        /* --- CONTROL TERMINAL CONSOLES INTERFACE --- */
         .betting-panel-wrapper {
             padding: 6px 8px;
             display: flex;
@@ -491,6 +492,10 @@
             cursor: pointer;
             padding: 6px;
             box-shadow: 0 3px 8px rgba(39, 174, 96, 0.3);
+            transition: transform 0.1s ease;
+        }
+        .giant-action-submit-btn:active {
+            transform: scale(0.97);
         }
 
         .giant-action-submit-btn .title-bold {
@@ -504,6 +509,107 @@
             font-weight: bold;
             margin-top: -1px;
         }
+
+        /* --- NOTIFICATION TOAST POPUP OVERLAY --- */
+        .insufficient-balance-alert {
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            background: linear-gradient(90deg, #d32f2f 0%, #b71c1c 100%);
+            color: #ffffff;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 12.5px;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid #ff5252;
+        }
+        .insufficient-balance-alert.show-toast {
+            top: 65px;
+        }
+        .warning-icon {
+            background-color: rgba(255,255,255,0.2);
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+        }
+
+        /* --- LIVE BET HISTORY BOX SHEET --- */
+        .history-ledger-container {
+            background-color: #16171e;
+            border: 1px solid #1e2029;
+            border-radius: 8px;
+            margin: 2px 8px 8px 8px;
+            padding: 8px;
+            height: 140px;
+            display: flex;
+            flex-direction: column;
+        }
+        .ledger-box-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            color: #6a707d;
+            font-weight: bold;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #222530;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .ledger-box-header span { flex: 1; }
+        .ledger-box-header span.txt-right { text-align: right; }
+        .ledger-box-header span.txt-center { text-align: center; }
+
+        .ledger-rows-scrollarea {
+            flex: 1;
+            overflow-y: auto;
+            margin-top: 4px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        /* Custom scrollbar hiding */
+        .ledger-rows-scrollarea::-webkit-scrollbar {
+            width: 3px;
+        }
+        .ledger-rows-scrollarea::-webkit-scrollbar-thumb {
+            background-color: #2b2c33;
+            border-radius: 2px;
+        }
+
+        .single-ledger-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            padding: 4px 0;
+            border-bottom: 1px solid #1a1b22;
+            animation: fadeInRow 0.3s ease-out;
+        }
+        @keyframes fadeInRow {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .single-ledger-row span { flex: 1; font-weight: 500; }
+        .user-id-node { color: #9ea5b3; font-family: monospace; }
+        .bet-amt-node { color: #ffffff; }
+        .mult-node { color: #2ecc71; text-align: center; font-weight: bold !important; }
+        .mult-node.lost { color: #6a707d; }
+        .win-amt-node { color: #61b827; text-align: right; font-weight: bold !important; }
+        .win-amt-node.lost { color: #444752; }
 
         /* Ledger Navigation Footer Grid Sheets Layout */
         .bottom-ledger-footer {
@@ -541,6 +647,11 @@
 <body>
 
     <div class="cricket-app-frame">
+        <div class="insufficient-balance-alert" id="balance-toast">
+            <span class="warning-icon">&#9888;</span>
+            <span>Insufficient Balance! Please Recharge.</span>
+        </div>
+
         <header class="header-top-bar">
             <div class="header-left">
                 <span class="arrow-back">&#10094;</span>
@@ -647,7 +758,7 @@
                             <button class="pill-trigger-btn" onclick="directSetBet('bet-field-1', 1000)">1000</button>
                         </div>
                     </div>
-                    <button class="giant-action-submit-btn">
+                    <button class="giant-action-submit-btn" onclick="triggerBetValidation()">
                         <span class="title-bold">BET</span>
                         <span class="sub-amount-lbl" id="submit-lbl-1">10 INR</span>
                     </button>
@@ -673,13 +784,24 @@
                             <button class="pill-trigger-btn" onclick="directSetBet('bet-field-2', 1000)">1000</button>
                         </div>
                     </div>
-                    <button class="giant-action-submit-btn">
+                    <button class="giant-action-submit-btn" onclick="triggerBetValidation()">
                         <span class="title-bold">BET</span>
                         <span class="sub-amount-lbl" id="submit-lbl-2">10 INR</span>
                     </button>
                 </div>
             </div>
 
+        </div>
+
+        <div class="history-ledger-container">
+            <div class="ledger-box-header">
+                <span>User ID</span>
+                <span>Bet (INR)</span>
+                <span class="txt-center">Mult.</span>
+                <span class="txt-right">Cashout</span>
+            </div>
+            <div class="ledger-rows-scrollarea" id="live-ledger-rows">
+                </div>
         </div>
 
         <footer class="bottom-ledger-footer">
@@ -695,10 +817,83 @@
         const hudCounter = document.getElementById('hud-counter');
         const ballActor = document.getElementById('ball-actor');
         const timelineDot = document.getElementById('timeline-dot');
+        const toastAlert = document.getElementById('balance-toast');
+        const ledgerContainer = document.getElementById('live-ledger-rows');
 
         let liveValue = 1.00;
         let flightCrashThreshold = 3.26;
         let rotationalDegree = 0;
+        let toastTimeoutTimer = null;
+
+        // --- INSUFFICIENT BALANCE ALERTS CONTROLLER ---
+        function triggerBetValidation() {
+            // Remove active classes cleanly if double clicked fast
+            toastAlert.classList.remove('show-toast');
+            clearTimeout(toastTimeoutTimer);
+            
+            // Force browser layout repaint trigger trick 
+            void toastAlert.offsetWidth; 
+            
+            // Push down visual alert panel
+            toastAlert.classList.add('show-toast');
+            
+            // Retract view window strip back up after 3 seconds standard delay
+            toastTimeoutTimer = setTimeout(() => {
+                toastAlert.classList.remove('show-toast');
+            }, 3000);
+        }
+
+        // --- AUTOMATED RANDOM USER DATA GENERATOR ---
+        const fakeUserPrefixes = ['98xx***', '70xx***', '88xx***', '91xx***', '63xx***', 'Aviator_King', 'CricketPro', 'MaxBet', 'Lucky_Striker'];
+        
+        function injectFakeBetRow() {
+            if (liveValue <= 1.05) return; // Wait until match sets speed pace
+
+            const randomUser = fakeUserPrefixes[Math.floor(Math.random() * fakeUserPrefixes.length)] + Math.floor(Math.random() * 90 + 10);
+            const randomBetValue = (Math.floor(Math.random() * 45) * 10 + 20); // 20 to 470 INR range bases
+
+            // Probability logic check vectors whether bot cashed out before current stadium multiplier index
+            const userCashedOut = Math.random() > 0.35; 
+            let cashoutMultiplier = (Math.random() * (liveValue - 1) + 1).toFixed(2);
+            
+            let rowStringTemplate = '';
+
+            if (userCashedOut && parseFloat(cashoutMultiplier) < parseFloat(liveValue)) {
+                let winPrizePool = (randomBetValue * cashoutMultiplier).toFixed(2);
+                rowStringTemplate = `
+                    <div class="single-ledger-row">
+                        <span class="user-id-node">${randomUser}</span>
+                        <span class="bet-amt-node">₹${randomBetValue}</span>
+                        <span class="mult-node">${cashoutMultiplier}x</span>
+                        <span class="win-amt-node">₹${winPrizePool}</span>
+                    </div>`;
+            } else {
+                // User timed out/remained trapped until crash phase reached state boundary
+                rowStringTemplate = `
+                    <div class="single-ledger-row">
+                        <span class="user-id-node">${randomUser}</span>
+                        <span class="bet-amt-node">₹${randomBetValue}</span>
+                        <span class="mult-node lost">-</span>
+                        <span class="win-amt-node lost">₹0.00</span>
+                    </div>`;
+            }
+
+            ledgerContainer.insertAdjacentHTML('afterbegin', rowStringTemplate);
+
+            // Clean memory overhead leak protection buffers caps
+            if (ledgerContainer.children.length > 25) {
+                ledgerContainer.removeChild(ledgerContainer.lastChild);
+            }
+        }
+
+        // Run continuous bot background population streams loops
+        setInterval(() => {
+            if (liveValue < flightCrashThreshold && liveValue > 1.02) {
+                // Active match phase simulation feeds pumping ticks
+                if (Math.random() > 0.4) injectFakeBetRow();
+            }
+        }, 650);
+
 
         function runStadiumSimulation() {
             liveValue = 1.00;
